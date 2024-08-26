@@ -1,0 +1,4 @@
+/* Add more custom styles for controls as needed */
+.ct_box_2_full_active {
+    grid-template-columns: 100% !important;
+  }

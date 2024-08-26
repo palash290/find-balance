@@ -96,27 +96,57 @@ export class FeedsComponent {
   currentAudio: HTMLAudioElement | null = null;
   currentAudioTime: number = 0;
   audioDuration: number = 0;
-  
-  toggleAudio(audioElement: HTMLAudioElement) {
-    if (this.currentVideoId) {
-      this.currentVideoId.pause();
-    }
 
-    if (this.currentAudio && this.currentAudio !== audioElement) {
-      this.currentAudio.pause(); // Pause the currently playing audio
-      this.isPlaying = false;
-    }
-  
-    if (audioElement.paused) {
-      audioElement.play();
-      this.currentAudio = audioElement;
-      this.isPlaying = true;
+///////
+  fileName = '';
+  formattedTime: any = 0;
+  duration: any = 0;
+  @ViewChild('audioPlayer') audioPlayer!: ElementRef<HTMLAudioElement>;
+
+  bar: any = 0;
+  togglePlayback() {
+    const player = this.audioPlayer.nativeElement;
+    setInterval(() => {
+      if (player.readyState >= 1) {
+        const current_time = player.currentTime;
+        const minutesC = Math.floor(current_time / 60);
+        const secondsC = Math.floor(current_time % 60);
+        const formattedDurationCurrent = `${minutesC}:${secondsC < 10 ? '0' : ''}${secondsC}`;
+        this.formattedTime = formattedDurationCurrent;
+        this.bar = (current_time / this.durationOrg) * 100
+        console.log('==>', this.bar)
+      }
+    }, 1000);
+
+    if (this.isPlaying) {
+      player.pause();
     } else {
-      audioElement.pause();
-      this.currentAudio = null;
-      this.isPlaying = false;
+      player.play();
     }
+    this.isPlaying = !this.isPlaying;
   }
+  //////// 
+  
+  // toggleAudio(audioElement: HTMLAudioElement) {
+  //   if (this.currentVideoId) {
+  //     this.currentVideoId.pause();
+  //   }
+
+  //   if (this.currentAudio && this.currentAudio !== audioElement) {
+  //     this.currentAudio.pause(); // Pause the currently playing audio
+  //     this.isPlaying = false;
+  //   }
+  
+  //   if (audioElement.paused) {
+  //     audioElement.play();
+  //     this.currentAudio = audioElement;
+  //     this.isPlaying = true;
+  //   } else {
+  //     audioElement.pause();
+  //     this.currentAudio = null;
+  //     this.isPlaying = false;
+  //   }
+  // }
   
   isAudioPlaying(audioElement: HTMLAudioElement): boolean {
     return audioElement === this.currentAudio && !audioElement.paused;

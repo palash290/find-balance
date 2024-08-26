@@ -28,6 +28,7 @@ import { CommunityComponent } from './community/community.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
+import { SearchCoachesComponent } from './search-coaches/search-coaches.component';
 
 
 @NgModule({
@@ -53,6 +54,7 @@ import {MatIconModule} from '@angular/material/icon';
     ChatFilterPipe,
     FollowingComponent,
     CommunityComponent,
+    SearchCoachesComponent,
   ],
   imports: [
     CommonModule,

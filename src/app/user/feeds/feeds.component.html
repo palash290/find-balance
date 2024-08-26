@@ -78,48 +78,42 @@
                      </div> -->
 
 
-                    <div class="ct_show_uploaded_audio_box mt-3 ct_light_grey_bg" style="position: relative;">
+                    <!-- <div class="ct_show_uploaded_audio_box mt-3 ct_light_grey_bg" style="position: relative;">
                         <div class="d-flex align-items-center gap-3" >
-                            <!-- Play/Pause Icon -->
+                            
                             <div class="ct_audio_play_icon" (click)="toggleAudio(audioPlayer)">
                                 <i *ngIf="!isAudioPlaying(audioPlayer)" class="bi bi-play-fill" style="cursor: pointer;"></i>
                                 <i *ngIf="isAudioPlaying(audioPlayer)" class="bi bi-pause-fill" style="cursor: pointer;"></i>
                             </div>
                             
 
-                            <!-- Audio Element -->
                             <audio #audioPlayer (timeupdate)="onAudioTimeUpdate(audioPlayer)"
                                  class="custom-audio-player">
                                 <source [src]="feed.mediaUrl" type="audio/mpeg">
                                 Your browser does not support the audio element.
                             </audio>
 
-                            <!-- Progress Bar -->
                             <input type="range" *ngIf="currentAudio === audioPlayer" class="custom-seekbar"
                                 (input)="onAudioSeek($event, audioPlayer)" />
 
-                            <!-- Audio Timing -->
                             <div *ngIf="currentAudio === audioPlayer" class="audio-timing text-white">
                                 {{ formatTime(currentAudioTime) }} / {{ formatTime(audioDuration) }}
                             </div>
-                            <!-- <div class="audio-timing text-white">
-                                {{ formatTime1(currentAudio === audioPlayer ? currentAudioTime : audioDurations.get(audioPlayer)) }} / 
-                                {{ formatTime1(audioDurations.get(audioPlayer)) }}
-                            </div> -->
+                           
                         </div>
-                    </div>
+                    </div> -->
 
 
-                    <!-- <div class="ct_show_uploaded_audio_box mt-3 ct_light_grey_bg">
-                        
+                    <div class="ct_show_uploaded_audio_box mt-3 ct_light_grey_bg">
+
                         <div class="d-flex align-items-center gap-3">
-                            <audio *ngIf="feed.mediaUrl" #audioPlayer class="custom-audio-player" (click)="togglePlayback(audioPlayer)">
+                            <audio *ngIf="feed.mediaUrl" controls class="custom-audio-player">
                                 <source [src]="feed.mediaUrl" type="audio/mpeg">
                                 Your browser does not support the audio element.
                             </audio>
                         </div>
 
-                        </div> -->
+                    </div>
 
                     <div class="ct_like_comment_div">
                         <ul>
