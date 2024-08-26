@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-follow-users',
@@ -11,7 +12,7 @@ export class FollowUsersComponent {
   searchQuery: string = '';
   avatar_url_fb: any;
 
-  constructor(private service: SharedService) { }
+  constructor(private router: Router, private service: SharedService) { }
 
   ngOnInit() {
     this.avatar_url_fb = localStorage.getItem('avatar_url_fb');
@@ -54,5 +55,11 @@ export class FollowUsersComponent {
       }
     });
   }
+
+
+  getUserId(uderId: any) {
+    this.router.navigateByUrl(`user/main/my-profile/${uderId}`)
+  }
+
 
 }

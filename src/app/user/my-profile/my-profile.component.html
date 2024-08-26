@@ -6,12 +6,15 @@
     <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 ct_mt_30 pt-1">
         <div>
             <h4 class="ct_ff_roboto ct_fw_600 text-white ct_fs_24 mb-0">{{name}}</h4>
-            <div class="d-flex align-items-center gap-2" *ngIf="isCoach">
+            @if(category){
+            <div class="d-flex align-items-center gap-2">
                 <img src="../assets/img/star.png" alt="star">
                 <span class="ct_orange_text">{{category}}</span>
             </div>
+            }
+
         </div>
-        <div>
+        <div *ngIf="!userId">
             <a routerLink="/user/main/edit-profile" class="ct_orange_btn ct_grey_btn ct_border_radius_10">Edit
                 Profile</a>
         </div>
@@ -26,45 +29,59 @@
     <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{ education ? education : 'Not found'
         }}</p>
 
-    <div *ngIf="isCoach">
-        <!-- <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600 mt-3">Accomplishments</h4>
+    @if(experience){
+    <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600 mt-3">Experience</h4>
+    <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{ experience
+        }}</p>
+    }
+
+
+    <!-- <div *ngIf="isCoach && userRole=='COACH'"> -->
+    <!-- <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600 mt-3">Accomplishments</h4>
         <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{accomplishments}}</p> -->
-        <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600 mt-3">Accomplishments</h4>
-        <ng-container *ngIf="accomplishments; else noAccomplishments">
-            <ul class="custom-list mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">
-                <li *ngFor="let accomplishment of accomplishments">{{ accomplishment }}</li>
-            </ul>
-        </ng-container>
+    @if(accomplishments){
+    <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600 mt-3">Accomplishments</h4>
+    <ng-container *ngIf="accomplishments; else noAccomplishments">
+        <ul class="custom-list mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">
+            <li *ngFor="let accomplishment of accomplishments">{{ accomplishment }}</li>
+        </ul>
+    </ng-container>
 
-        <ng-template #noAccomplishments>
-            <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">Not found</p>
-        </ng-template>
-
-
-        <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600 mt-3">Certificates</h4>
-        <ng-container *ngIf="certificates; else nocertificate">
-            <ul class="custom-list mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">
-                <li *ngFor="let certificate of certificates">{{ certificate }}</li>
-            </ul>
-        </ng-container>
-        <ng-template #nocertificate>
-            <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">Not found</p>
-        </ng-template>
+    <ng-template #noAccomplishments>
+        <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">Not found</p>
+    </ng-template>
+    }
 
 
+    @if(certificates){
+    <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600 mt-3">Certificates</h4>
+    <ng-container *ngIf="certificates; else nocertificate">
+        <ul class="custom-list mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">
+            <li *ngFor="let certificate of certificates">{{ certificate }}</li>
+        </ul>
+    </ng-container>
+    <ng-template #nocertificate>
+        <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">Not found</p>
+    </ng-template>
+    }
 
-        <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600 mt-3">Other Categories</h4>
-        <ng-container *ngIf="selectedCategoryNames && selectedCategoryNames.length > 0; else noSelectedCategory">
-            <ul class="custom-list mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">
-              <li *ngFor="let selectedCategoryName of selectedCategoryNames">{{ selectedCategoryName }}</li>
-            </ul>
-          </ng-container>
-          
-          <ng-template #noSelectedCategory>
-            <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">Not found</p>
-          </ng-template>
-          
-    </div>
+
+
+    @if(selectedCategoryNames && selectedCategoryNames.length > 0){
+    <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600 mt-3">Other Categories</h4>
+    <ng-container *ngIf="selectedCategoryNames && selectedCategoryNames.length > 0; else noSelectedCategory">
+        <ul class="custom-list mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">
+            <li *ngFor="let selectedCategoryName of selectedCategoryNames">{{ selectedCategoryName }}</li>
+        </ul>
+    </ng-container>
+
+    <ng-template #noSelectedCategory>
+        <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">Not found</p>
+    </ng-template>
+    }
+
+
+    <!-- </div> -->
 
 
 </div>

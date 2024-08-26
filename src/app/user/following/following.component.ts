@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-following',
@@ -15,7 +16,7 @@ export class FollowingComponent {
   isCoach: boolean = true;
   role: any;
 
-  constructor(private service: SharedService) { }
+  constructor(private router: Router, private service: SharedService) { }
 
   ngOnInit() {
     this.role = this.service.getRole();
@@ -80,5 +81,10 @@ export class FollowingComponent {
       }
     });
   }
+
+  getCoachId(uderId: any) {
+    this.router.navigateByUrl(`user/main/my-profile/${uderId}`)
+  }
+
 
 }

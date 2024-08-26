@@ -13,19 +13,14 @@
         <div class=" mb-4 d-flex align-items-center gap-4" *ngIf="!isCoach">
             <select class="ct_login_input form-control w-auto ms-auto" [(ngModel)]="categoryId"
                 (change)="onCategoryChange($event)">
-                <option value="0">Short By Category</option>
+                <option value="">All</option>
                 <option *ngFor="let category of categories" [value]="category.id">{{ category.name
                     }}</option>
             </select>
             <!-- <div class="w-100">
                 <hr class="ct_hr_line_op_5" style="opacity: 1;">
             </div> -->
-            <select class="ct_login_input form-control w-auto ms-auto">
-                <option value="">Short By</option>
-                <option value="Following">Video</option>
-                <option value="Following">Audio</option>
-                <option value="Following">Podcast</option>
-            </select>
+            <input type="text" name="" id="" [(ngModel)]="experience" (ngModelChange)="getAllCoaches()">
         </div>
 
 
@@ -61,8 +56,7 @@
                                         *ngIf="btnLoader && categories.id == followId">
                                         <span class="visually-hidden">Loading...</span>
                                     </div>
-                                    <span
-                                        *ngIf="btnLoader && categories.id != followId || !btnLoader">Follow</span>
+                                    <span *ngIf="btnLoader && categories.id != followId || !btnLoader">Follow</span>
                                 </div>
 
                             </button>

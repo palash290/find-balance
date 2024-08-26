@@ -44,8 +44,10 @@ export class SearchCoachesComponent {
   //   });
   // }
 
+  experience: any = '';
+
   getAllCoaches() {
-    const url = `coach/follow/allCoaches?search=${this.searchQuery}`;
+    const url = this.isCoach ? `coach/follow/allCoaches?search=${this.searchQuery}` : `user/allCoaches?categoryId=${this.categoryId}&experience=${this.experience}&search=${this.searchQuery}`;
     this.service.getApi(url).subscribe({
       next: resp => {
         this.data = resp.data || [];
@@ -85,7 +87,7 @@ export class SearchCoachesComponent {
   }
 
 
-  categoryId: any = '0';
+  categoryId: any = '';
   selectedCategoryName: string | undefined;
   categories: any[] = [];
 
@@ -99,6 +101,7 @@ export class SearchCoachesComponent {
       console.log('Selected Category ID:', this.categoryId);
       console.log('Selected Category Name:', this.selectedCategoryName);
     }
+    this.getAllCoaches()
   }
 
 }
