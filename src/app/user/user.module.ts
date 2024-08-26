@@ -30,7 +30,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import { SearchCoachesComponent } from './search-coaches/search-coaches.component';
 import { TeamsComponent } from './teams/teams.component';
-import { FollowCoachesComponent } from './follow-coaches/follow-coaches.component';
+import { FollowUsersComponent } from './follow-users/follow-users.component';
 
 
 @NgModule({
@@ -58,7 +58,7 @@ import { FollowCoachesComponent } from './follow-coaches/follow-coaches.componen
     CommunityComponent,
     SearchCoachesComponent,
     TeamsComponent,
-    FollowCoachesComponent,
+    FollowUsersComponent,
   ],
   imports: [
     CommonModule,

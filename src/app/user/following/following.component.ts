@@ -12,10 +12,17 @@ export class FollowingComponent {
   searchQuery: string = '';
   isFollowing: { [key: number | string]: boolean } = {};
   avatar_url_fb: any;
+  isCoach: boolean = true;
+  role: any;
 
   constructor(private service: SharedService) { }
 
   ngOnInit() {
+    this.role = this.service.getRole();
+    if (this.role == "USER") {
+      this.isCoach = false;
+    }
+
     this.service.refreshSidebar$.subscribe(() => {
       this.searchCategories();
     });
@@ -24,19 +31,19 @@ export class FollowingComponent {
     //this.searchCategories();
   }
 
-  getCategories() {
-    this.service.getApi('user/coach/followedCoaches').subscribe({
-      next: resp => {
-        this.data = resp.data;
-      },
-      error: error => {
-        console.log(error.message)
-      }
-    });
-  }
+  // getCategories() {
+  //   this.service.getApi('user/coach/followedCoaches').subscribe({
+  //     next: resp => {
+  //       this.data = resp.data;
+  //     },
+  //     error: error => {
+  //       console.log(error.message)
+  //     }
+  //   });
+  // }
 
   searchCategories() {
-    const url = `user/coach/followedCoaches?search=${this.searchQuery}`;
+    const url = this.isCoach ? `coach/follow/followedCoaches?search=${this.searchQuery}` : `user/coach/followedCoaches?search=${this.searchQuery}`;
     this.service.getApi(url).subscribe({
       next: resp => {
         this.data = resp.data || [];
@@ -61,10 +68,10 @@ export class FollowingComponent {
     this.followId = postId;
     this.btnLoader = true
 
-    this.service.postAPI(`user/coach/unfollow/${postId}`, null).subscribe({
+    this.service.postAPI(this.isCoach ? `coach/follow/unfollow/${postId}` : `user/coach/unfollow/${postId}`, null).subscribe({
       next: resp => {
         console.log(resp);
-        this.getCategories();
+        this.searchCategories();
         this.btnLoader = false;
       },
       error: error => {

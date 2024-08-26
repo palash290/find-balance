@@ -52,6 +52,7 @@ export class SidebarComponent {
   totalFollowers: any;
   category: any;
   isExpanded: boolean = false;
+  numberOfFollowings: any;
 
   loadUserProfile() {
     this.visibilityService.getApi(this.isCoach ? 'coach/myProfile' : 'user/myProfile').subscribe({
@@ -64,6 +65,7 @@ export class SidebarComponent {
           this.totalPosts = resp.data.numberOfPosts;
           this.totalFollowers = resp.data.numberOfFollower;
           this.category = resp.data.category.name;
+          this.numberOfFollowings = resp.data.numberOfFollowings
         } else {
           this.about_me = resp.user.about_me;
           this.name = resp.user.full_name;

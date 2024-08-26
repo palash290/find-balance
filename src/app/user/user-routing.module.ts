@@ -19,6 +19,7 @@ import { FollowingComponent } from './following/following.component';
 import { CommunityComponent } from './community/community.component';
 import { SearchCoachesComponent } from './search-coaches/search-coaches.component';
 import { TeamsComponent } from './teams/teams.component';
+import { FollowUsersComponent } from './follow-users/follow-users.component';
 
 const routes: Routes = [
   {
@@ -87,6 +88,10 @@ const routes: Routes = [
       {
         path: "teams",
         component: TeamsComponent,
+      },
+      {
+        path: "followed-users",
+        component: FollowUsersComponent,
       },
       // {
       //   path: "suggested-categories",

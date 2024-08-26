@@ -1,0 +1,60 @@
+<div class='ct_box_2_column ct_box_2_full_active'>
+    <div>
+        <div class="ct_upload_text">
+            <img [src]="avatar_url_fb ? avatar_url_fb : '/assets/img/np_pro.png'" alt=""
+                class="ct_img_44 ct_orange_border_1">
+            <div class="form-group w-100">
+                <input type="text" class="form-control ct_custom_input w-100" placeholder="Type here..."
+                    [(ngModel)]="searchQuery" (ngModelChange)="searchFollowUsersList()">
+            </div>
+        </div>
+
+        <div *ngIf="data?.length === 0" class="text-center">
+            <p class="ct_fs_15 text-white mt-5">No user found</p>
+        </div>
+
+        <div class="mt-4" *ngIf="data?.length > 0">
+            <ul class="ct_mt_30 ct_all_notification px-2">
+                <li *ngFor="let follower of data;">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex gap-2">
+                            <div class="ct_star_circle">
+                                <img [src]="follower.follower.avatar_url ? follower.follower.avatar_url : '/assets/img/np_pro.png'"
+                                    alt="" class="ct_img_44 ct_bor ct_orange_border_1">
+                            </div>
+                            <div>
+                                <h5 class="ct_fs_15 ct_orange_text ct_fw_600 mb-1 ct_ff_roboto">
+                                    {{follower.follower.full_name}}</h5>
+                                <!-- <p class="mb-0 ct_fs_12 text-white">{{categories.following.totalPosts}}
+                                    {{categories.following.totalPosts > 1 ? 'Posts' : 'Post'}}</p> -->
+                            </div>
+                        </div>
+                        <div>
+                            <!-- <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 px-2 py-2 h-auto ct_fs_13"
+                                style="min-width: 5rem;" [ngClass]="{'ct_active_follow': follower.isFollowing}"
+                                (click)="removeUser(follower.follower.id)">
+
+                                <div class="d-flex align-items-center">
+                                    <div class="spinner-border me-2" role="status"
+                                        *ngIf="btnLoader && follower.following.id == followId">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <span
+                                        *ngIf="btnLoader && follower.following.id != followId || !btnLoader">Remove</span>
+                                </div>
+
+                            </button> -->
+                            <!-- <p class="mb-0 ct_ff_roboto ct_fs_12 text-white text-center mt-2 ct_fw_400">
+                                {{follower.following.totalFollowers}} {{follower.following.totalFollowers > 1 ?
+                                'Followers' : 'Follower'}}
+                            </p> -->
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+
+</div>
