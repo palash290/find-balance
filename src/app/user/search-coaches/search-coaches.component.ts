@@ -16,6 +16,13 @@ export class SearchCoachesComponent {
   constructor(private service: SharedService) { }
 
   ngOnInit() {
+
+    this.service.getApi('coach/categories').subscribe(response => {
+      if (response.success) {
+        this.categories = response.data;
+      }
+    });
+
     this.service.refreshSidebar$.subscribe(() => {
       this.searchCategories();
     });
@@ -72,6 +79,23 @@ export class SearchCoachesComponent {
         console.log(error.message)
       }
     });
+  }
+
+
+  categoryId: any = '0';
+  selectedCategoryName: string | undefined;
+  categories: any[] = [];
+
+  onCategoryChange(event: any): void {
+    const selectedId = event.target.value;
+    const selectedCategory = this.categories.find(category => category.id == selectedId);
+
+    if (selectedCategory) {
+      this.categoryId = selectedCategory.id;
+      this.selectedCategoryName = selectedCategory.name;
+      console.log('Selected Category ID:', this.categoryId);
+      console.log('Selected Category Name:', this.selectedCategoryName);
+    }
   }
 
 }
