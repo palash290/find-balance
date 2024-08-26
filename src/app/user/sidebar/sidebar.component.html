@@ -1,0 +1,208 @@
+<div class="ct_side_bar">
+    <div class="ct_ps_10_pe_20">
+        <div class="ct_logo text-center">
+            <a>
+                <img src="../assets/img/logo.svg" alt="">
+            </a>
+        </div>
+        <div class="ct_user_detail">
+            <div class="d-flex align-items-center justify-content-between">
+                <a routerLink="/user/main/settings" (click)="onToggleMenu()">
+                    <img src="../assets/img/setting_icon.svg" alt="">
+                </a>
+                <div>
+                    <img [src]="avatar_url ? avatar_url : '/assets/img/np_pro.png'" alt="" class="ct_img_84">
+                </div>
+                @if (isCoach) {
+                <div class="ct_notification_icon" routerLink="/user/main/notifications" style="cursor: pointer;"
+                    (click)="onToggleMenu()">
+                    <a>
+                        <img src="../assets/img/notification_icon.svg" alt="">
+                        <span *ngIf="unreadNotifications > 0">{{unreadNotifications}}</span>
+                    </a>
+                </div>
+                } @else {
+                <div class="ct_notification_icon" (click)="toggleComponent()" style="cursor: pointer;"
+                    (click)="onToggleMenu()">
+                    <a>
+                        <img src="../assets/img/notification_icon.svg" alt="">
+                        <span *ngIf="unreadNotifications > 0">{{unreadNotifications}}</span>
+                    </a>
+                </div>
+                }
+
+                <!-- <div class="ct_notification_icon" style="cursor: pointer;">
+                    <a routerLink="/user/main/notifications">
+                        <img src="../assets/img/notification_icon.svg" alt="">
+                        <span>{{unreadNotifications}}</span>
+                    </a>
+                </div> -->
+            </div>
+            <div class="ct_mt_10">
+                <h4 class="ct_fs_22 ct_fw_600 ct_ff_roboto text-center text-white">{{name}}</h4>
+                @if(isCoach){
+                <div class="d-flex align-items-center justify-content-center gap-2">
+                    <img src="../assets/img/star.png" alt="star">
+                    <span class="ct_orange_text">{{category}}</span>
+                </div>
+                }
+
+                <p class="ct_fs_13 ct_line_height_22 text-white ct_fw_500 ct_ff_roboto ct_mt_10 mb-0 text-center">
+                    <span>
+                        {{ isExpanded ? about_me : (about_me?.length > 100 ? (about_me.substring(0, 100) + '...') :
+                        about_me) }}
+                    </span>
+                    <a *ngIf="shouldShowReadMore()" class="ct_orange_text" (click)="toggleText()"
+                        href="javascript:void(0);">
+                        {{ isExpanded ? 'Read less' : 'Read more' }}
+                    </a>
+                </p>
+
+                @if(isCoach){
+                <div class="d-flex align-items-center justify-content-around mt-3">
+                    <div class="ct_total_post">
+                        <h5 class="ct_fs_18 ct_fw_500 ct_ff_roboto mb-1 text-white text-center">{{totalPosts}}</h5>
+                        <p class="ct_fs_14 text-white ct_text_op_5">Posts</p>
+                    </div>
+                    <div class="ct_total_post">
+                        <h5 class="ct_fs_18 ct_fw_500 ct_ff_roboto mb-1 text-white text-center">{{totalFollowers}}</h5>
+                        <p class="ct_fs_14 text-white ct_text_op_5">Follower</p>
+                    </div>
+                </div>
+                }
+
+
+            </div>
+        </div>
+
+        <div class="ct_panel_menu">
+            <ul>
+
+                <!-- <li (click)="onToggleMenu()">
+                    <a routerLink="/user/main/community"
+                        [ngClass]="{ 'ct_menu_active1': isActive('user/main/community')}">
+                        <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M2 17.5C1.45 17.5 0.979335 17.3043 0.588002 16.913C0.196668 16.5217 0.000668362 16.0507 1.69491e-06 15.5C-0.000664972 14.9493 0.195335 14.4787 0.588002 14.088C0.980668 13.6973 1.45133 13.5013 2 13.5C2.54867 13.4987 3.01967 13.6947 3.413 14.088C3.80634 14.4813 4.002 14.952 4 15.5C3.998 16.048 3.80234 16.519 3.413 16.913C3.02367 17.307 2.55267 17.5027 2 17.5ZM14 17.5C14 15.55 13.6333 13.7293 12.9 12.038C12.1667 10.3467 11.1667 8.86733 9.9 7.6C8.63334 6.33267 7.15434 5.33267 5.463 4.6C3.77167 3.86733 1.95067 3.50067 1.69491e-06 3.5V0.5C2.36667 0.5 4.575 0.941666 6.625 1.825C8.675 2.70833 10.475 3.925 12.025 5.475C13.575 7.025 14.7917 8.825 15.675 10.875C16.5583 12.925 17 15.1333 17 17.5H14ZM8 17.5C8 16.3833 7.79167 15.3457 7.375 14.387C6.95834 13.4283 6.38334 12.5827 5.65 11.85C4.91667 11.1173 4.071 10.5423 3.113 10.125C2.155 9.70767 1.11733 9.49933 1.69491e-06 9.5V6.5C1.53333 6.5 2.96267 6.78767 4.288 7.363C5.61334 7.93833 6.77567 8.72567 7.775 9.725C8.77433 10.7243 9.562 11.887 10.138 13.213C10.714 14.539 11.0013 15.968 11 17.5H8Z"
+                                fill="#E58934" />
+                        </svg>
+                        Community</a>
+                </li> -->
+
+                <li (click)="onToggleMenu()">
+                    <a routerLink="/user/main/feeds" [ngClass]="{ 'ct_menu_active1': isActive('user/main/feeds')}">
+                        <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M2 17.5C1.45 17.5 0.979335 17.3043 0.588002 16.913C0.196668 16.5217 0.000668362 16.0507 1.69491e-06 15.5C-0.000664972 14.9493 0.195335 14.4787 0.588002 14.088C0.980668 13.6973 1.45133 13.5013 2 13.5C2.54867 13.4987 3.01967 13.6947 3.413 14.088C3.80634 14.4813 4.002 14.952 4 15.5C3.998 16.048 3.80234 16.519 3.413 16.913C3.02367 17.307 2.55267 17.5027 2 17.5ZM14 17.5C14 15.55 13.6333 13.7293 12.9 12.038C12.1667 10.3467 11.1667 8.86733 9.9 7.6C8.63334 6.33267 7.15434 5.33267 5.463 4.6C3.77167 3.86733 1.95067 3.50067 1.69491e-06 3.5V0.5C2.36667 0.5 4.575 0.941666 6.625 1.825C8.675 2.70833 10.475 3.925 12.025 5.475C13.575 7.025 14.7917 8.825 15.675 10.875C16.5583 12.925 17 15.1333 17 17.5H14ZM8 17.5C8 16.3833 7.79167 15.3457 7.375 14.387C6.95834 13.4283 6.38334 12.5827 5.65 11.85C4.91667 11.1173 4.071 10.5423 3.113 10.125C2.155 9.70767 1.11733 9.49933 1.69491e-06 9.5V6.5C1.53333 6.5 2.96267 6.78767 4.288 7.363C5.61334 7.93833 6.77567 8.72567 7.775 9.725C8.77433 10.7243 9.562 11.887 10.138 13.213C10.714 14.539 11.0013 15.968 11 17.5H8Z"
+                                fill="#E58934" />
+                        </svg>
+                        Feed</a>
+                </li>
+                <li *ngIf="!isCoach">
+                    <a routerLink="/user/main/my-intrest" (click)="onToggleMenu()"
+                        [ngClass]="{ 'ct_menu_active1': isActive('user/main/my-intrest')}">
+                        <svg width="17" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M11 21.5C16.523 21.5 21 17.023 21 11.5C21 5.977 16.523 1.5 11 1.5C5.47701 1.5 1.00001 5.977 1.00001 11.5C0.997756 13.478 1.58395 15.4121 2.68401 17.056C2.80601 17.2375 2.57751 18.386 2.00001 20.5C4.11451 19.9225 5.26251 19.694 5.44401 19.816C7.08795 20.9161 9.02196 21.5023 11 21.5Z"
+                                stroke="#E58934" stroke-width="2" stroke-linejoin="round" />
+                            <path
+                                d="M7.30273 9.41002H15.6922M9.92373 7.36902L8.46673 15.631M13.4237 7.36902L11.9667 15.631M6.30273 13.5H14.6922"
+                                stroke="#E58934" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        My Interest</a>
+                </li>
+
+                <li *ngIf="!isCoach">
+                    <a routerLink="/user/main/following" (click)="onToggleMenu()"
+                        [ngClass]="{ 'ct_menu_active1': isActive('user/main/following')}">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_659_15731)">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M11 4C10.606 4 10.2159 4.0776 9.85195 4.22836C9.48797 4.37913 9.15726 4.6001 8.87868 4.87868C8.6001 5.15726 8.37913 5.48797 8.22836 5.85195C8.0776 6.21593 8 6.60603 8 7C8 7.39397 8.0776 7.78407 8.22836 8.14805C8.37913 8.51203 8.6001 8.84274 8.87868 9.12132C9.15726 9.3999 9.48797 9.62087 9.85195 9.77164C10.2159 9.9224 10.606 10 11 10C11.7956 10 12.5587 9.68393 13.1213 9.12132C13.6839 8.55871 14 7.79565 14 7C14 6.20435 13.6839 5.44129 13.1213 4.87868C12.5587 4.31607 11.7956 4 11 4ZM6 7C6 5.67392 6.52678 4.40215 7.46447 3.46447C8.40215 2.52678 9.67392 2 11 2C12.3261 2 13.5979 2.52678 14.5355 3.46447C15.4732 4.40215 16 5.67392 16 7C16 8.32608 15.4732 9.59785 14.5355 10.5355C13.5979 11.4732 12.3261 12 11 12C9.67392 12 8.40215 11.4732 7.46447 10.5355C6.52678 9.59785 6 8.32608 6 7ZM4.413 17.601C4.09 18.011 4 18.321 4 18.5C4 18.622 4.037 18.751 4.255 18.926C4.504 19.126 4.937 19.333 5.599 19.508C6.917 19.858 8.811 20 11 20C11.222 20 11.4413 19.9983 11.658 19.995C11.9232 19.9914 12.179 20.0933 12.3691 20.2783C12.5591 20.4634 12.6679 20.7163 12.6715 20.9815C12.6751 21.2467 12.5732 21.5025 12.3882 21.6926C12.2031 21.8826 11.9502 21.9914 11.685 21.995C11.4583 21.9983 11.23 22 11 22C8.771 22 6.665 21.86 5.087 21.442C4.302 21.234 3.563 20.936 3.003 20.486C2.41 20.01 2 19.345 2 18.5C2 17.713 2.358 16.977 2.844 16.361C3.338 15.736 4.021 15.161 4.822 14.671C6.425 13.695 8.605 13 11 13C11.4473 13 11.886 13.0233 12.316 13.07C12.5798 13.098 12.8216 13.2296 12.9883 13.4359C13.155 13.6422 13.233 13.9062 13.205 14.17C13.177 14.4338 13.0454 14.6756 12.8391 14.8423C12.6328 15.009 12.3688 15.087 12.105 15.059C11.7443 15.0197 11.376 15 11 15C8.977 15 7.157 15.59 5.864 16.379C5.217 16.773 4.728 17.201 4.413 17.601ZM21.708 16.068C21.8902 15.8794 21.991 15.6268 21.9887 15.3646C21.9864 15.1024 21.8812 14.8516 21.6958 14.6662C21.5104 14.4808 21.2596 14.3756 20.9974 14.3733C20.7352 14.371 20.4826 14.4718 20.294 14.654L17.112 17.836L15.698 16.422C15.5094 16.2398 15.2568 16.139 14.9946 16.1413C14.7324 16.1436 14.4816 16.2488 14.2962 16.4342C14.1108 16.6196 14.0056 16.8704 14.0033 17.1326C14.001 17.3948 14.1018 17.6474 14.284 17.836L16.334 19.886C16.4362 19.9882 16.5574 20.0693 16.6909 20.1246C16.8244 20.1799 16.9675 20.2084 17.112 20.2084C17.2565 20.2084 17.3996 20.1799 17.5331 20.1246C17.6666 20.0693 17.7878 19.9882 17.89 19.886L21.708 16.068Z"
+                                    fill="#E58934" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_659_15731">
+                                    <rect width="24" height="24" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+
+                        Following</a>
+                </li>
+
+                <li *ngIf="!isCoach">
+                    <a routerLink="/user/main/saved-posts" (click)="onToggleMenu()"
+                        [ngClass]="{ 'ct_menu_active1': isActive('user/main/saved-posts')}">
+                        <svg width="17" height="19" viewBox="0 0 14 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M0 18.5V2.5C0 1.95 0.196 1.47933 0.588 1.088C0.98 0.696667 1.45067 0.500667 2 0.5H12C12.55 0.5 13.021 0.696 13.413 1.088C13.805 1.48 14.0007 1.95067 14 2.5V18.5L7 15.5L0 18.5ZM2 15.45L7 13.3L12 15.45V2.5H2V15.45Z"
+                                fill="#E58934" />
+                        </svg>
+                        Saved Post</a>
+                </li>
+                <li>
+                    <a routerLink="/user/main/my-profile" (click)="onToggleMenu()"
+                        [ngClass]="{ 'ct_menu_active1': isActive('user/main/my-profile')}">
+                        <svg width="17" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M1 15.5C1 14.4391 1.42143 13.4217 2.17157 12.6716C2.92172 11.9214 3.93913 11.5 5 11.5H13C14.0609 11.5 15.0783 11.9214 15.8284 12.6716C16.5786 13.4217 17 14.4391 17 15.5C17 16.0304 16.7893 16.5391 16.4142 16.9142C16.0391 17.2893 15.5304 17.5 15 17.5H3C2.46957 17.5 1.96086 17.2893 1.58579 16.9142C1.21071 16.5391 1 16.0304 1 15.5Z"
+                                stroke="#E58934" stroke-width="1.5" stroke-linejoin="round" />
+                            <path
+                                d="M9 7.5C10.6569 7.5 12 6.15685 12 4.5C12 2.84315 10.6569 1.5 9 1.5C7.34315 1.5 6 2.84315 6 4.5C6 6.15685 7.34315 7.5 9 7.5Z"
+                                stroke="#E58934" stroke-width="1.5" />
+                        </svg>
+                        My Profile</a>
+                </li>
+                <li (click)="onToggleMenu()">
+                    <a routerLink="/user/main/chat" [ngClass]="{ 'ct_menu_active1': isActive('user/main/chat')}">
+                        <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10.9999 0.5C9.68665 0.5 8.38629 0.758658 7.17303 1.2612C5.95978 1.76375 4.85738 2.50035 3.9288 3.42893C2.05343 5.3043 0.999866 7.84784 0.999866 10.5C0.991124 12.8091 1.79066 15.0485 3.25987 16.83L1.25987 18.83C1.12111 18.9706 1.02711 19.1492 0.989738 19.3432C0.952364 19.5372 0.973287 19.7379 1.04987 19.92C1.13292 20.0999 1.26757 20.2511 1.43671 20.3544C1.60586 20.4577 1.80187 20.5083 1.99987 20.5H10.9999C13.652 20.5 16.1956 19.4464 18.0709 17.5711C19.9463 15.6957 20.9999 13.1522 20.9999 10.5C20.9999 7.84784 19.9463 5.3043 18.0709 3.42893C16.1956 1.55357 13.652 0.5 10.9999 0.5ZM10.9999 18.5H4.40987L5.33987 17.57C5.52612 17.3826 5.63066 17.1292 5.63066 16.865C5.63066 16.6008 5.52612 16.3474 5.33987 16.16C4.03045 14.852 3.21504 13.1305 3.03256 11.2888C2.85007 9.44705 3.31181 7.59901 4.33909 6.05952C5.36638 4.52004 6.89566 3.38436 8.66638 2.84597C10.4371 2.30759 12.3397 2.3998 14.0501 3.10691C15.7604 3.81402 17.1727 5.09227 18.0463 6.72389C18.9199 8.35551 19.2007 10.2395 18.841 12.055C18.4813 13.8705 17.5032 15.505 16.0734 16.6802C14.6436 17.8554 12.8506 18.4985 10.9999 18.5ZM15.9999 9.5H5.99987C5.73465 9.5 5.4803 9.60536 5.29276 9.79289C5.10522 9.98043 4.99987 10.2348 4.99987 10.5C4.99987 10.7652 5.10522 11.0196 5.29276 11.2071C5.4803 11.3946 5.73465 11.5 5.99987 11.5H15.9999C16.2651 11.5 16.5194 11.3946 16.707 11.2071C16.8945 11.0196 16.9999 10.7652 16.9999 10.5C16.9999 10.2348 16.8945 9.98043 16.707 9.79289C16.5194 9.60536 16.2651 9.5 15.9999 9.5ZM13.9999 13.5H7.99987C7.73465 13.5 7.4803 13.6054 7.29276 13.7929C7.10522 13.9804 6.99987 14.2348 6.99987 14.5C6.99987 14.7652 7.10522 15.0196 7.29276 15.2071C7.4803 15.3946 7.73465 15.5 7.99987 15.5H13.9999C14.2651 15.5 14.5194 15.3946 14.707 15.2071C14.8945 15.0196 14.9999 14.7652 14.9999 14.5C14.9999 14.2348 14.8945 13.9804 14.707 13.7929C14.5194 13.6054 14.2651 13.5 13.9999 13.5ZM7.99987 7.5H13.9999C14.2651 7.5 14.5194 7.39464 14.707 7.20711C14.8945 7.01957 14.9999 6.76522 14.9999 6.5C14.9999 6.23478 14.8945 5.98043 14.707 5.79289C14.5194 5.60536 14.2651 5.5 13.9999 5.5H7.99987C7.73465 5.5 7.4803 5.60536 7.29276 5.79289C7.10522 5.98043 6.99987 6.23478 6.99987 6.5C6.99987 6.76522 7.10522 7.01957 7.29276 7.20711C7.4803 7.39464 7.73465 7.5 7.99987 7.5Z"
+                                fill="#E58934" />
+                        </svg>
+                        Chat </a>
+                </li>
+            </ul>
+
+        </div>
+        <div class="ct_event_all_main">
+            @if(!isCoach){
+            <div class="d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 ct_fw_600 ct_fs_20 text-white ct_ff_roboto">Upcoming Events</h4>
+            </div>
+            }@else {
+            <div class="d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 ct_fw_600 ct_fs_20 text-white ct_ff_roboto">My All Events</h4>
+                <a class="ct_orange_text" routerLink="/user/main/add-event">+ Add New Event</a>
+            </div>
+            }
+            <div class="ct_mt_30 ct_event_scroll" style="cursor: pointer;">
+                <div *ngFor="let event of eventData" (click)="onToggleMenu()">
+                    <a class="ct_event_list mt-3" (click)="getEventId(event.id)">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="ct_event_img_small">
+                                <img [src]="event?.mediaUrl ? event?.mediaUrl : '/assets/img/np_pro.png'" alt=""
+                                    class="ct_img_62">
+                            </div>
+                            <div class="ct_event_info">
+                                <h5 class="ct_fs_15 ct_fw_500 ct_ff_roboto text-white ct_mb_5">{{event.name}} </h5>
+                                <div class="d-flex align-items-center gap-2">
+                                    <img src="../assets/img/location_icon.svg" alt="">
+                                    <p class="mb-0 ct_fs_12 ct_fw_500 ct_ff_roboto ct_orange_text">{{event.address}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <p *ngIf="event.registeredUsers > 0"
+                                class=" ct_fs_12 text-white ct_fw_400 ct_ff_roboto ct_mb_10">{{event.registeredUsers}} Interested
+                            </p>
+                            <p class="mb-0 ct_fs_12 ct_fw_500 ct_ff_roboto ct_orange_text">{{event.date |
+                                date:'d MMM y'}}</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<!-- add this class to below ct_show_menu -->
+<section class="ct_panel_main_bg" [ngClass]="{ 'ct_show_menu': showMenu }">
+    <div class="ct_menu_toggle" (click)="onToggleMenu()">
+        <i class="fa-solid fa-bars"></i>
+    </div>
+    <app-sidebar></app-sidebar>
+    <div class="ct_right_side_panel position-relative">
+        <router-outlet></router-outlet>
+        <!-- <div *ngIf="loading" class="ct_loader_main_component">
+            <div class="loader"></div>
+        </div> -->
+    </div>
+</section>

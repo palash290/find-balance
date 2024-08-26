@@ -1,0 +1,14 @@
+div#ct_add_community .modal-content,
+div#ct_edit_community .modal-content {
+    background-color: #111010;
+    border: 1px solid var(--orange);
+    padding: 22px;
+}
+
+.ct_edt_img img {
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 15px;
+    cursor: pointer;
+}

@@ -1,0 +1,20 @@
+.custom-list {
+    list-style: none; /* Remove default list styling */
+    padding: 0;
+  }
+  
+  .custom-list li {
+    position: relative;
+    padding-left: 25px; /* Space for the custom dot */
+    margin-bottom: 10px; /* Space between list items */
+    word-break: break-all;
+  }
+  
+  .custom-list li::before {
+    content: '•'; /* Unicode character for the bullet dot */
+    position: absolute;
+    left: 0;
+    font-size: 24px; /* Adjust size of the dot */
+    color: white; /* Adjust color of the dot */
+  }
+  

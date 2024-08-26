@@ -1,0 +1,13 @@
+/* Example for the cropper */
+.image-cropper {
+    width: 100%;
+    max-width: 600px;
+  }
+  
+
+  .ct_img_h_200{
+    height: 250px;
+    width: 100%;
+    object-fit: fill;
+    border-radius: 20px;
+  }

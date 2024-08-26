@@ -1,0 +1,49 @@
+/* @import "../node_modules/bootstrap/dist/css/bootstrap.min.css"; */
+@import "ngx-toastr/toastr";
+
+.error-message {
+  color: red;
+}
+
+div:where(.swal2-container) div:where(.swal2-popup){
+  background-color: #333 !important;
+}
+div:where(.swal2-container) h2:where(.swal2-title),div:where(.swal2-container) .swal2-html-container{
+  color: #fff!important;
+}
+
+div:where(.swal2-icon).swal2-warning{
+  border-color: #e58934 !important;
+  color: #e58934!important;
+}
+
+
+.ct_orange_border_1{
+  border: 1px solid var(--orange);
+}
+
+.ct_multi_select {
+  margin-bottom: 0px !important;
+}   
+
+.ct_multi_select .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: transparent;
+  border: 1px solid #8f8f8f !important;
+  height: 48px !important;
+  color: #fff;
+  border-radius: 10px;
+}
+.ct_multi_select .mdc-text-field--no-label:not(.mdc-text-field--textarea) .mat-mdc-form-field-input-control.mdc-text-field__input, .mat-mdc-text-field-wrapper .mat-mdc-form-field-input-control {
+  color: #fff !important;
+  height: 38px !important;
+}
+.ct_multi_select .mdc-text-field--no-label:not(.mdc-text-field--textarea) .mat-mdc-form-field-input-control.mdc-text-field__input, .mat-mdc-text-field-wrapper .mat-mdc-form-field-input-control::placeholder{
+  color: #fff !important;
+  opacity: 0.8;
+}
+
+.ct_multi_select .mat-mdc-form-field-infix.ng-tns-c1132357239-0,.ct_multi_select .mat-mdc-form-field-infix.ng-tns-c1132357239-1,.mat-mdc-form-field-infix{
+  padding: 3px 0px !important;
+}
+
+

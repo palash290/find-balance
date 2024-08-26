@@ -1,0 +1,258 @@
+<div class="d-flex align-items-center gap-2 justify-content-between mb-4">
+    <h4 class="ct_fs_28 ct_ff_roboto ct_fw_500 ct_orange_text">Edit Profile</h4>
+    <button (click)="onUpdate()" class="ct_orange_btn ct_grey_btn ct_border_radius_10"> Save</button>
+</div>
+
+<form [formGroup]="newForm">
+
+    <div class="form-group mb-3" data-bs-toggle="modal" data-bs-target="#ct_create_team">
+        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Image</label>
+        <div class="ct_cover_img">
+            <label for="imgInp" class="w-100">
+                <input accept="image/*" type="file" id="imgInp" class="d-none" (change)="fileChangeEvent($event)"
+                    formControlName="cover" />
+                <img id="blah1" class="ct_img_h_200" src="#" alt="Uploaded Image"
+                    [src]="croppedImage ? croppedImage : '/assets/img/no_bg.png'">
+            </label>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="ct_create_team" tabindex="-1" aria-labelledby="ct_create_teamLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <label for="" class="w-100">
+
+                    <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false"
+                        [aspectRatio]="4 / 3" format="png" (imageCropped)="imageCropped($event)"
+                        [cropperMaxHeight]="1250" [cropperMinHeight]="1250"></image-cropper>
+
+                    <button class="ct_orange_btn ct_border_radius_10 ct_py_14_px_10 w-100 ct_fs_20 mt-3 "
+                        data-bs-dismiss="modal">Done</button>
+                    <button hidden type="button" class="btn btn-secondary" #closeModal
+                        data-bs-dismiss="modal">Close</button>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="form-group mb-3">
+        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white"></label>
+        <label for="imgInp" class="w-100">
+            <input accept="image/*" type="file" id="imgInp" class="d-none" (change)="handleFileInput1($event)"
+                formControlName="cover" />
+            <div class="ct_cover_img position-relative">
+                <img id="blah1" class="ct_img_h_200" src="#" alt="Uploaded Image"
+                    [src]="data?.cover_photo_url ? data?.cover_photo_url : '/assets/img/no_bg.png'">
+                <div class="ct_edit_upload_img_icon">
+                    <i class="fa-solid fa-pen"></i>
+                </div>
+            </div>
+        </label>
+    </div> -->
+
+    <div class="form-group mb-3 ct_my_profile_main">
+        <!-- <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Profile Image</label> -->
+        <!-- <input type="file" class="ct_login_input form-control ct_border_radius_10"> -->
+        <label for="imgInp1" class="w-100">
+            <input accept="image/*" type="file" id="imgInp1" class="d-none" (change)="handleFileInput2($event)"
+                formControlName="avatar" />
+            <div class="ct_edt_img position-relative ct_img_100">
+                <img id="blah2" src="#" class="ct_img_100" alt="Uploaded Image"
+                    [src]="data?.avatar_url ? data?.avatar_url : '/assets/img/np_pro.png'">
+                <div class="ct_edit_upload_img_icon2">
+                    <i class="fa-solid fa-pen"></i>
+                </div>
+            </div>
+        </label>
+        <!-- <div *ngIf="newForm.controls['image'].invalid && newForm.controls['image'].touched"
+            class="error-message">
+            <div *ngIf="newForm.controls['image'].errors?.['required']">Image is
+                required.
+            </div>
+        </div> -->
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Name</label>
+        <input type="text" class="ct_login_input form-control ct_border_radius_10" placeholder="Enter Name"
+            formControlName="full_name">
+
+        <div *ngIf="newForm.controls['full_name'].invalid && newForm.controls['full_name'].touched"
+            class="error-message">
+            <div *ngIf="newForm.controls['full_name'].errors?.['required']">Name is
+                required.</div>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">About</label>
+        <textarea class="ct_login_input form-control ct_border_radius_10 h-auto" rows="4" formControlName="about_me"
+            placeholder="Type here..." maxlength="500">
+      </textarea>
+
+      <div *ngIf="newForm.controls['about_me'].invalid && newForm.controls['about_me'].touched"
+      class="error-message">
+      <div *ngIf="newForm.controls['about_me'].errors?.['required']">Category is
+          required.</div>
+  </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Education</label>
+        <input type="text" class="ct_login_input form-control ct_border_radius_10" placeholder="Education details"
+            formControlName="education">
+
+        <!-- <div *ngIf="newForm.controls['education'].invalid && newForm.controls['education'].touched"
+            class="error-message">
+            <div *ngIf="newForm.controls['education'].errors?.['required']">Education is
+                required.</div>
+        </div> -->
+    </div>
+
+    <div class="form-group mb-4 w-100" *ngIf="isCoach">
+        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Category</label>
+        <select name="" id="" class="form-control ct_login_input" formControlName="categoryId">
+            <option *ngFor="let category of categories" [value]="category.id"> {{ category.name
+                }}</option>
+
+        </select>
+        <div *ngIf="newForm.controls['categoryId'].invalid && newForm.controls['categoryId'].touched"
+            class="error-message">
+            <div *ngIf="newForm.controls['categoryId'].errors?.['required']">Category is
+                required.</div>
+        </div>
+    </div>
+
+
+    <div class="form-group mb-3" *ngIf="isCoach">
+        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Other Category</label>
+        <input type="text" class="ct_login_input form-control ct_border_radius_10" placeholder="Select other categories"
+            formControlName="other_categ" data-bs-toggle="modal" data-bs-target="#ct_edit_community" readonly>
+
+        <div *ngIf="newForm.controls['other_categ'].invalid && newForm.controls['other_categ'].touched"
+            class="error-message">
+            <div *ngIf="newForm.controls['other_categ'].errors?.['required']">Category is
+                required.</div>
+        </div>
+    </div>
+
+
+
+    <label *ngIf="isCoach" for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Certificates</label>
+    <mat-form-field class="example-chip-list form-group mb-4 w-100 ct_multi_select" *ngIf="isCoach">
+        <!-- <mat-label>Certificates</mat-label> -->
+        <mat-chip-grid #chipGridCertificates aria-label="Enter certificates">
+            <mat-chip-row *ngFor="let certificate of certificates(); trackBy: certificates"
+                (removed)="removeCertificate(certificate)" [editable]="true"
+                (edited)="editCertificate(certificate, $event)"
+                [aria-description]="'press enter to edit ' + certificate.name">
+                {{ certificate.name }}
+                <button matChipRemove [attr.aria-label]="'remove ' + certificate.name">
+                    <mat-icon>cancel</mat-icon>
+                </button>
+            </mat-chip-row>
+            <input placeholder="Add certificate..." [matChipInputFor]="chipGridCertificates"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="addCertificate($event)" />
+        </mat-chip-grid>
+    </mat-form-field>
+
+
+
+    <div class="form-group mb-3" *ngIf="isCoach">
+        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Experience(Years)</label>
+        <input type="text" class="ct_login_input form-control ct_border_radius_10" placeholder="Enter experience"
+            formControlName="exp" maxlength="2">
+
+        <!-- <div *ngIf="newForm.controls['full_name'].invalid && newForm.controls['full_name'].touched"
+            class="error-message">
+            <div *ngIf="newForm.controls['full_name'].errors?.['required']">Name is
+                required.</div>
+        </div> -->
+    </div>
+
+
+
+
+    <!-- Compliments Field -->
+    <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white" *ngIf="isCoach">Accomplishments</label>
+    <mat-form-field class="example-chip-list form-group mb-4 w-100 ct_multi_select" *ngIf="isCoach">
+        <!-- <mat-label>Accomplishments</mat-label> -->
+        <mat-chip-grid #chipGridCompliments aria-label="Enter compliments">
+            <mat-chip-row *ngFor="let compliment of compliments(); trackBy: compliments"
+                (removed)="removeCompliment(compliment)" [editable]="true" (edited)="editCompliment(compliment, $event)"
+                [aria-description]="'press enter to edit ' + compliment.name">
+                {{ compliment.name }}
+                <button matChipRemove [attr.aria-label]="'remove ' + compliment.name">
+                    <mat-icon>cancel</mat-icon>
+                </button>
+            </mat-chip-row>
+            <input placeholder="Add accomplishments..." [matChipInputFor]="chipGridCompliments"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="addCompliment($event)" />
+        </mat-chip-grid>
+    </mat-form-field>
+
+
+
+
+
+
+
+    <div *ngIf="loading" class="ct_loader_main">
+        <div class="loader"></div>
+    </div>
+</form>
+
+
+
+
+
+
+<div class="modal fade" id="ct_edit_community" tabindex="-1" aria-labelledby="ct_add_communityLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pt-0 px-0 d-block text-center">
+                <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Add Categories
+                </h5>
+                <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="fa-solid fa-x"></i></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="ct_add_member_scroll" *ngFor="let coach of filteredCategories;">
+                    <div class="d-flex align-items-center gap-2 mt-4">
+                        <div class="ct_star_circle">
+                            <img src="../assets/img/star.png" alt="" >
+                        </div>
+                        
+                        <div>
+                            <h4 class="ct_ff_roboto ct_fw_600 text-white ct_fs_15 mb-0">{{coach.name}}</h4>
+                            <div class="d-flex align-items-center  gap-2 mt-1">
+                                <!-- <img src="../assets/img/star.png" alt="star">
+                                <span class="ct_orange_text">Accountability</span> -->
+                            </div>
+                        </div>
+                        <!-- <div class="form-check ms-auto ct_custom_checkbox">
+                            <input class="form-check-input" type="checkbox" (change)="onCategoryChange($event, coach)">
+                        </div> -->
+                        <div class="form-check ms-auto ct_custom_radio">
+                            <input class="form-check-input" type="checkbox"
+                                [checked]="selectedCategoryIds.includes(coach.id)"
+                                (change)="onCategoryChange($event, coach)" id="flexRadioDefault1">
+                        </div>
+                    </div>
+                </div>
+                <!-- ct_orange_btn ct_grey_btn ct_border_radius_10 -->
+                <button type="button" class=" ct_orange_btn ct_grey_btn ct_custom_btn mt-5 px-4 w-auto mx-auto d-block" data-bs-dismiss="modal">Save
+                    Categories</button>
+
+                <!-- <button hidden type="button" class="btn btn-secondary" #closeModal2
+                    data-bs-dismiss="modal">Close</button> -->
+                <!-- <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 w-100 mt-4">Create new team</button> -->
+            </div>
+
+        </div>
+    </div>
+</div>

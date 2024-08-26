@@ -1,0 +1,55 @@
+
+
+.ct_edit_upload_img_icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #333;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    border-radius: 0px;
+    align-items: center;
+    background-color: #0000001c;
+}
+.ct_edit_upload_img_icon i{
+    font-size: 12px;
+    width:30px;
+    height: 30px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+}
+
+.ct_edit_upload_img_icon2{
+    position: absolute;
+    bottom: -10px;
+    width: 30px;
+    height: 30px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+    right: -10px;
+}
+
+div#ct_add_community .modal-content,
+div#ct_edit_community .modal-content {
+    background-color: #111010;
+    border: 1px solid var(--orange);
+    padding: 22px;
+}
+
+
+
+.ct_custom_radio .form-check-input:checked {
+    background-color: var(--orange);
+    border-color: var(--orange);
+    box-shadow: unset;
+}
+

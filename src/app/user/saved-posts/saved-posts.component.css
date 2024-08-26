@@ -1,0 +1,17 @@
+.ct_send_msg_plane{
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.custom-audio-player {
+    width: 100%;
+    /* Add any additional styling here */
+  }
+
+  .spinner-border {
+    height: 15px;
+    width: 15px;
+}

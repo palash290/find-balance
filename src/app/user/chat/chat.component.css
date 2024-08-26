@@ -1,0 +1,129 @@
+.showbox {
+    opacity: 1;
+}
+
+.ct_chat_area_scroll {
+    height: calc(100vh - 324px);
+    max-height: calc(100vh - 324px);
+    overflow: auto;
+    overflow-x: hidden;
+    padding-inline: 5px;
+}
+
+.ct_msg_count_12 {
+    width: 20px !important;
+    height: 20px;
+    background: #e58934;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+    font-size: 11px;
+    margin-left: auto;
+}
+
+.ct_send_msg_plane {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background-color: #e58934;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+}
+
+.ct_chat_item_send {
+    margin-top: 15px;
+    margin-right: 10px;
+}
+
+.ct_chat_item_left_get_msg {
+    margin-top: 15px;
+    margin-right: 35px;
+}
+
+.ct_chatting_area {
+    margin-top: 0px;
+}
+
+
+/* .ct_message_user_lit {
+    height: calc(100vh - 236px);
+} */
+.ct_message_user_lit[_ngcontent-ng-c2845599439] {
+    height: calc(100vh - 189px);
+}
+
+
+/* width */
+.ct_chat_area_scroll::-webkit-scrollbar {
+    width: 4px;
+}
+
+/* Track */
+.ct_chat_area_scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+.ct_chat_area_scroll::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+.ct_chat_area_scroll::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.ct_empty_message_cnt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+}
+
+.ct_empty_message_cnt i {
+    font-size: 30px;
+    color: var(--orange);
+}
+
+.ct_chat_back {
+    display: none;
+}
+
+.ct_chat_item_send p,
+.ct_chat_item_left_get_msg p {
+    white-space: normal;
+    word-break: break-word;
+}
+
+@media screen and (max-width:1199px) {
+    .ct_chat_back {
+        display: block;
+    }
+
+    .ct_empty_message_cnt {
+        display: none;
+    }
+}
+
+
+
+.ct_login_input {
+ 
+    height: 38px;
+    resize: none; /* Prevent resizing by user */
+    overflow: hidden; /* Hide overflow */
+ 
+}
+
+.form-control {
+    width: 90%;
+}
+  

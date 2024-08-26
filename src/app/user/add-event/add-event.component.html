@@ -1,0 +1,93 @@
+<div class="d-flex align-items-center gap-2 justify-content-between mb-4">
+    <h4 class="ct_fs_28 ct_ff_roboto ct_fw_500 ct_orange_text">New Event Details</h4>
+    <button class="ct_orange_btn ct_grey_btn ct_border_radius_10" (click)="addEvevt()"> Create Event</button>
+</div>
+
+<form [formGroup]="newForm">
+
+    <div class="form-group mb-3" data-bs-toggle="modal" data-bs-target="#ct_create_team">
+        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Image</label>
+        <div class="ct_cover_img">
+            <label for="imgInp" class="w-100">
+                <input accept="image/*" type="file" id="imgInp" class="d-none" (change)="fileChangeEvent($event)"
+                    formControlName="cover" />
+                <img id="blah1" class="ct_img_h_200" src="#" alt="Uploaded Image"
+                    [src]="croppedImage ? croppedImage : '/assets/img/no_bg.png'">
+            </label>
+
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="ct_create_team" tabindex="-1" aria-labelledby="ct_create_teamLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <label for="" class="w-100">
+
+                    <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false"
+                        [aspectRatio]="4 / 3" format="png" (imageCropped)="imageCropped($event)"
+                        [cropperMaxHeight]="1300" [cropperMinHeight]="1300"></image-cropper>
+
+                    <button class="ct_orange_btn ct_border_radius_10 ct_py_14_px_10 w-100 ct_fs_20 mt-3 "
+                        data-bs-dismiss="modal">Done</button>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="form-group mb-3">
+        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Image</label>
+        <label for="imgInp" class="w-100">
+            <input accept="image/*" type="file" id="imgInp" class="d-none" (change)="handleFileInput1($event)"
+                formControlName="cover" />
+
+            <div class="ct_cover_img">
+                <img id="blah1" class="ct_img_h_200" src="#" alt="Uploaded Image"
+                    [src]="UploadedBg ? UploadedBg : '/assets/img/no_bg.png'">
+            </div>
+        </label>
+    </div> -->
+
+    <div class="form-group mb-3">
+        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Title</label>
+        <input type="text" class="ct_login_input form-control ct_border_radius_10" formControlName="name"
+            placeholder="Enter Event Name">
+        <div *ngIf="newForm.controls['name'].invalid && newForm.controls['name'].touched" class="error-message">
+            <div *ngIf="newForm.controls['name'].errors?.['required']">Title is
+                required.</div>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Location</label>
+        <input type="text" class="ct_login_input form-control ct_border_radius_10" formControlName="address"
+            placeholder="Enter Location">
+        <div *ngIf="newForm.controls['address'].invalid && newForm.controls['address'].touched" class="error-message">
+            <div *ngIf="newForm.controls['address'].errors?.['required']">Location is
+                required.</div>
+        </div>
+    </div>
+    <div class="form-group mb-3">
+        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Date</label>
+        <input type="date" class="ct_login_input form-control ct_border_radius_10" formControlName="date"
+            [attr.min]="minDate">
+        <div *ngIf="newForm.controls['date'].invalid && newForm.controls['date'].touched" class="error-message">
+            <div *ngIf="newForm.controls['date'].errors?.['required']">Date is
+                required.</div>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Description</label>
+        <textarea class="ct_login_input form-control ct_border_radius_10 h-auto" rows="4" placeholder="Type here..."
+            formControlName="about" maxlength="500">
+      </textarea>
+        <div *ngIf="newForm.controls['about'].invalid && newForm.controls['about'].touched" class="error-message">
+            <div *ngIf="newForm.controls['about'].errors?.['required']">Description is
+                required.</div>
+        </div>
+    </div>
+</form>
+<div *ngIf="loading" class="ct_loader_main">
+    <div class="loader"></div>
+</div>

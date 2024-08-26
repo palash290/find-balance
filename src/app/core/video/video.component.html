@@ -1,0 +1,15 @@
+<!-- audio-player.component.html -->
+<div>
+    <input type="file" (change)="onFileSelected($event)" accept="audio/*">
+    <audio #audioPlayer controls></audio>
+    <div *ngIf="audioUrl">
+      <button (click)="playAudio()">Play</button>
+      <button (click)="pauseAudio()">Pause</button>
+      <button (click)="stopAudio()">Stop</button>
+    </div>
+  </div>
+  
+
+
+
+

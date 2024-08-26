@@ -1,0 +1,175 @@
+<div class="d-flex align-items-center justify-content-between flex-wrap gap-2 ct_mt_30 pt-1">
+    <a class="ct_orange_btn ct_grey_btn ct_border_radius_10" style="cursor: pointer;" data-bs-toggle="modal"
+        data-bs-target="#ct_add_community">Add Community</a>
+</div>
+
+
+
+
+
+<div class="mt-4" *ngIf="data?.length > 0">
+    <ul class="ct_mt_30 ct_all_notification px-2">
+        <li *ngFor="let categories of data;">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex gap-2">
+                    <div class="ct_star_circle">
+                        <img [src]="categories.following.avatar_url ? categories.following.avatar_url : '/assets/img/np_pro.png'"
+                            alt="" class="ct_img_44 ct_bor ct_orange_border_1">
+                    </div>
+                    <div>
+                        <h5 class="ct_fs_15 ct_orange_text ct_fw_600 mb-1 ct_ff_roboto">
+                            {{categories.following.full_name}}</h5>
+                        <p class="mb-0 ct_fs_12 text-white">{{categories.following.totalPosts}}
+                            {{categories.following.totalPosts > 1 ? 'Posts' : 'Post'}}</p>
+                    </div>
+                </div>
+
+                <div>
+                    <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 px-2 py-2 h-auto ct_fs_13"
+                        style="min-width: 5rem;">Follow
+                    </button>
+                </div>
+
+                <div>
+                    <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 px-2 py-2 h-auto ct_fs_13"
+                        style="min-width: 5rem;" data-bs-toggle="modal" data-bs-target="#ct_edit_community">Edit
+                    </button>
+                    <!-- <p class="mb-0 ct_ff_roboto ct_fs_12 text-white text-center mt-2 ct_fw_400">
+                        Followers
+                    </p> -->
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+
+
+<!-- Edit Community -->
+
+<div class="modal fade" id="ct_edit_community" tabindex="-1" aria-labelledby="ct_add_communityLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pt-0 px-0 d-block text-center">
+                <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Edit Community
+                </h5>
+                <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="fa-solid fa-x"></i></button>
+            </div>
+            <div class="modal-body">
+
+                <form [formGroup]="updateForm">
+
+
+                    <div class="ct_formField mb-3">
+                        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Image</label>
+
+                        <label for="imgInp" class="w-100">
+                            <input accept="image/*" type="file" formControlName="image" id="imgInp" class="d-none"
+                                (change)="handleFileInput($event)" />
+                            <div class="ct_edt_img">
+                                <img id="blah" src="#" alt="Uploaded Image" [src]="updateDet?.image_url">
+                            </div>
+                        </label>
+                    </div>
+
+
+                    <div class="form-group mb-3">
+                        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Title</label>
+                        <input type="text" class="ct_login_input form-control ct_border_radius_10"
+                            placeholder="Enter Name" formControlName="title">
+
+                        <!-- <div *ngIf="newForm.controls['full_name'].invalid && newForm.controls['full_name'].touched"
+                            class="error-message">
+                            <div *ngIf="newForm.controls['full_name'].errors?.['required']">Name is
+                                required.</div>
+                        </div> -->
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">About</label>
+                        <textarea class="ct_login_input form-control ct_border_radius_10 h-auto" rows="4"
+                            formControlName="about" placeholder="Type here..." maxlength="300">
+                      </textarea>
+                    </div>
+
+
+                </form>
+
+
+                <button type="button" (click)="addCommunity()"
+                    class="ct_custom_btn mt-5 px-4 w-auto mx-auto d-block">Add Event</button>
+
+                <button hidden type="button" class="btn btn-secondary" #closeModal2
+                    data-bs-dismiss="modal">Close</button>
+                <!-- <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 w-100 mt-4">Create new team</button> -->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Add Community -->
+
+<div class="modal fade" id="ct_add_community" tabindex="-1" aria-labelledby="ct_add_communityLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pt-0 px-0 d-block text-center">
+                <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Add Community
+                </h5>
+                <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="fa-solid fa-x"></i></button>
+            </div>
+            <div class="modal-body">
+
+                <form [formGroup]="newForm">
+
+
+                    <div class="ct_formField mb-3">
+                        <label for="ct_event_img" class="w-100">
+                            <input type="file" id="ct_event_img" required formControlName="image"
+                                (change)="handleCommittedFileInput($event)" />
+                        </label>
+                        <!-- <div *ngIf="newForm.controls['image'].invalid && newForm.controls['image'].touched"
+                            class="error-message">
+                            <div *ngIf="newForm.controls['image'].errors?.['required']">Image is
+                                required.
+                            </div>
+                        </div> -->
+                    </div>
+
+
+                    <div class="form-group mb-3">
+                        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Title</label>
+                        <input type="text" class="ct_login_input form-control ct_border_radius_10"
+                            placeholder="Enter Name" formControlName="title">
+
+                        <!-- <div *ngIf="newForm.controls['full_name'].invalid && newForm.controls['full_name'].touched"
+                            class="error-message">
+                            <div *ngIf="newForm.controls['full_name'].errors?.['required']">Name is
+                                required.</div>
+                        </div> -->
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">About</label>
+                        <textarea class="ct_login_input form-control ct_border_radius_10 h-auto" rows="4"
+                            formControlName="about" placeholder="Type here..." maxlength="300">
+                      </textarea>
+                    </div>
+
+
+                </form>
+
+
+                <button type="button" (click)="addCommunity()"
+                    class="ct_custom_btn mt-5 px-4 w-auto mx-auto d-block">Add Event</button>
+                <button hidden type="button" class="btn btn-secondary" #closeModal
+                    data-bs-dismiss="modal">Close</button>
+                <!-- <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 w-100 mt-4">Create new team</button> -->
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,453 @@
+<div class="ct_chat_box_main">
+    <div class="ct_left_message_list">
+        @if(isCoach){
+        <div class="d-flex align-items-center gap-3">
+            <div class="ct_notification_search_input" style="flex: 1;">
+                <input type="text" class="form-control ct_login_input" placeholder="Search"
+                    [(ngModel)]="searchQueryFilter">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+
+            <i class="fa-solid fa-user-plus text-white" (click)="searchFollowUsersList()" style="cursor: pointer;"
+                data-bs-toggle="modal" data-bs-target="#ct_followed_coaches"></i>
+        </div>
+        } @else {
+        <div class="d-flex align-items-center gap-3">
+            <div class="ct_notification_search_input" style="flex: 1;">
+                <input type="text" class="form-control ct_login_input" placeholder="Search"
+                    [(ngModel)]="searchQueryFilter">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+
+            <i class="fa-solid fa-user-plus text-white" (click)="searchCoachesList()" style="cursor: pointer;"
+                data-bs-toggle="modal" data-bs-target="#ct_followed_coaches"></i>
+        </div>
+        }
+
+        @if(isCoach){
+        <!-- <div class="d-flex align-items-center justify-content-between ct_pt_20">
+            <h4 class="mb-0 ct_fw_600 ct_fs_20 text-white ct_ff_roboto">All Users</h4>
+            <a href="javascript:void(0)" class="ct_orange_text" data-bs-toggle="modal"
+                data-bs-target="#ct_create_team">+ Create Team</a>
+        </div> -->
+        }
+
+
+        <!-- Chat Group -->
+        <!-- <div class="ct_octen_team_box ct_mt_30">
+            <div class="d-flex align-items-center">
+                <img src="../assets/img/user_img_1.png" alt="" class="ct_w_36">
+                <img src="../assets/img/user_img_2.png" alt="" class="ct_w_36">
+                <img src="../assets/img/user_img_1.png" alt="" class="ct_w_36">
+            </div>
+            <div>
+                <h5 class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500 mb-2">Octen Team</h5>
+                <p class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 ct_orange_text"> 12 Members</p>
+            </div>
+        </div> -->
+
+        @if(isCoach){
+        <!-- <ul class="ct_message_user_lit mt-3" *ngIf="followersVisible">
+            <li *ngFor="let follower of followersList;" style="cursor: pointer;">
+                <div class="d-flex align-items-center gap-2" (click)="createChat(follower.follower.id)">
+                    <img [src]="follower.follower.avatar_url ? follower.follower.avatar_url : '/assets/img/np_pro.png'"
+                        alt="" class="ct_img_40">
+                    <p class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500">{{follower.follower.full_name}}</p>
+                </div>
+            </li>
+        </ul> -->
+
+        <ul class="ct_message_user_lit mt-3" (click)="openChat()">
+
+            <div *ngIf="(chatsList | chatFilter:searchQueryFilter)?.length === 0 && searchQueryFilter"
+                class="text-center mt-4">
+                <p class="ct_fs_15 text-white">No chats found</p>
+            </div>
+
+            <!-- add This Class active when chat open  -->
+            <li *ngFor="let chat of chatsList | chatFilter:searchQueryFilter" style="cursor: pointer;">
+                <div class="d-flex align-items-center gap-2" (click)="getChatMessages(chat.id)">
+                    <!-- Loop through participants of each chat -->
+                    <ng-container *ngFor="let participant of chat.participants">
+                        <img [src]="participant?.User?.avatar_url ? participant.User.avatar_url : '/assets/img/np_pro.png'"
+                            alt="" class="ct_img_40 ct_orange_border_1">
+                        <div>
+                            <p class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500">
+                                {{participant?.User?.full_name || 'Unknown Coach'}}
+                            </p>
+                            <span class="text-white ct_fs_14">{{getLimitedText(chat.lastMessage?.content, 15)}}</span>
+                        </div>
+                        <span *ngIf="chat.unreadCount > 0"
+                            class="text-white ct_msg_count_12">{{chat.unreadCount}}</span>
+                    </ng-container>
+                </div>
+            </li>
+        </ul>
+        } @else {
+        <!-- <ul class="ct_message_user_lit mt-3" *ngIf="coachListVisible">
+            <li *ngFor="let coach of coachesList;" style="cursor: pointer;">
+                <div class="d-flex align-items-center gap-2" (click)="createChat(coach.following.id)">
+                    <img [src]="coach.following.avatar_url ? coach.following.avatar_url : '/assets/img/np_pro.png'"
+                        alt="" class="ct_img_40">
+                    <p class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500">{{coach.following.full_name}}</p>
+                </div>
+            </li>
+        </ul> -->
+
+        <ul class="ct_message_user_lit mt-3" *ngIf="!coachListVisible" (click)="openChat()">
+
+            <div *ngIf="(chatsList | chatFilter:searchQueryFilter)?.length === 0 && searchQueryFilter"
+                class="text-center mt-4">
+                <p class="ct_fs_15 text-white">No chats found</p>
+            </div>
+
+            <!-- add This Class active when chat open  -->
+            <li *ngFor="let chat of chatsList | chatFilter:searchQueryFilter" style="cursor: pointer;">
+                <div class="d-flex align-items-center gap-2" (click)="getChatMessages(chat.id)">
+                    <!-- Loop through participants of each chat -->
+                    <!-- <div class="mt-4" *ngIf="chat.participants?.length == 0" class="text-center">
+                        <p class="ct_fs_15 text-white">No chats found</p>
+                    </div> -->
+
+                    <ng-container *ngFor="let participant of chat.participants">
+                        <img [src]="participant?.Coach?.avatar_url ? participant.Coach.avatar_url : '/assets/img/np_pro.png'"
+                            alt="" class="ct_img_40 ct_orange_border_1">
+
+                        <div>
+                            <p class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500"> {{participant?.Coach?.full_name
+                                || 'Unknown Coach'}}</p>
+                            <span class="text-white ct_fs_14">{{getLimitedText(chat.lastMessage?.content, 15)}}</span>
+                        </div>
+                        <span *ngIf="chat.unreadCount > 0"
+                            class="text-white text-end ct_msg_count_12">{{chat.unreadCount}}</span>
+
+                    </ng-container>
+
+                </div>
+            </li>
+        </ul>
+        }
+
+
+    </div>
+
+    <div class="ct_empty_message_cnt" *ngIf="!participantFullName">
+        <i class="fa-regular fa-message"></i>
+        <h4 class="ct_fs_22 text-white"></h4>
+    </div>
+
+    <div class="ct_right_message_area" [ngClass]="{ 'active': isChatActive }" *ngIf="participantFullName">
+        <div class="ct_octen_team_box ct_mt_30 px-3 ct_message_head_bg">
+            <a href="javascript:void(0)" class="ct_orange_text ct_back_to_list ct_chat_back"
+                (click)="closeChat()">Back</a>
+            <!-- @if(isCoach){
+            <div class="d-flex align-items-center" >
+                <img [src]="participantAvatarUrl ? participantAvatarUrl : '/assets/img/np_pro.png'" alt="" class="ct_w_36">
+             
+            </div>
+            <div>
+                <h5 class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500 mb-2">{{participantFullName}}</h5>
+            </div>
+            } @else { -->
+            <div class="d-flex align-items-center">
+                <img [src]="participantAvatarUrl ? participantAvatarUrl : '/assets/img/np_pro.png'" alt=""
+                    class="ct_w_36 ct_orange_border_1">
+                <!-- <img src="../assets/img/user_img_2.png" alt="" class="ct_w_36">
+                <img src="../assets/img/user_img_1.png" alt="" class="ct_w_36"> -->
+            </div>
+            <div>
+                <h5 class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500 mb-2">{{participantFullName}}</h5>
+            </div>
+            <!-- } -->
+
+            <!-- <div class="ms-auto" style="cursor: pointer;">
+                <p class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 ct_orange_text" (click)="seeGroupMembesr()">See All 12
+                    Members</p>
+            </div> -->
+
+        </div>
+
+
+
+        <div class="position-relative ">
+
+            @if(toSee){
+            <div class="ct_chatting_area d-block">
+
+
+                <!-- <div class="ct_chat_area_scroll" #scrollMe [scrollTop]="scrollMe.scrollHeight"> -->
+                <div class="ct_chat_area_scroll" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+                    <div *ngFor="let msgs of messageList">
+
+                        @if(isCoach){
+
+                        <ul>
+                            <li class="ct_chat_item_left_get_msg" *ngIf="msgs.senderUser">
+                                <div class="d-flex align-items-center gap-2 justify-content-start">
+                                    <img [src]="msgs.senderUser.avatar_url ? msgs.senderUser.avatar_url : '/assets/img/np_pro.png'"
+                                        alt="" class="ct_img_40 ct_orange_border_1">
+                                    <div>
+                                        <p class="text-white mb-0 ct_ff_roboto ct_fs_18">{{msgs.content}}</p>
+                                        <span
+                                            class="ct_fs_12 text-white ct_ff_roboto text-start d-block mt-2">{{formatTimestamp1(msgs.createdAt)}}</span>
+
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="ct_chat_item_send" *ngIf="msgs.senderCoach">
+                                <div class="d-flex align-items-center gap-2 justify-content-end">
+
+                                    <div>
+                                        <p class="text-white mb-0 ct_ff_roboto ct_fs_18">{{msgs.content}}</p>
+                                        <span
+                                            class="ct_fs_12 text-white ct_ff_roboto text-end d-block mt-2">{{formatTimestamp1(msgs.createdAt)}}</span>
+                                    </div>
+                                    <img [src]="msgs.senderCoach.avatar_url ? msgs.senderCoach.avatar_url : '/assets/img/np_pro.png'"
+                                        alt="" class="ct_img_40 ct_orange_border_1">
+                                </div>
+                            </li>
+
+                        </ul>
+
+
+
+                        } @else {
+
+                        <ul>
+                            <li class="ct_chat_item_left_get_msg" *ngIf="msgs.senderCoach">
+                                <div class="d-flex align-items-center gap-2 justify-content-start">
+                                    <img [src]="msgs.senderCoach.avatar_url ? msgs.senderCoach.avatar_url : '/assets/img/np_pro.png'"
+                                        alt="" class="ct_img_40 ct_orange_border_1">
+                                    <div>
+                                        <p class="text-white mb-0 ct_ff_roboto ct_fs_18">{{msgs.content}}</p>
+                                        <span
+                                            class="ct_fs_12 text-white ct_ff_roboto text-start d-block mt-2">{{formatTimestamp1(msgs.createdAt)}}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="ct_chat_item_send" *ngIf="msgs.senderUser">
+                                <div class="d-flex align-items-center gap-2 justify-content-end">
+
+                                    <div>
+                                        <p class="text-white mb-0 ct_ff_roboto ct_fs_18">{{msgs.content}}</p>
+                                        <span
+                                            class="ct_fs_12 text-white ct_ff_roboto text-end d-block mt-2">{{formatTimestamp1(msgs.createdAt)}}</span>
+                                    </div>
+                                    <img [src]="msgs.senderUser.avatar_url ? msgs.senderUser.avatar_url : '/assets/img/np_pro.png'"
+                                        alt="" class="ct_img_40 ct_orange_border_1">
+                                </div>
+                            </li>
+
+                        </ul>
+
+                        }
+                    </div>
+                </div>
+
+
+                <div class="ct_chat_footer mt-4" *ngIf="currentChatId">
+                    <div class="position-relative">
+                        <!-- <input [(ngModel)]="newMessage" type="text" class="form-control ct_login_input"
+                            placeholder="Type here..." maxlength="250" (keyup.enter)="sendMessage()"
+                            [ngModelOptions]="{standalone: true}" (input)="handleInput()"> -->
+                            <textarea #messageTextarea
+                            [(ngModel)]="newMessage"
+                            class="form-control w-90 ct_login_input"
+                            placeholder="Type here..."
+                            maxlength="250"
+                            rows="1"
+                            (keyup.enter)="sendMessage()"
+                            [ngModelOptions]="{standalone: true}"
+                            (input)="handleInput()"></textarea>
+
+                        <div class="d-flex align-items-center" style="cursor: pointer;">
+                            <button type="button" [disabled]="isDisabled" (click)="sendMessage()">
+                                <i class="fa fa-paper-plane ct_send_msg_plane text-white" aria-hidden="true">
+                                </i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            } @else {
+            <div class="ct_all_team_member_list">
+                <ul class="ct_message_user_lit mt-3" style="max-height: 670px;">
+                    <!-- add This Class active when chat open  -->
+                    <li class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-2">
+                            <img src="../assets/img/user_img_1.png" alt="" class="ct_img_40 ct_orange_border_1">
+                            <p class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500">Alex Bishop</p>
+                        </div>
+                        <div class="dropdown ms-auto ct_chat_dropdown">
+                            <button class="btn  ct_dropdown_btn" type="button" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-ellipsis-vertical ct_orange_text"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item">Remove</a></li>
+
+                            </ul>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<!-- Create Team Modal S -->
+<div class="modal fade" id="ct_create_team" tabindex="-1" aria-labelledby="ct_create_teamLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pt-0 px-0 d-block text-center">
+                <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Add User In Team
+                </h5>
+                <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="fa-solid fa-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <input type="text" class="form-control ct_login_input" placeholder="Enter Name">
+                </div>
+
+                <div class="ct_add_member_scroll">
+                    <div class="d-flex align-items-center gap-2 mt-4">
+                        <img src="../assets/img/user_img_1.png" alt="" class="ct_img_62 ct_border_radius_100">
+                        <div>
+                            <h4 class="ct_ff_roboto ct_fw_600 text-white ct_fs_15 mb-0">Joyce Barrows</h4>
+                            <div class="d-flex align-items-center  gap-2 mt-1">
+                                <img src="../assets/img/star.png" alt="star">
+                                <span class="ct_orange_text">Accountability</span>
+                            </div>
+                        </div>
+                        <div class="form-check ms-auto ct_custom_radio">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 mt-4">
+                        <img src="../assets/img/user_img_1.png" alt="" class="ct_img_62 ct_border_radius_100">
+                        <div>
+                            <h4 class="ct_ff_roboto ct_fw_600 text-white ct_fs_15 mb-0">Joyce Barrows</h4>
+                            <div class="d-flex align-items-center  gap-2 mt-1">
+                                <img src="../assets/img/star.png" alt="star">
+                                <span class="ct_orange_text">Accountability</span>
+                            </div>
+                        </div>
+                        <div class="form-check ms-auto ct_custom_radio">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 mt-4">
+                        <img src="../assets/img/user_img_1.png" alt="" class="ct_img_62 ct_border_radius_100">
+                        <div>
+                            <h4 class="ct_ff_roboto ct_fw_600 text-white ct_fs_15 mb-0">Joyce Barrows</h4>
+                            <div class="d-flex align-items-center  gap-2 mt-1">
+                                <img src="../assets/img/star.png" alt="star">
+                                <span class="ct_orange_text">Accountability</span>
+                            </div>
+                        </div>
+                        <div class="form-check ms-auto ct_custom_radio">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 mt-4">
+                        <img src="../assets/img/user_img_1.png" alt="" class="ct_img_62 ct_border_radius_100">
+                        <div>
+                            <h4 class="ct_ff_roboto ct_fw_600 text-white ct_fs_15 mb-0">Joyce Barrows</h4>
+                            <div class="d-flex align-items-center  gap-2 mt-1">
+                                <img src="../assets/img/star.png" alt="star">
+                                <span class="ct_orange_text">Accountability</span>
+                            </div>
+                        </div>
+                        <div class="form-check ms-auto ct_custom_radio">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                        </div>
+                    </div>
+                </div>
+                <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 w-100 mt-4">Create new team</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Follow Friend Modal S -->
+
+<div class="modal fade" id="ct_followed_coaches" tabindex="-1" aria-labelledby="ct_followed_coachesLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pt-0 px-0 d-block text-center">
+                <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">{{isCoach ?
+                    'Followed Users' : 'Followed Coaches'}}
+                </h5>
+                <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="fa-solid fa-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="!isCoach">
+                    <input type="text" class="form-control ct_login_input" placeholder="Enter Name"
+                        [(ngModel)]="searchQuery" (ngModelChange)="searchCoachesList()">
+                </div>
+
+                <div *ngIf="isCoach">
+                    <input type="text" class="form-control ct_login_input" placeholder="Enter Name"
+                        [(ngModel)]="searchQuery" (ngModelChange)="searchFollowUsersList()">
+                </div>
+
+                <div class="ct_add_member_scroll" *ngIf="isCoach">
+                    <div *ngIf="followersList?.length === 0" class="text-center mt-4">
+                        <p class="ct_fs_15 text-white">No users found</p>
+                    </div>
+                    <div *ngFor="let follower of followersList;">
+                        <div class="d-flex align-items-center gap-2 mt-4" style="cursor: pointer;"
+                            (click)="createChat(follower.follower.id)">
+                            <img [src]="follower.follower.avatar_url ? follower.follower.avatar_url : '/assets/img/np_pro.png'"
+                                alt="" class="ct_img_62 ct_border_radius_100">
+                            <div>
+                                <h4 class="ct_ff_roboto ct_fw_600 text-white ct_fs_15 mb-0">
+                                    {{follower.follower.full_name}}</h4>
+                                <div class="d-flex align-items-center  gap-2 mt-1">
+                                    <!-- <img src="../assets/img/star.png" alt="star"> -->
+                                    <!-- <span class="ct_orange_text">Accountability</span> -->
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="ct_add_member_scroll" *ngIf="!isCoach">
+                    <div *ngIf="coachesList?.length === 0" class="text-center mt-4">
+                        <p class="ct_fs_15 text-white">No coaches found</p>
+                    </div>
+                    <div *ngFor="let coach of coachesList;">
+                        <div class="d-flex align-items-center gap-2 mt-4" style="cursor: pointer;"
+                            (click)="createChat(coach.following.id)">
+                            <img [src]="coach.following.avatar_url ? coach.following.avatar_url : '/assets/img/np_pro.png'"
+                                alt="" class="ct_img_62 ct_border_radius_100">
+                            <div>
+                                <h4 class="ct_ff_roboto ct_fw_600 text-white ct_fs_15 mb-0">
+                                    {{coach.following.full_name}}</h4>
+                                <div class="d-flex align-items-center  gap-2 mt-1">
+                                    <img src="../assets/img/star.png" alt="star">
+                                    <span class="ct_orange_text">{{coach.following.category.name}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button hidden type="button" class="btn btn-secondary" #closeModal
+                    data-bs-dismiss="modal">Close</button>
+                <!-- <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 w-100 mt-4">Create new team</button> -->
+            </div>
+
+        </div>
+    </div>
+</div>

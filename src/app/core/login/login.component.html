@@ -1,0 +1,133 @@
+<!-- <div>{{isCoach ? 'coach' : 'user'}}</div>
+
+<button (click)="isCoach = !isCoach">{{isCoach ? 'coach' : 'user'}}</button>
+
+<div style="text-align: center;">
+    <ngx-loading [show]="loading"></ngx-loading>
+</div> -->
+<div class="ct_light_login_bg">
+    <img src="assets/img/Ellipse_small_half.png" alt="" class="ct_elipse_small_img">
+    <div class="ct_login_main">
+        <div class="container">
+            <div class="row pt-3">
+                <div class="col-md-12">
+                    <div class="ct_logo">
+                        <a>
+                            <img src="assets/img/logo.svg" alt="">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <div class="ct_login_left">
+                        <h3 class="text-white ct_fs_36 ct_fw_600 text-center"><i><span
+                                    class="ct_orange_text">Discover</span> Inner Harmony <br> with Your <span
+                                    class="ct_orange_text">Ideal Coach.</span> </i></h3>
+                        <div class="ct_animated_login_imgages">
+                            <img src="assets/img/login_left_img_1.png" alt="" class="ct_i_am_user_img"
+                                [ngClass]="isCoach ? 'ct_hide_img12' : 'ct_show_img12'">
+                            <img src="assets/img/login_left_img_2.png" alt="" class="ct_i_am_coach_img"
+                                [ngClass]="isCoach ? 'ct_show_img12' : 'ct_hide_img12'">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 mb-4 mb-lg-0 offset_lg-1 position-relative ">
+                    <img src="assets/img/Ellipse_big.png" alt="" class="ct_elipse_big_img">
+                    <div class="ct_right_login">
+
+                        <h2 class="ct_fs_36 text-white mb-0 ct_ff_noto ct_fw_600 text-start">{{isCoach ? 'Coach Login' :
+                            'User Login'}}</h2>
+                        <p class="mb-0 text-white ct_ff_noto mb-0">Glad you’re back.!</p>
+                        <form [formGroup]="loginForm" class="mt-3 w-100">
+                            <div class="ct_login_grid_2 w-100">
+                                <div class="form-group mb-4">
+                                    <!-- <select class="form-control ct_login_input px-0 text-center"
+                                        formControlName="countryCode" [(ngModel)]="selectedCountryCode">
+                                        <option *ngFor="let country of countries" [value]="country.dialCode">
+                                            <span [class]="country.flag" style="font-size: 20px; margin-right: 8px;"></span>
+                                            {{ country.name }} ({{ country.dialCode }})
+                                        </option>
+                                    </select> -->
+                                    <div class="position-relative">
+                                        <select name="" id="" formControlName="countryCode"
+                                            class="form-control ct_login_input px-0 text-center"
+                                            style="text-indent: 25px;">
+                                            <option selected value="+44">+44</option>
+                                        </select>
+                                        <img src="../../../assets/img/ukFlag.jpg" class="ct_uk_flag_top"
+                                            style="width: 20px; height: 15px;">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-4 w-100">
+                                    <input type="text" maxlength="10" class="form-control ct_login_input"
+                                        placeholder="Phone" formControlName="phone_no">
+                                    <div *ngIf="loginForm.controls['phone_no'].invalid && loginForm.controls['phone_no'].touched"
+                                        class="error-message">
+                                        <div *ngIf="loginForm.controls['phone_no'].errors?.['required']">Phone number is
+                                            required.</div>
+                                        <!-- <div *ngIf="loginForm.controls['phone_no'].errors?.['pattern']">Only numbers are
+                                            allowed.</div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-4 w-100">
+                                <div class="position-relative">
+                                    <input type="{{ isPasswordVisible ? 'text' : 'password' }}"
+                                        class="form-control ct_login_input" placeholder="Password"
+                                        formControlName="password">
+                                    <img [src]="imageSrc" alt="Eye" class="ct_eye_position_top"
+                                        (click)="togglePasswordVisibility()">
+                                </div>
+                                <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched"
+                                    class="error-message">
+                                    <div *ngIf="loginForm.controls['password'].errors?.['required']">Password is
+                                        required.</div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 mt-1 w-100">
+                                <label class="ct_container_checkout">
+                                    <input type="checkbox" />
+                                    <div class="ct_checkmark"></div>
+                                </label>
+                                <p class="mb-0 text-white ct_fw_500 ct_ff_noto">Remember me</p>
+                            </div>
+                            <div class="mt-4 w-100" (click)="login()">
+                                <button
+                                    class="ct_orange_btn ct_border_radius_10 ct_py_14_px_10 ct_ff_roboto w-100 ct_fs_20">Login</button>
+                            </div>
+                            <div class="mt-4 w-100 text-center">
+                                <a routerLink="/forgot-password"
+                                    class="ct_fw_600 text-white ct_ff_roboto ct_fw_500">Forgot
+                                    password ?</a>
+                            </div>
+                            <div class="mt-3 w-100">
+                                <p class="mb-0 text-white ct_fw_500 ct_ff_roboto text-center"> Don’t have an account ?
+                                    @if(isCoach){
+                                    <a routerLink="/signup" class="ct_orange_text ct_text_underline">Signup</a>
+                                    } @else {
+                                    <a routerLink="/signup-user" class="ct_orange_text ct_text_underline">Signup</a>
+                                    }
+                                </p>
+                            </div>
+                            <div class="mt-4 w-100">
+                                <button (click)="toggleUser()"
+                                    class="ct_orange_btn ct_border_radius_10 ct_py_14_px_10 w-100 ct_fs_20 ct_tansparent_btn "
+                                    [ngClass]="isCoach ? 'ct_i_am_user_btn' : 'ct_i_am_coach_btn'">
+                                    {{isCoach ? 'I am a User' : 'I am a Coach'}}</button>
+
+                                <!-- <button
+                                class="ct_orange_btn ct_border_radius_10 ct_py_14_px_10 w-100 ct_fs_20 ct_tansparent_btn ct_i_am_coach_btn">I’m
+                                a Coach</button> -->
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="loading" class="ct_loader_main">
+    <div class="loader"></div>
+</div>

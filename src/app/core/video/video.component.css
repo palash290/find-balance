@@ -1,0 +1,53 @@
+/* video-thumbnail.component.css */
+div {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+img {
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+/* audio-player.component.css */
+.custom-audio-player {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.controls button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.controls input[type="range"] {
+  width: 100px;
+}
+
+.progress-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.progress-container input[type="range"] {
+  width: 100%;
+}
+
+.progress-container span {
+  font-size: 0.9em;
+}
+
+
