@@ -12,10 +12,17 @@ export class SearchCoachesComponent {
   searchQuery: string = '';
   isFollowing: { [key: number | string]: boolean } = {};
   avatar_url_fb: any;
+  role: any;
+  isCoach: boolean = true;
 
   constructor(private service: SharedService) { }
 
   ngOnInit() {
+
+    this.role = this.service.getRole();
+    if (this.role == 'USER') {
+      this.isCoach = false;
+    }
 
     this.service.getApi('coach/categories').subscribe(response => {
       if (response.success) {
@@ -23,34 +30,29 @@ export class SearchCoachesComponent {
       }
     });
 
-    this.service.refreshSidebar$.subscribe(() => {
-      this.searchCategories();
-    });
-    this.avatar_url_fb = localStorage.getItem('avatar_url_fb');
-    // this.getCategories();
-    //this.searchCategories();
+    this.getAllCoaches()
   }
 
-  getCategories() {
-    this.service.getApi('user/coach/followedCoaches').subscribe({
-      next: resp => {
-        this.data = resp.data;
-      },
-      error: error => {
-        console.log(error.message)
-      }
-    });
-  }
+  // getAllCoaches() {
+  //   this.service.getApi('user/coach/followedCoaches').subscribe({
+  //     next: resp => {
+  //       this.data = resp.data;
+  //     },
+  //     error: error => {
+  //       console.log(error.message)
+  //     }
+  //   });
+  // }
 
-  searchCategories() {
-    const url = `user/coach/followedCoaches?search=${this.searchQuery}`;
+  getAllCoaches() {
+    const url = `coach/follow/allCoaches?search=${this.searchQuery}`;
     this.service.getApi(url).subscribe({
       next: resp => {
         this.data = resp.data || [];
         // Reset follow state for each category if needed
-        this.data.forEach((category: { following: { id: string | number; }; isFollowing: any; }) => {
-          this.isFollowing[category.following.id] = category.isFollowing;
-        });
+        // this.data.forEach((category: { following: { id: string | number; }; isFollowing: any; }) => {
+        //   this.isFollowing[category.following.id] = category.isFollowing;
+        // });
       },
       error: error => {
         console.log(error.message);
@@ -63,15 +65,15 @@ export class SearchCoachesComponent {
 
   followId: any;
 
-  unfollowCoach(postId: any) {
+  followCoach(coachId: any) {
     //this.isLike = !this.isLike;
-    this.followId = postId;
+    this.followId = coachId;
     this.btnLoader = true
 
-    this.service.postAPI(`user/coach/unfollow/${postId}`, null).subscribe({
+    this.service.postAPI(`coach/follow/${coachId}`, null).subscribe({
       next: resp => {
         console.log(resp);
-        this.getCategories();
+        this.getAllCoaches();
         this.btnLoader = false;
       },
       error: error => {
@@ -79,6 +81,7 @@ export class SearchCoachesComponent {
         console.log(error.message)
       }
     });
+    this.avatar_url_fb = localStorage.getItem('avatar_url_fb');
   }
 
 

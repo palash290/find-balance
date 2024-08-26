@@ -1,15 +1,16 @@
 <div class="ct_box_2_column ct_box_2_full_active">
     <div>
         <div class="ct_upload_text">
-            <img [src]="avatar_url_fb ? avatar_url_fb : '/assets/img/np_pro.png'" alt="" class="ct_img_44 ct_orange_border_1">
+            <img [src]="avatar_url_fb ? avatar_url_fb : '/assets/img/np_pro.png'" alt=""
+                class="ct_img_44 ct_orange_border_1">
             <div class="form-group w-100">
                 <input type="text" class="form-control ct_custom_input w-100" placeholder="Type here..."
-                    [(ngModel)]="searchQuery" (ngModelChange)="searchCategories()">
+                    [(ngModel)]="searchQuery" (ngModelChange)="getAllCoaches()">
             </div>
         </div>
 
 
-         <div class=" mb-4 d-flex align-items-center gap-4">
+        <div class=" mb-4 d-flex align-items-center gap-4" *ngIf="!isCoach">
             <select class="ct_login_input form-control w-auto ms-auto" [(ngModel)]="categoryId"
                 (change)="onCategoryChange($event)">
                 <option value="0">Short By Category</option>
@@ -38,29 +39,36 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="d-flex gap-2">
                             <div class="ct_star_circle">
-                                <img [src]="categories.following.avatar_url ? categories.following.avatar_url : '/assets/img/np_pro.png'" alt="" class="ct_img_44 ct_bor ct_orange_border_1">
+                                <img [src]="categories.avatar_url ? categories.avatar_url : '/assets/img/np_pro.png'"
+                                    alt="" class="ct_img_44 ct_bor ct_orange_border_1">
                             </div>
                             <div>
                                 <h5 class="ct_fs_15 ct_orange_text ct_fw_600 mb-1 ct_ff_roboto">
-                                    {{categories.following.full_name}}</h5>
-                                <p class="mb-0 ct_fs_12 text-white">{{categories.following.totalPosts}} {{categories.following.totalPosts > 1 ? 'Posts' : 'Post'}}</p>
+                                    {{categories.full_name}}</h5>
+                                <div class="d-flex align-items-center  gap-2 mt-1">
+                                    <img src="../assets/img/star.png" alt="star">
+                                    <span class="ct_orange_text">{{categories.category.name}}</span>
+                                </div>
                             </div>
                         </div>
                         <div>
                             <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 px-2 py-2 h-auto ct_fs_13"
                                 style="min-width: 5rem;" [ngClass]="{'ct_active_follow': categories.isFollowing}"
-                                (click)="unfollowCoach(categories.following.id)">
+                                (click)="followCoach(categories.id)">
 
                                 <div class="d-flex align-items-center">
-                                    <div class="spinner-border me-2" role="status" *ngIf="btnLoader && categories.following.id == followId">
+                                    <div class="spinner-border me-2" role="status"
+                                        *ngIf="btnLoader && categories.id == followId">
                                         <span class="visually-hidden">Loading...</span>
                                     </div>
-                                    <span *ngIf="btnLoader && categories.following.id != followId || !btnLoader">Following</span>
+                                    <span
+                                        *ngIf="btnLoader && categories.id != followId || !btnLoader">Follow</span>
                                 </div>
-                                
+
                             </button>
                             <p class="mb-0 ct_ff_roboto ct_fs_12 text-white text-center mt-2 ct_fw_400">
-                                {{categories.following.totalFollowers}} {{categories.following.totalFollowers > 1 ? 'Followers' : 'Follower'}}
+                                {{categories.numberOfFollower}} {{categories.numberOfFollower > 1 ? 'Followers' :
+                                'Follower'}}
                             </p>
                         </div>
                     </div>
@@ -70,5 +78,5 @@
 
 
     </div>
-   
+
 </div>

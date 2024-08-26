@@ -29,6 +29,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import { SearchCoachesComponent } from './search-coaches/search-coaches.component';
+import { TeamsComponent } from './teams/teams.component';
+import { FollowCoachesComponent } from './follow-coaches/follow-coaches.component';
 
 
 @NgModule({
@@ -55,6 +57,8 @@ import { SearchCoachesComponent } from './search-coaches/search-coaches.componen
     FollowingComponent,
     CommunityComponent,
     SearchCoachesComponent,
+    TeamsComponent,
+    FollowCoachesComponent,
   ],
   imports: [
     CommonModule,

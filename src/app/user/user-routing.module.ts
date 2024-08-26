@@ -18,6 +18,7 @@ import { EditEventComponent } from './edit-event/edit-event.component';
 import { FollowingComponent } from './following/following.component';
 import { CommunityComponent } from './community/community.component';
 import { SearchCoachesComponent } from './search-coaches/search-coaches.component';
+import { TeamsComponent } from './teams/teams.component';
 
 const routes: Routes = [
   {
@@ -82,6 +83,10 @@ const routes: Routes = [
       {
         path: "search",
         component: SearchCoachesComponent,
+      },
+      {
+        path: "teams",
+        component: TeamsComponent,
       },
       // {
       //   path: "suggested-categories",
