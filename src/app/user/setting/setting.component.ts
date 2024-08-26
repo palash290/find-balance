@@ -17,6 +17,7 @@ export class SettingComponent implements OnInit {
 
   constructor(private srevice: SharedService, private toastr: ToastrService, private route: Router) { }
   ngOnInit(): void {
+    this.getSettings();
     this.role = this.srevice.getRole();
     if (this.role == 'USER') {
       this.isCoach = false;
@@ -26,13 +27,54 @@ export class SettingComponent implements OnInit {
     this.userDetails = data;
   }
 
-  ngOninit() {
- 
+  chatNotification!: boolean;
+  feedNotification!: boolean;
+
+  getSettings(): void {
+    this.srevice.getApi(this.isCoach ? 'coach/mySettings' : 'user/mySettings').subscribe((resp: any) => {
+      if (resp.success && resp.data) {
+        this.chatNotification = resp.data.chatNotification;
+        this.feedNotification = resp.data.feedNotification;
+      }
+    });
   }
 
-  // logout() {
-  //   this.srevice.logout();
+  updateChatNotification(): void {
+  
+    const chatSettings = {
+      chatNotification: this.chatNotification,
+      feedNotification: this.feedNotification
+    };
+
+    this.srevice.postAPIFormData(this.isCoach ? 'coach/mySettings' : 'user/mySettings', chatSettings).subscribe((resp: any) => {
+      if (resp.success) {
+        this.toastr.success(resp.message);
+        console.log('Chat notification settings updated successfully');
+        this.getSettings();
+      } else {
+        this.toastr.warning(resp.message);
+        console.error('Failed to update chat notification settings');
+      }
+    });
+  }
+
+  // updateFeedNotification(): void {
+  //   const feedSettings = {
+  //     feedNotification: this.feedNotification
+  //   };
+
+  //   this.srevice.postAPIFormData(this.isCoach ? 'coach/mySettings' : 'user/mySettings', feedSettings).subscribe((resp: any) => {
+  //     if (resp.success) {
+  //       this.toastr.success(resp.message);
+  //       console.log('Feed notification settings updated successfully');
+  //       this.getSettings();
+  //     } else {
+  //       this.toastr.warning(resp.message);
+  //       console.error('Failed to update feed notification settings');
+  //     }
+  //   });
   // }
+
 
   logout() {
     Swal.fire({
