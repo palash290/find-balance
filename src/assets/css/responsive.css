@@ -16,8 +16,8 @@
         position: relative;
         overflow-x: hidden;
     }
-    .ct_left_message_list{
-        max-width: 100%;
+    .ct_left_message_list ,.ct_community_left_width{
+        max-width: 100% !important;
         border-right: 0px;
     }
     .ct_right_message_area{

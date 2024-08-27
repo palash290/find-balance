@@ -1,175 +1,565 @@
-<div class="d-flex align-items-center justify-content-between flex-wrap gap-2 ct_mt_30 pt-1">
-    <a class="ct_orange_btn ct_grey_btn ct_border_radius_10" style="cursor: pointer;" data-bs-toggle="modal"
-        data-bs-target="#ct_add_community">Add Community</a>
-</div>
 
+   
 
-
-
-
-<div class="mt-4" *ngIf="data?.length > 0">
-    <ul class="ct_mt_30 ct_all_notification px-2">
-        <li *ngFor="let categories of data;">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="d-flex gap-2">
-                    <div class="ct_star_circle">
-                        <img [src]="categories.following.avatar_url ? categories.following.avatar_url : '/assets/img/np_pro.png'"
-                            alt="" class="ct_img_44 ct_bor ct_orange_border_1">
-                    </div>
-                    <div>
-                        <h5 class="ct_fs_15 ct_orange_text ct_fw_600 mb-1 ct_ff_roboto">
-                            {{categories.following.full_name}}</h5>
-                        <p class="mb-0 ct_fs_12 text-white">{{categories.following.totalPosts}}
-                            {{categories.following.totalPosts > 1 ? 'Posts' : 'Post'}}</p>
-                    </div>
+        <div class="ct_chat_box_main">
+            <div class="ct_left_message_list ct_community_left_width" >
+                <div class="ct_notification_search_input">
+                    <input type="text" class="form-control ct_login_input" placeholder="Search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <div class="d-flex align-items-center justify-content-between ct_pt_20">
+                    <h4 class="mb-0 ct_fw_600 ct_fs_20 text-white ct_ff_roboto">All communities</h4>
+                    <a href="javascript:void(0)" class="ct_orange_text"  data-bs-toggle="modal" data-bs-target="#ct_create_team">+ Create</a>
                 </div>
 
-                <div>
-                    <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 px-2 py-2 h-auto ct_fs_13"
-                        style="min-width: 5rem;">Follow
-                    </button>
-                </div>
-
-                <div>
-                    <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 px-2 py-2 h-auto ct_fs_13"
-                        style="min-width: 5rem;" data-bs-toggle="modal" data-bs-target="#ct_edit_community">Edit
-                    </button>
-                    <!-- <p class="mb-0 ct_ff_roboto ct_fs_12 text-white text-center mt-2 ct_fw_400">
-                        Followers
-                    </p> -->
-                </div>
+             
+                <ul class="ct_message_user_lit ct_community_sidebar mt-3">
+                  <!-- add This Class active when chat open  -->
+                    <li class="active">
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="d-flex align-items-center">
+                            <img src="../assets/img/user_img_1.png" alt="" class="ct_img_62 ct_border_radius_100">
+                        </div>
+                      <div class="d-flex align-items-center justify-content-between" style="flex: 1;">
+                        <div>
+                            <h5 class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500 mb-2">Design community</h5>
+                            <p class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 text-white"> 17 K Post</p>
+                        </div>
+                        <p class="mb-0 ct_fs_12 ms-auto text-white">362 Members</p>
+                      </div>
+                      </div>
+                    </li>
+                 
+                </ul>
             </div>
-        </li>
-    </ul>
-</div>
+            <div class="ct_right_message_area">
+                <div class="ct_octen_team_box ct_mt_30 px-3 ct_message_head_bg">
+                    <a href="javascript:void(0)" class="ct_orange_text ct_back_to_list ct_chat_back">Back</a>
+                  
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="d-flex align-items-center">
+                            <img src="../assets/img/user_img_1.png" alt="" class="ct_img_44 ct_border_radius_100">
+                        </div>
+                  
+                        <div>
+                            <h5 class="mb-0 ct_fs_15 ct_ff_roboto ct_fw_500 mb-2 ct_orange_text">Design community</h5>
+                            <p class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 text-white"> 17 K Post <span> - 1 K Members</span></p>
+                        </div>
+                     
+                      </div>
+                    <div class="ms-auto">
+                        <p class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 ct_orange_text">See All 12 Members</p>
+                    </div>
+                  
+                </div>
+
+                <div class="position-relative mt-3">
+                    <app-add-post></app-add-post>
 
 
-
-<!-- Edit Community -->
-
-<div class="modal fade" id="ct_edit_community" tabindex="-1" aria-labelledby="ct_add_communityLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-0 pt-0 px-0 d-block text-center">
-                <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Edit Community
-                </h5>
-                <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i
-                        class="fa-solid fa-x"></i></button>
-            </div>
-            <div class="modal-body">
-
-                <form [formGroup]="updateForm">
-
-
-                    <div class="ct_formField mb-3">
-                        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Image</label>
-
-                        <label for="imgInp" class="w-100">
-                            <input accept="image/*" type="file" formControlName="image" id="imgInp" class="d-none"
-                                (change)="handleFileInput($event)" />
-                            <div class="ct_edt_img">
-                                <img id="blah" src="#" alt="Uploaded Image" [src]="updateDet?.image_url">
+                    <div class="ct_all_feed_boxex">
+                        <div class="ct_feed_box mt-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="../assets/img/user_img_1.png" alt="" class="ct_img_44 ct_bor ct_white_border_1">
+                                <div>
+                                    <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <p class="mb-0  ct_fs_12 text-white ct_text_op_5">14 Aug at 04:21 PM</p>
+                                        <div class="d-flex align-items-center justify-content-center gap-2">
+                                            <img src="../assets/img/star.png" alt="star">
+                                            <span class="ct_orange_text">Fitness</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </label>
+        
+                            <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22  mt-3"><span>Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                influencing the flow of thoughts and sensations in an changing reality Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                influencing the flow of thoughts and sensations in an changing reality Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                influencing the flow of thoughts and sensations in an changing reality Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                influencing the flow of thoughts and sensations in an changing reality</span> <a href="#" class="ct_orange_text">Read more</a></p>
+        
+                           
+        
+                             <div class="ct_like_comment_div">
+                                <ul>
+                                    <li>
+                                       <div class="ct_like_btn d-flex align-items-center gap-3">
+                                           <!-- show this class ct_active_like when user will like  -->
+                                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z" stroke="#E58934" stroke-width="1.3"></path>
+                                            </svg>
+                                            <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">1.6k</p>
+                                       </div>
+                                    </li>
+                                    <li>
+                                       <div class="ct_comment_bnt  d-flex align-items-center gap-3">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M10 1.75C5.44366 1.75 1.75001 5.44365 1.75001 10C1.75001 11.365 2.08093 12.6505 2.66626 13.7828C2.74503 13.9352 2.76918 14.1099 2.7347 14.278L1.96334 18.0367L5.72204 17.2653C5.89007 17.2308 6.06484 17.255 6.21722 17.3338C7.3495 17.9191 8.63502 18.25 10 18.25C14.5564 18.25 18.25 14.5563 18.25 10C18.25 5.44365 14.5564 1.75 10 1.75ZM0.250013 10C0.250013 4.61522 4.61524 0.25 10 0.25C15.3848 0.25 19.75 4.61522 19.75 10C19.75 15.3848 15.3848 19.75 10 19.75C8.48564 19.75 7.05008 19.4042 5.76973 18.7868L1.15079 19.7347C0.903835 19.7854 0.647943 19.7086 0.469683 19.5303C0.291422 19.3521 0.214644 19.0962 0.265324 18.8492L1.21323 14.2303C0.595784 12.9499 0.250013 11.5144 0.250013 10Z" fill="#E58934"></path>
+                                            </svg>
+                                        <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">Comment</p>
+                                       </div>
+                                    </li>
+                                    <li class="ct_book_mark_icon  ms-auto">
+                                        <!-- add this class ct_book_mark_icon_active when user will book marked  -->
+                                        <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="">
+                                            <path d="M0 18V2C0 1.45 0.196 0.979333 0.588 0.588C0.98 0.196667 1.45067 0.000666667 2 0H12C12.55 0 13.021 0.196 13.413 0.588C13.805 0.98 14.0007 1.45067 14 2V18L7 15L0 18Z" fill="#fff"></path>
+                                            </svg>
+                                    </li>
+                                </ul>
+                                <!-- show this div when user click on comment -->
+                                <div class="ct_comment_area_main mt-4 d-none">
+                                    <input type="text" class="form-control ct_custom_input w-100" placeholder="Write comment...">
+        
+                                    <div class="ct_comment_area_scroll">
+                                        <div class="d-flex justify-content-between gap-2 mt-3">
+                                            <div class="d-flex  gap-3 ">
+                                                <img src="../assets/img/user_img_1.png" alt="" class="ct_img_40 ct_bor ct_white_border_1">
+                                                <div style="flex: 1;">
+                                                  <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                    <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
+                                                   <div class="d-flex align-items-center gap-3">
+                                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                                        <img src="../assets/img/star.png" alt="star">
+                                                        <span class="ct_orange_text">Fitness</span>
+                                                    </div>
+                                                    <p class="mb-0  ct_fs_12 text-white ct_text_op_5">2 days ago</p>
+                                                   </div>
+                
+                                                  </div>
+                                                  <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 ct_commented_text mt-3"><span>Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                                    influencing the flow of thoughts and sensations in</span> <a href="#" class="ct_orange_text">Read more</a></p>
+                
+                                                    <div class="mt-4">
+                                                        <button class="ct_orange_btn ct_tansparent_btn w-100 ct_white_border_1 ct_border_radius_10">Load more comments</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ct_like_btn">
+                                                <!-- show this class ct_active_like when user will like  -->
+                                             <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                 <path d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z" stroke="#E58934" stroke-width="1.3"></path>
+                                                 </svg>
+                                                
+                                            </div>
+                                        </div>
+                                      
+                                    </div>
+                                    
+                                </div>
+                             </div>
+                        </div>
+                        <div class="ct_feed_box mt-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="../assets/img/user_img_1.png" alt="" class="ct_img_44 ct_bor ct_white_border_1">
+                                <div>
+                                    <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <p class="mb-0  ct_fs_12 text-white ct_text_op_5">14 Aug at 04:21 PM</p>
+                                        <div class="d-flex align-items-center justify-content-center gap-2">
+                                            <img src="../assets/img/star.png" alt="star">
+                                            <span class="ct_orange_text">Fitness</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22  mt-3"><span>Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                influencing the flow of thoughts and sensations in an changing reality Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                influencing the flow of thoughts and sensations in an changing reality Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                influencing the flow of thoughts and sensations in an changing reality Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                influencing the flow of thoughts and sensations in an changing reality</span> <a href="#" class="ct_orange_text">Read more</a></p>
+        
+                           
+        
+                             <div class="ct_like_comment_div">
+                                <ul>
+                                    <li>
+                                       <div class="ct_like_btn d-flex align-items-center gap-3">
+                                           <!-- show this class ct_active_like when user will like  -->
+                                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z" stroke="#E58934" stroke-width="1.3"></path>
+                                            </svg>
+                                            <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">1.6k</p>
+                                       </div>
+                                    </li>
+                                    <li>
+                                       <div class="ct_comment_bnt  d-flex align-items-center gap-3">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M10 1.75C5.44366 1.75 1.75001 5.44365 1.75001 10C1.75001 11.365 2.08093 12.6505 2.66626 13.7828C2.74503 13.9352 2.76918 14.1099 2.7347 14.278L1.96334 18.0367L5.72204 17.2653C5.89007 17.2308 6.06484 17.255 6.21722 17.3338C7.3495 17.9191 8.63502 18.25 10 18.25C14.5564 18.25 18.25 14.5563 18.25 10C18.25 5.44365 14.5564 1.75 10 1.75ZM0.250013 10C0.250013 4.61522 4.61524 0.25 10 0.25C15.3848 0.25 19.75 4.61522 19.75 10C19.75 15.3848 15.3848 19.75 10 19.75C8.48564 19.75 7.05008 19.4042 5.76973 18.7868L1.15079 19.7347C0.903835 19.7854 0.647943 19.7086 0.469683 19.5303C0.291422 19.3521 0.214644 19.0962 0.265324 18.8492L1.21323 14.2303C0.595784 12.9499 0.250013 11.5144 0.250013 10Z" fill="#E58934"></path>
+                                            </svg>
+                                        <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">Comment</p>
+                                       </div>
+                                    </li>
+                                    <li class="ct_book_mark_icon  ms-auto">
+                                        <!-- add this class ct_book_mark_icon_active when user will book marked  -->
+                                        <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="">
+                                            <path d="M0 18V2C0 1.45 0.196 0.979333 0.588 0.588C0.98 0.196667 1.45067 0.000666667 2 0H12C12.55 0 13.021 0.196 13.413 0.588C13.805 0.98 14.0007 1.45067 14 2V18L7 15L0 18Z" fill="#fff"></path>
+                                            </svg>
+                                    </li>
+                                </ul>
+                                <!-- show this div when user click on comment -->
+                                <div class="ct_comment_area_main mt-4 d-none">
+                                    <input type="text" class="form-control ct_custom_input w-100" placeholder="Write comment...">
+        
+                                    <div class="ct_comment_area_scroll">
+                                        <div class="d-flex justify-content-between gap-2 mt-3">
+                                            <div class="d-flex  gap-3 ">
+                                                <img src="../assets/img/user_img_1.png" alt="" class="ct_img_40 ct_bor ct_white_border_1">
+                                                <div style="flex: 1;">
+                                                  <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                    <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
+                                                   <div class="d-flex align-items-center gap-3">
+                                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                                        <img src="../assets/img/star.png" alt="star">
+                                                        <span class="ct_orange_text">Fitness</span>
+                                                    </div>
+                                                    <p class="mb-0  ct_fs_12 text-white ct_text_op_5">2 days ago</p>
+                                                   </div>
+                
+                                                  </div>
+                                                  <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 ct_commented_text mt-3"><span>Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                                    influencing the flow of thoughts and sensations in</span> <a href="#" class="ct_orange_text">Read more</a></p>
+                
+                                                    <div class="mt-4">
+                                                        <button class="ct_orange_btn ct_tansparent_btn w-100 ct_white_border_1 ct_border_radius_10">Load more comments</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ct_like_btn">
+                                                <!-- show this class ct_active_like when user will like  -->
+                                             <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                 <path d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z" stroke="#E58934" stroke-width="1.3"></path>
+                                                 </svg>
+                                                
+                                            </div>
+                                        </div>
+                                      
+                                    </div>
+                                    
+                                </div>
+                             </div>
+                        </div>
+                        <div class="ct_feed_box mt-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="../assets/img/user_img_1.png" alt="" class="ct_img_44 ct_bor ct_white_border_1">
+                                <div>
+                                    <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <p class="mb-0  ct_fs_12 text-white ct_text_op_5">14 Aug at 04:21 PM</p>
+                                        <div class="d-flex align-items-center justify-content-center gap-2">
+                                            <img src="../assets/img/star.png" alt="star">
+                                            <span class="ct_orange_text">Fitness</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22  mt-3"><span>Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                influencing the flow of thoughts and sensations in an changing reality Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                influencing the flow of thoughts and sensations in an changing reality Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                influencing the flow of thoughts and sensations in an changing reality Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                influencing the flow of thoughts and sensations in an changing reality</span> <a href="#" class="ct_orange_text">Read more</a></p>
+        
+                           
+        
+                             <div class="ct_like_comment_div">
+                                <ul>
+                                    <li>
+                                       <div class="ct_like_btn d-flex align-items-center gap-3">
+                                           <!-- show this class ct_active_like when user will like  -->
+                                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z" stroke="#E58934" stroke-width="1.3"></path>
+                                            </svg>
+                                            <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">1.6k</p>
+                                       </div>
+                                    </li>
+                                    <li>
+                                       <div class="ct_comment_bnt  d-flex align-items-center gap-3">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M10 1.75C5.44366 1.75 1.75001 5.44365 1.75001 10C1.75001 11.365 2.08093 12.6505 2.66626 13.7828C2.74503 13.9352 2.76918 14.1099 2.7347 14.278L1.96334 18.0367L5.72204 17.2653C5.89007 17.2308 6.06484 17.255 6.21722 17.3338C7.3495 17.9191 8.63502 18.25 10 18.25C14.5564 18.25 18.25 14.5563 18.25 10C18.25 5.44365 14.5564 1.75 10 1.75ZM0.250013 10C0.250013 4.61522 4.61524 0.25 10 0.25C15.3848 0.25 19.75 4.61522 19.75 10C19.75 15.3848 15.3848 19.75 10 19.75C8.48564 19.75 7.05008 19.4042 5.76973 18.7868L1.15079 19.7347C0.903835 19.7854 0.647943 19.7086 0.469683 19.5303C0.291422 19.3521 0.214644 19.0962 0.265324 18.8492L1.21323 14.2303C0.595784 12.9499 0.250013 11.5144 0.250013 10Z" fill="#E58934"></path>
+                                            </svg>
+                                        <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">Comment</p>
+                                       </div>
+                                    </li>
+                                    <li class="ct_book_mark_icon  ms-auto">
+                                        <!-- add this class ct_book_mark_icon_active when user will book marked  -->
+                                        <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="">
+                                            <path d="M0 18V2C0 1.45 0.196 0.979333 0.588 0.588C0.98 0.196667 1.45067 0.000666667 2 0H12C12.55 0 13.021 0.196 13.413 0.588C13.805 0.98 14.0007 1.45067 14 2V18L7 15L0 18Z" fill="#fff"></path>
+                                            </svg>
+                                    </li>
+                                </ul>
+                                <!-- show this div when user click on comment -->
+                                <div class="ct_comment_area_main mt-4 d-none">
+                                    <input type="text" class="form-control ct_custom_input w-100" placeholder="Write comment...">
+        
+                                    <div class="ct_comment_area_scroll">
+                                        <div class="d-flex justify-content-between gap-2 mt-3">
+                                            <div class="d-flex  gap-3 ">
+                                                <img src="../assets/img/user_img_1.png" alt="" class="ct_img_40 ct_bor ct_white_border_1">
+                                                <div style="flex: 1;">
+                                                  <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                    <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
+                                                   <div class="d-flex align-items-center gap-3">
+                                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                                        <img src="../assets/img/star.png" alt="star">
+                                                        <span class="ct_orange_text">Fitness</span>
+                                                    </div>
+                                                    <p class="mb-0  ct_fs_12 text-white ct_text_op_5">2 days ago</p>
+                                                   </div>
+                
+                                                  </div>
+                                                  <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 ct_commented_text mt-3"><span>Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                                    influencing the flow of thoughts and sensations in</span> <a href="#" class="ct_orange_text">Read more</a></p>
+                
+                                                    <div class="mt-4">
+                                                        <button class="ct_orange_btn ct_tansparent_btn w-100 ct_white_border_1 ct_border_radius_10">Load more comments</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ct_like_btn">
+                                                <!-- show this class ct_active_like when user will like  -->
+                                             <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                 <path d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z" stroke="#E58934" stroke-width="1.3"></path>
+                                                 </svg>
+                                                
+                                            </div>
+                                        </div>
+                                      
+                                    </div>
+                                    
+                                </div>
+                             </div>
+                        </div>
+                        <div class="ct_feed_box mt-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="../assets/img/user_img_1.png" alt="" class="ct_img_44 ct_bor ct_white_border_1">
+                                <div>
+                                    <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <p class="mb-0  ct_fs_12 text-white ct_text_op_5">14 Aug at 04:21 PM</p>
+                                        <div class="d-flex align-items-center justify-content-center gap-2">
+                                            <img src="../assets/img/star.png" alt="star">
+                                            <span class="ct_orange_text">Fitness</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22  mt-3"><span>Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                influencing the flow of thoughts and sensations in an changing reality Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                influencing the flow of thoughts and sensations in an changing reality Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                influencing the flow of thoughts and sensations in an changing reality Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                influencing the flow of thoughts and sensations in an changing reality</span> <a href="#" class="ct_orange_text">Read more</a></p>
+        
+                           
+        
+                             <div class="ct_like_comment_div">
+                                <ul>
+                                    <li>
+                                       <div class="ct_like_btn d-flex align-items-center gap-3">
+                                           <!-- show this class ct_active_like when user will like  -->
+                                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z" stroke="#E58934" stroke-width="1.3"></path>
+                                            </svg>
+                                            <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">1.6k</p>
+                                       </div>
+                                    </li>
+                                    <li>
+                                       <div class="ct_comment_bnt  d-flex align-items-center gap-3">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M10 1.75C5.44366 1.75 1.75001 5.44365 1.75001 10C1.75001 11.365 2.08093 12.6505 2.66626 13.7828C2.74503 13.9352 2.76918 14.1099 2.7347 14.278L1.96334 18.0367L5.72204 17.2653C5.89007 17.2308 6.06484 17.255 6.21722 17.3338C7.3495 17.9191 8.63502 18.25 10 18.25C14.5564 18.25 18.25 14.5563 18.25 10C18.25 5.44365 14.5564 1.75 10 1.75ZM0.250013 10C0.250013 4.61522 4.61524 0.25 10 0.25C15.3848 0.25 19.75 4.61522 19.75 10C19.75 15.3848 15.3848 19.75 10 19.75C8.48564 19.75 7.05008 19.4042 5.76973 18.7868L1.15079 19.7347C0.903835 19.7854 0.647943 19.7086 0.469683 19.5303C0.291422 19.3521 0.214644 19.0962 0.265324 18.8492L1.21323 14.2303C0.595784 12.9499 0.250013 11.5144 0.250013 10Z" fill="#E58934"></path>
+                                            </svg>
+                                        <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">Comment</p>
+                                       </div>
+                                    </li>
+                                    <li class="ct_book_mark_icon  ms-auto">
+                                        <!-- add this class ct_book_mark_icon_active when user will book marked  -->
+                                        <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="">
+                                            <path d="M0 18V2C0 1.45 0.196 0.979333 0.588 0.588C0.98 0.196667 1.45067 0.000666667 2 0H12C12.55 0 13.021 0.196 13.413 0.588C13.805 0.98 14.0007 1.45067 14 2V18L7 15L0 18Z" fill="#fff"></path>
+                                            </svg>
+                                    </li>
+                                </ul>
+                                <!-- show this div when user click on comment -->
+                                <div class="ct_comment_area_main mt-4 d-none">
+                                    <input type="text" class="form-control ct_custom_input w-100" placeholder="Write comment...">
+        
+                                    <div class="ct_comment_area_scroll">
+                                        <div class="d-flex justify-content-between gap-2 mt-3">
+                                            <div class="d-flex  gap-3 ">
+                                                <img src="../assets/img/user_img_1.png" alt="" class="ct_img_40 ct_bor ct_white_border_1">
+                                                <div style="flex: 1;">
+                                                  <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                    <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
+                                                   <div class="d-flex align-items-center gap-3">
+                                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                                        <img src="../assets/img/star.png" alt="star">
+                                                        <span class="ct_orange_text">Fitness</span>
+                                                    </div>
+                                                    <p class="mb-0  ct_fs_12 text-white ct_text_op_5">2 days ago</p>
+                                                   </div>
+                
+                                                  </div>
+                                                  <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 ct_commented_text mt-3"><span>Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                                    influencing the flow of thoughts and sensations in</span> <a href="#" class="ct_orange_text">Read more</a></p>
+                
+                                                    <div class="mt-4">
+                                                        <button class="ct_orange_btn ct_tansparent_btn w-100 ct_white_border_1 ct_border_radius_10">Load more comments</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ct_like_btn">
+                                                <!-- show this class ct_active_like when user will like  -->
+                                             <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                 <path d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z" stroke="#E58934" stroke-width="1.3"></path>
+                                                 </svg>
+                                                
+                                            </div>
+                                        </div>
+                                      
+                                    </div>
+                                    
+                                </div>
+                             </div>
+                        </div>
+                        <div class="ct_feed_box mt-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="../assets/img/user_img_1.png" alt="" class="ct_img_44 ct_bor ct_white_border_1">
+                                <div>
+                                    <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <p class="mb-0  ct_fs_12 text-white ct_text_op_5">14 Aug at 04:21 PM</p>
+                                        <div class="d-flex align-items-center justify-content-center gap-2">
+                                            <img src="../assets/img/star.png" alt="star">
+                                            <span class="ct_orange_text">Fitness</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="ct_show_uploaded_video mt-2">
+                                <iframe width="100%" height="390" src="https://www.youtube.com/embed/D0UnqGm_miA?si=stUsA1BTtk2p_3AH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+                            </div>
+        
+                            <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22  mt-3"><span>Design Shot is an invitation to ponder cn design as a living entity. capature of embodying and
+                                influencing the flow of thoughts and sensations in an changing reality...</span> <a href="#" class="ct_orange_text">Read more</a></p>
+        
+                           
+        
+                             <div class="ct_like_comment_div">
+                                <ul>
+                                    <li>
+                                       <div class="ct_like_btn d-flex align-items-center gap-3">
+                                           <!-- show this class ct_active_like when user will like  -->
+                                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z" stroke="#E58934" stroke-width="1.3"></path>
+                                            </svg>
+                                            <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">1.6k</p>
+                                       </div>
+                                    </li>
+                                    <li>
+                                       <div class="ct_comment_bnt  d-flex align-items-center gap-3">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M10 1.75C5.44366 1.75 1.75001 5.44365 1.75001 10C1.75001 11.365 2.08093 12.6505 2.66626 13.7828C2.74503 13.9352 2.76918 14.1099 2.7347 14.278L1.96334 18.0367L5.72204 17.2653C5.89007 17.2308 6.06484 17.255 6.21722 17.3338C7.3495 17.9191 8.63502 18.25 10 18.25C14.5564 18.25 18.25 14.5563 18.25 10C18.25 5.44365 14.5564 1.75 10 1.75ZM0.250013 10C0.250013 4.61522 4.61524 0.25 10 0.25C15.3848 0.25 19.75 4.61522 19.75 10C19.75 15.3848 15.3848 19.75 10 19.75C8.48564 19.75 7.05008 19.4042 5.76973 18.7868L1.15079 19.7347C0.903835 19.7854 0.647943 19.7086 0.469683 19.5303C0.291422 19.3521 0.214644 19.0962 0.265324 18.8492L1.21323 14.2303C0.595784 12.9499 0.250013 11.5144 0.250013 10Z" fill="#E58934"></path>
+                                            </svg>
+                                        <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">Comment</p>
+                                       </div>
+                                    </li>
+                                    <li class="ct_book_mark_icon  ms-auto">
+                                        <!-- add this class ct_book_mark_icon_active when user will book marked  -->
+                                        <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="">
+                                            <path d="M0 18V2C0 1.45 0.196 0.979333 0.588 0.588C0.98 0.196667 1.45067 0.000666667 2 0H12C12.55 0 13.021 0.196 13.413 0.588C13.805 0.98 14.0007 1.45067 14 2V18L7 15L0 18Z" fill="#fff"></path>
+                                            </svg>
+                                    </li>
+                                </ul>
+                                <!-- show this div when user click on comment -->
+                                <div class="ct_comment_area_main mt-4 d-none">
+                                    <input type="text" class="form-control ct_custom_input w-100" placeholder="Write comment...">
+        
+                                    <div class="ct_comment_area_scroll">
+                                        <div class="d-flex justify-content-between gap-2 mt-3">
+                                            <div class="d-flex  gap-3 ">
+                                                <img src="../assets/img/user_img_1.png" alt="" class="ct_img_40 ct_bor ct_white_border_1">
+                                                <div style="flex: 1;">
+                                                  <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                    <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
+                                                   <div class="d-flex align-items-center gap-3">
+                                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                                        <img src="../assets/img/star.png" alt="star">
+                                                        <span class="ct_orange_text">Fitness</span>
+                                                    </div>
+                                                    <p class="mb-0  ct_fs_12 text-white ct_text_op_5">2 days ago</p>
+                                                   </div>
+                
+                                                  </div>
+                                                  <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 ct_commented_text mt-3"><span>Design Shot is an invitation to ponder cn design as a living entity. capture of embodying and
+                                                    influencing the flow of thoughts and sensations in</span> <a href="#" class="ct_orange_text">Read more</a></p>
+                
+                                                    <div class="mt-4">
+                                                        <button class="ct_orange_btn ct_tansparent_btn w-100 ct_white_border_1 ct_border_radius_10">Load more comments</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ct_like_btn">
+                                                <!-- show this class ct_active_like when user will like  -->
+                                             <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                 <path d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z" stroke="#E58934" stroke-width="1.3"></path>
+                                                 </svg>
+                                                
+                                            </div>
+                                        </div>
+                                      
+                                    </div>
+                                    
+                                </div>
+                             </div>
+                        </div>
                     </div>
+                  
+                </div>
 
-
-                    <div class="form-group mb-3">
-                        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Title</label>
-                        <input type="text" class="ct_login_input form-control ct_border_radius_10"
-                            placeholder="Enter Name" formControlName="title">
-
-                        <!-- <div *ngIf="newForm.controls['full_name'].invalid && newForm.controls['full_name'].touched"
-                            class="error-message">
-                            <div *ngIf="newForm.controls['full_name'].errors?.['required']">Name is
-                                required.</div>
-                        </div> -->
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">About</label>
-                        <textarea class="ct_login_input form-control ct_border_radius_10 h-auto" rows="4"
-                            formControlName="about" placeholder="Type here..." maxlength="300">
-                      </textarea>
-                    </div>
-
-
-                </form>
-
-
-                <button type="button" (click)="addCommunity()"
-                    class="ct_custom_btn mt-5 px-4 w-auto mx-auto d-block">Add Event</button>
-
-                <button hidden type="button" class="btn btn-secondary" #closeModal2
-                    data-bs-dismiss="modal">Close</button>
-                <!-- <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 w-100 mt-4">Create new team</button> -->
             </div>
 
         </div>
-    </div>
-</div>
 
 
-<!-- Add Community -->
 
-<div class="modal fade" id="ct_add_community" tabindex="-1" aria-labelledby="ct_add_communityLabel" aria-hidden="true">
+
+            <!-- Create Team Modal S -->
+   
+<div class="modal fade" id="ct_create_team" tabindex="-1" aria-labelledby="ct_create_teamLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-0 pt-0 px-0 d-block text-center">
-                <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Add Community
-                </h5>
-                <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i
-                        class="fa-solid fa-x"></i></button>
-            </div>
-            <div class="modal-body">
-
-                <form [formGroup]="newForm">
-
-
-                    <div class="ct_formField mb-3">
-                        <label for="ct_event_img" class="w-100">
-                            <input type="file" id="ct_event_img" required formControlName="image"
-                                (change)="handleCommittedFileInput($event)" />
-                        </label>
-                        <!-- <div *ngIf="newForm.controls['image'].invalid && newForm.controls['image'].touched"
-                            class="error-message">
-                            <div *ngIf="newForm.controls['image'].errors?.['required']">Image is
-                                required.
-                            </div>
-                        </div> -->
-                    </div>
-
-
-                    <div class="form-group mb-3">
-                        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Title</label>
-                        <input type="text" class="ct_login_input form-control ct_border_radius_10"
-                            placeholder="Enter Name" formControlName="title">
-
-                        <!-- <div *ngIf="newForm.controls['full_name'].invalid && newForm.controls['full_name'].touched"
-                            class="error-message">
-                            <div *ngIf="newForm.controls['full_name'].errors?.['required']">Name is
-                                required.</div>
-                        </div> -->
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">About</label>
-                        <textarea class="ct_login_input form-control ct_border_radius_10 h-auto" rows="4"
-                            formControlName="about" placeholder="Type here..." maxlength="300">
-                      </textarea>
-                    </div>
-
-
-                </form>
-
-
-                <button type="button" (click)="addCommunity()"
-                    class="ct_custom_btn mt-5 px-4 w-auto mx-auto d-block">Add Event</button>
-                <button hidden type="button" class="btn btn-secondary" #closeModal
-                    data-bs-dismiss="modal">Close</button>
-                <!-- <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 w-100 mt-4">Create new team</button> -->
-            </div>
-
+      <div class="modal-content">
+        <div class="modal-header border-0 pt-0 px-0 d-block text-center">
+          <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Create New Community</h5>
+          <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-x"></i></button>
         </div>
+        <div class="modal-body">
+            <div>
+                <input type="text" class="form-control ct_login_input" placeholder="My Community Name">
+            </div>
+            <div  class="ct_uploaded_cnt">
+                <div  id="ct_audio" class="ct_audio_upload_first" style="max-width: 100%;"><label  for="ct_upload_audio"><input  type="file" id="ct_upload_audio" accept="audio/*" class="d-none"><!--bindings={
+                "ng-reflect-ng-if": null
+              }--><div ><p  class="mb-2 text-white ct_fs_13">Click to upload audio file</p><p  class="mb-0 text-white ct_text_op_5 ct_fs_13">Max upload file 50 MB</p></div><!--bindings={
+                "ng-reflect-ng-if": "true"
+              }--></label></div><div  id="ct_video" class="ct_audio_upload_first d-block"  style="max-width: 100%;"><label  for="ct_upload_video"><input  type="file" id="ct_upload_video" accept="video/*" class="d-none"><!--bindings={
+                "ng-reflect-ng-if": null
+              }--><div ><p  class="mb-2 text-white ct_fs_13">Click to upload video file</p><p  class="mb-0 text-white ct_text_op_5 ct_fs_13">Max upload file 50 MB</p></div><!--bindings={
+                "ng-reflect-ng-if": "true"
+              }--></label></div></div>
+
+           
+           <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 w-100 mt-4">Create</button>
+        </div>
+      
+      </div>
     </div>
-</div>
+  </div>
+    <!-- Create Team Modal E -->
+
+      
+
+    
+
+

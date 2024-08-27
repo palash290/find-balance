@@ -633,8 +633,10 @@
 
                     <div class="ct_show_uploaded_video mt-2" style="position: relative;">
 
-                        <img *ngIf="!isVideoPlaying(videoPlayer)" src="../assets/img/play.png" class="play-button"
-                            alt="Play Button" (click)="toggleVideo(videoPlayer)" />
+                       <div class="play-button" *ngIf="!isVideoPlaying(videoPlayer)"  (click)="toggleVideo(videoPlayer)">
+                        <img src="../assets/img/play.png" 
+                        alt="Play Button" />
+                       </div>
 
                         <video [src]="feed.mediaUrl" #videoPlayer (timeupdate)="onTimeUpdate(videoPlayer)"
                             (loadedmetadata)="setVideoDuration(videoPlayer)" width="100%" height="390"

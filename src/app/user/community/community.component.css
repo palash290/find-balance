@@ -12,3 +12,21 @@ div#ct_edit_community .modal-content {
     border-radius: 15px;
     cursor: pointer;
 }
+
+.ct_community_sidebar li.active,.ct_community_sidebar li:hover {
+    background-color: var(--orange);
+}
+.ct_chat_back {
+    display: none;
+}
+.ct_community_left_width{
+    max-width: 350px;
+}
+
+@media screen and (max-width:1199px) {
+    .ct_chat_back {
+        display: block;
+    }
+
+  
+}

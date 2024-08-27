@@ -1,0 +1,22 @@
+.ct_category_filter123{
+    border:1px solid #fff;
+    border-radius: 10px;
+    padding: 6px 15px;
+}
+.ct_category_filter123 select{
+    border: 0px;
+    background-color: transparent;
+    width: 100px;
+    color: #fff;
+    
+    
+}
+.ct_category_filter123 select:focus-visible,.ct_category_filter123 select:focus{
+    box-shadow: unset !important;
+    border: none !important;
+    outline: none;
+}
+.ct_category_filter123 select option{
+    color: #fff;
+    background-color: #0F100F;
+}

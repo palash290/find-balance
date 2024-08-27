@@ -7,16 +7,16 @@
         </div>
     </div>
 
-    <div class=" mb-4 d-flex align-items-center gap-4">
+    <!-- <div class=" mb-4 d-flex align-items-center gap-4">
         <select class="ct_login_input form-control w-auto ms-auto" [(ngModel)]="categoryId"
             (change)="onCategoryChange($event)">
             <option disabled>Post Catagory</option>
             <option *ngFor="let category of categories" [value]="category.id">{{ category.name
                 }}</option>
         </select>
-    </div>
+    </div> -->
 
-    <div class="ct_upload_items mt-4">
+    <div class="ct_upload_items justify-content-between mt-4 flex-wrap">
         <ul>
             <li>
                 <div class="ct_audio_upload_btn" id="ct_audio_btn" (click)="toggle('Podcast')" style="cursor: pointer;">
@@ -31,7 +31,16 @@
                 </div>
             </li>
         </ul>
-        <div class="ms-md-auto">
+        <div class="ct_category_filter123">
+            <span class="ct_text_op_5 text-white ct_fs_13">Post Category :</span>
+            <select [(ngModel)]="categoryId"
+            (change)="onCategoryChange($event)">
+            <option disabled>Post Catagory</option>
+            <option *ngFor="let category of categories" [value]="category.id">{{ category.name
+                }}</option>
+        </select>
+        </div>
+        <div>
             <!-- @if(!btnLoader){
             <button type="button" (click)="uploadFiles()"
                 class="ct_orange_btn ct_white_border_1 ct_grey_btn ct_border_radius_10 px-4 py-2 h-auto">Post</button>
