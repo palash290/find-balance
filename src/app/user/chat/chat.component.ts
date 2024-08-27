@@ -272,14 +272,42 @@ export class ChatComponent {
 
   @ViewChild('messageTextarea') messageTextarea!: ElementRef<HTMLTextAreaElement>;
 
- handleInput(): void {
-    const textarea = this.messageTextarea.nativeElement;
+//  handleInput(): void {
+//     const textarea = this.messageTextarea.nativeElement;
   
-      // Automatically wrap to next line if 10 or more letters
-      textarea.style.height = 'auto'; // Reset height
-      textarea.style.height = textarea.scrollHeight + 'px'; // Adjust height based on content
+//       // Automatically wrap to next line if 10 or more letters
+//       textarea.style.height = 'auto'; // Reset height
+//       textarea.style.height = textarea.scrollHeight + 'px'; // Adjust height based on content
     
+//   }
+handleInput(): void {
+  const textarea = this.messageTextarea.nativeElement;
+
+  // Automatically wrap to the next line if 10 or more letters in a word
+  const words = this.newMessage.split(' ');
+  const shouldWrap = words.some((word: string | any[]) => word.length >= 10);
+
+  if (shouldWrap) {
+    textarea.style.whiteSpace = 'pre-wrap';
+  } else {
+    textarea.style.whiteSpace = 'normal';
   }
+
+  // Automatically adjust the textarea height based on its content
+  textarea.style.height = 'auto'; // Reset height
+  textarea.style.height = textarea.scrollHeight + 'px'; // Adjust height based on content
+
+  // Limit the max rows to 3
+  const lineHeight = 20; // Adjust according to your textarea's line height
+  const maxHeight = lineHeight * 3;
+  if (textarea.scrollHeight > maxHeight) {
+    textarea.style.overflowY = 'auto'; // Allow scrolling if content exceeds max rows
+    textarea.style.height = maxHeight + 'px';
+  } else {
+    textarea.style.overflowY = 'hidden';
+  }
+}
+
 
 
   formatTimestamp(timestamp: number): string {

@@ -119,8 +119,7 @@
  
     height: 38px;
     resize: none; /* Prevent resizing by user */
-    overflow: hidden; /* Hide overflow */
- 
+    
 }
 
 .form-control {
