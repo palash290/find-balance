@@ -2,8 +2,12 @@
 <div [ngClass]="{'ct_box_2_column ct_box_2_full_active': isCoach, 'ct_box_2_column': !isCoach, }">
     <!-- <div [ngClass]="{'ct_box_2_column ct_box_2_full_active': isActive, 'ct_box_2_column': !isActive}"> -->
     <div>
-        @if (!isCoach) {
-        <!-- <div class=" mb-4 d-flex align-items-center gap-4">
+
+        @if (isCoach) {
+        <app-add-post></app-add-post>
+        }
+
+        <div class=" mb-4 d-flex align-items-center gap-4">
             <select class="ct_login_input form-control w-auto ms-auto" [(ngModel)]="categoryId"
                 (change)="onCategoryChange($event)">
                 <option value="0">Short By Category</option>
@@ -19,10 +23,8 @@
                 <option value="Following">Audio</option>
                 <option value="Following">Podcast</option>
             </select>
-        </div> -->
-        } @else {
-        <app-add-post></app-add-post>
-        }
+        </div>
+
 
 
         <hr class="ct_hr_line_op_5">
@@ -646,11 +648,6 @@
                             {{ formatTime(currentTime) }} / {{ formatTime(videoDuration) }}
                         </div>
                     </div>
-
-
-
-
-
 
 
                     <div class="ct_like_comment_div">

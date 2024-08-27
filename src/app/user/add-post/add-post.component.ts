@@ -31,11 +31,33 @@ export class AddPostComponent {
   }
 
   avatar_url_fb: any;
+  categories: any[] = [];
   
   constructor(private route: Router, private service: SharedService, private toastr: ToastrService) { }
 
   ngOnInit(){
+    this.service.getApi('coach/categories').subscribe(response => {
+      if (response.success) {
+        this.categories = response.data;
+      }
+    });
+
     this.avatar_url_fb = localStorage.getItem('avatar_url_fb');
+  }
+
+  categoryId: any = '1';
+  selectedCategoryName: string | undefined;
+
+  onCategoryChange(event: any): void {
+    const selectedId = event.target.value;
+    const selectedCategory = this.categories.find(category => category.id == selectedId);
+
+    if (selectedCategory) {
+      this.categoryId = selectedCategory.id;
+      this.selectedCategoryName = selectedCategory.name;
+      console.log('Selected Category ID:', this.categoryId);
+      console.log('Selected Category Name:', this.selectedCategoryName);
+    }
   }
 
   postText: any;
@@ -111,6 +133,8 @@ export class AddPostComponent {
       //   return;
       // }
     }
+
+    formData.append('categoryId', this.categoryId);
     let audio = document.getElementById('ct_audio')
     let video = document.getElementById('ct_video')
     this.btnLoader = true;
@@ -125,7 +149,8 @@ export class AddPostComponent {
         audio?.classList.remove('d-block');
         video?.classList.remove('d-block');
         this.btnLoader = false;
-        window.location.reload();
+        this.service.triggerRefresh();
+        //window.location.reload();
       },
       error: (error) => {
         this.btnLoader = false;

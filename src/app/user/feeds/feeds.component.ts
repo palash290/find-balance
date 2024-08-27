@@ -22,6 +22,12 @@ export class FeedsComponent {
   constructor(private visibilityService: SharedService) { }
 
   ngOnInit() {
+
+    this.visibilityService.refreshSidebar$.subscribe(() => {
+      this.getProfileData();
+      //console.log('wprking ');
+    });
+
     this.visibilityService.getApi('coach/categories').subscribe(response => {
       if (response.success) {
         this.categories = response.data;

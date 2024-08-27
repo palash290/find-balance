@@ -6,6 +6,16 @@
                 placeholder="Type here...">
         </div>
     </div>
+
+    <div class=" mb-4 d-flex align-items-center gap-4">
+        <select class="ct_login_input form-control w-auto ms-auto" [(ngModel)]="categoryId"
+            (change)="onCategoryChange($event)">
+            <option disabled>Post Catagory</option>
+            <option *ngFor="let category of categories" [value]="category.id">{{ category.name
+                }}</option>
+        </select>
+    </div>
+
     <div class="ct_upload_items mt-4">
         <ul>
             <li>
@@ -39,7 +49,9 @@
             </button>
             
             } -->
-            <button type="button" (click)="uploadFiles()" class="ct_orange_btn ct_white_border_1 ct_grey_btn ct_border_radius_10 px-4 py-2 h-auto d-flex align-items-center" [disabled]="btnLoader">
+            <button type="button" (click)="uploadFiles()"
+                class="ct_orange_btn ct_white_border_1 ct_grey_btn ct_border_radius_10 px-4 py-2 h-auto d-flex align-items-center"
+                [disabled]="btnLoader">
                 <div class="d-flex align-items-center">
                     <div class="spinner-border me-2" role="status" *ngIf="btnLoader">
                         <span class="visually-hidden">Loading...</span>
@@ -47,7 +59,7 @@
                     <span *ngIf="!btnLoader">Post</span>
                 </div>
             </button>
-            
+
 
 
         </div>

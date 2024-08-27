@@ -1,20 +1,140 @@
 .custom-list {
-    list-style: none; /* Remove default list styling */
-    padding: 0;
-  }
-  
-  .custom-list li {
-    position: relative;
-    padding-left: 25px; /* Space for the custom dot */
-    margin-bottom: 10px; /* Space between list items */
-    word-break: break-all;
-  }
-  
-  .custom-list li::before {
-    content: '•'; /* Unicode character for the bullet dot */
+  list-style: none;
+  /* Remove default list styling */
+  padding: 0;
+}
+
+.custom-list li {
+  position: relative;
+  padding-left: 25px;
+  /* Space for the custom dot */
+  margin-bottom: 10px;
+  /* Space between list items */
+  word-break: break-all;
+}
+
+.custom-list li::before {
+  content: '•';
+  /* Unicode character for the bullet dot */
+  position: absolute;
+  left: 0;
+  font-size: 24px;
+  /* Adjust size of the dot */
+  color: white;
+  /* Adjust color of the dot */
+}
+
+
+.ct_send_msg_plane {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.spinner-border {
+  height: 15px;
+  width: 15px;
+}
+
+
+
+
+.custom-audio-player {
+  width: 100%;
+  /* Add any additional styling here */
+}
+
+/* .custom-audio-player::-webkit-media-controls-panel {
+      background-color: #443c3c; 
+      color: #ff0000; 
+    } */
+
+/* Add more custom styles for controls as needed */
+.ct_box_2_full_active {
+  grid-template-columns: 100% !important;
+}
+
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* .custom-seekbar {
+    width: 100%;
     position: absolute;
+    bottom: 0;
     left: 0;
-    font-size: 24px; /* Adjust size of the dot */
-    color: white; /* Adjust color of the dot */
-  }
-  
+  } */
+
+.custom-seekbar {
+  width: 100%;
+  /* Make the seekbar take full width */
+  position: absolute;
+  bottom: 0;
+  /* Position it at the bottom of the container */
+  left: 0;
+  margin: 0;
+  padding: 0;
+  z-index: 2;
+  /* Ensure it appears on top */
+  background: transparent;
+  height: 4px;
+  -webkit-appearance: none;
+}
+
+.custom-seekbar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 10px;
+  background: #ffffff;
+  cursor: pointer;
+  border-radius: 50%;
+  margin: -3px;
+}
+
+.custom-seekbar::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  background: #ffffff;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.custom-seekbar::-ms-thumb {
+  width: 10px;
+  height: 10px;
+  background: #ffffff;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.custom-seekbar::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  background: #ccc;
+}
+
+.custom-seekbar::-moz-range-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  background: #ccc;
+}
+
+.custom-seekbar::-ms-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  background: #ccc;
+  border-color: transparent;
+  color: transparent;
+}

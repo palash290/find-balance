@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-coaches',
@@ -15,7 +16,7 @@ export class SearchCoachesComponent {
   role: any;
   isCoach: boolean = true;
 
-  constructor(private service: SharedService) { }
+  constructor(private router: Router, private service: SharedService) { }
 
   ngOnInit() {
 
@@ -77,6 +78,7 @@ export class SearchCoachesComponent {
         console.log(resp);
         this.getAllCoaches();
         this.btnLoader = false;
+        this.service.triggerRefresh();
       },
       error: error => {
         this.btnLoader = false
@@ -103,5 +105,10 @@ export class SearchCoachesComponent {
     }
     this.getAllCoaches()
   }
+
+  getCoachId(uderId: any) {
+    this.router.navigateByUrl(`user/main/my-profile/${uderId}`)
+  }
+
 
 }

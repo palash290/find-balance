@@ -74,6 +74,7 @@ export class FollowingComponent {
         console.log(resp);
         this.searchCategories();
         this.btnLoader = false;
+        this.service.triggerRefresh();
       },
       error: error => {
         this.btnLoader = false
