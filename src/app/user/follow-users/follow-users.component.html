@@ -16,8 +16,8 @@
         <div class="mt-4" *ngIf="data?.length > 0">
             <ul class="ct_mt_30 ct_all_notification px-2">
                 <li *ngFor="let follower of data;">
-                    <div class="d-flex align-items-center justify-content-between" (click)="getUserId(follower.follower.id)">
-                        <div class="d-flex gap-2">
+                    <div class="d-flex align-items-center justify-content-between" >
+                        <div class="d-flex gap-2" (click)="getUserId(follower.follower.id)" style="cursor: pointer;">
                             <div class="ct_star_circle">
                                 <img [src]="follower.follower.avatar_url ? follower.follower.avatar_url : '/assets/img/np_pro.png'"
                                     alt="" class="ct_img_44 ct_bor ct_orange_border_1">
