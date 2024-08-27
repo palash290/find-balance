@@ -25,16 +25,17 @@
     <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600">About Me</h4>
     <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{userEmail}}</p>
 
-    <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600 mt-3">Education</h4>
-    <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{ education ? education : 'Not found'
-        }}</p>
+    @if(experience){
+        <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600 mt-3">Education</h4>
+        <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{ education ? education : 'Not found'
+            }}</p>
+    }
 
     @if(experience){
     <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600 mt-3">Experience</h4>
     <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{ experience
         }}</p>
     }
-
 
     <!-- <div *ngIf="isCoach && userRole=='COACH'"> -->
     <!-- <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600 mt-3">Accomplishments</h4>
