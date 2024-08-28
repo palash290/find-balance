@@ -14,15 +14,16 @@
 <div class="mt-4">
     <ul class="ct_mt_30 ct_all_notification px-2">
         <li *ngFor="let categories of displayedCategories | filter:searchQuery;">
-            <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center justify-content-between gap-2">
                 <div class="d-flex gap-2">
                     <div class="ct_star_circle">
                         <img src="../assets/img/star.png" alt="">
                     </div>
-                    <div>
+                    <div  style="flex: 1;">
                         <h5 class="ct_fs_15 ct_orange_text ct_fw_600 mb-1">{{categories.name}}</h5>
                         <p class="mb-0 ct_fs_12 text-white">{{categories.totalPosts}} {{categories.totalPosts > 1 ?
                             'Posts' : 'Post'}}</p>
+                            
                     </div>
                 </div>
                 <div>
@@ -85,9 +86,10 @@
                             class="ct_img_44 ct_bor ct_orange_border_1">
                     </div>
                     <div>
-                        <h5 class="ct_fs_15 ct_orange_text ct_fw_600 mb-1">{{coach.full_name}}</h5>
-                        <p class="mb-0 ct_fs_12 text-white">{{coach.numberOfPosts}} {{coach.numberOfPosts > 1 ? 'Posts'
-                            : 'Post'}}</p>
+                        <h5 class="ct_fs_15 text-white ct_fw_600 mb-1">{{coach.full_name}}</h5>
+                        <!-- <p class="mb-0 ct_fs_12 text-white">{{coach.numberOfPosts}} {{coach.numberOfPosts > 1 ? 'Posts'
+                            : 'Post'}}</p> -->
+                            <div  class="d-flex align-items-center gap-2 mt-1"><img  src="../assets/img/star.png" alt="star"><span  class="ct_orange_text">Marketing</span></div>
                     </div>
                 </div>
                 <div>

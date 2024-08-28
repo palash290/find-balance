@@ -7,22 +7,31 @@
         <app-add-post></app-add-post>
         }
 
-        <div class=" mb-4 d-flex align-items-center gap-4">
-            <select class="ct_login_input form-control w-auto ms-auto" [(ngModel)]="categoryId"
-                (change)="onCategoryChange($event)">
-                <option value="0">Short By Category</option>
-                <option *ngFor="let category of categories" [value]="category.id">{{ category.name
-                    }}</option>
-            </select>
-            <div class="w-100">
-                <hr class="ct_hr_line_op_5" style="opacity: 1;">
-            </div>
-            <select class="ct_login_input form-control w-auto ms-auto">
-                <option value="">Short By</option>
+        <div class=" mb-4 d-flex align-items-center gap-4 mt-3 ct_flex_wrap_575">
+            <p class="mb-0 text-white" style="white-space: nowrap;">Filter post by :</p>
+            
+          <div class="ct_filter_search_input_140">
+            <span class="text-white">Category</span>
+            <select class="" [(ngModel)]="categoryId"
+            (change)="onCategoryChange($event)">
+            <option value="0">All</option>
+            <option *ngFor="let category of categories" [value]="category.id">{{ category.name
+                }}</option>
+        </select>
+          </div>
+          <div class="ct_filter_search_input_140">
+            <span class="text-white">Type</span>
+            <select>
+                <option value="">All</option>
                 <option value="Following">Video</option>
                 <option value="Following">Audio</option>
                 <option value="Following">Podcast</option>
             </select>
+            </div>
+            <div class="w-100">
+                <hr class="ct_hr_line_op_5" style="opacity: 1;">
+            </div>
+        
         </div>
 
 

@@ -16,6 +16,10 @@ div#ct_edit_community .modal-content {
 .ct_community_sidebar li.active,.ct_community_sidebar li:hover {
     background-color: var(--orange);
 }
+.ct_community_sidebar li:hover button{
+  background-color: #fff !important;
+  color: var(--orange);
+}
 .ct_chat_back {
     display: none;
 }

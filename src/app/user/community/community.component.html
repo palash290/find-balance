@@ -22,10 +22,18 @@
                     </div>
                     <div class="d-flex align-items-center justify-content-between" style="flex: 1;">
                         <div>
-                            <h5 class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500 mb-2">{{data.title}}</h5>
+                            <h5 class="mb-0 ct_fs_15 ct_orange_text ct_ff_roboto ct_fw_500 mb-2">{{data.title}}</h5>
                             <p class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 text-white"> {{data.numberOfPosts}} Post</p>
                         </div>
-                        <p class="mb-0 ct_fs_12 ms-auto text-white">{{data.numberOfParticipant}} Members</p>
+                        <div>
+                            <button  class="ct_orange_btn ct_grey_btn ct_border_radius_10 px-4 mx-auto py-2 h-auto ct_fs_13 ct_active_follow"><div  class="d-flex align-items-center"><!--bindings={
+                                "ng-reflect-ng-if": "false"
+                              }--><span >Join</span><!--bindings={
+                                "ng-reflect-ng-if": "true"
+                              }--></div></button>
+                            <p class="mb-0 ct_fs_12 ms-auto text-white mt-2">{{data.numberOfParticipant}} Members</p>
+                        
+                        </div>
                     </div>
                 </div>
             </li>
@@ -892,7 +900,7 @@
             <div class="ct_all_team_member_list">
                 <ul class="ct_message_user_lit mt-3" style="max-height: 670px;">
                     <!-- add This Class active when chat open  -->
-                    <li class="d-flex align-items-center justify-content-between"
+                    <li class=""
                         *ngFor="let participants of communityParticipants;">
                         <!-- <div *ngIf="participants.user">
                             <div class="d-flex align-items-center gap-2">
@@ -914,27 +922,29 @@
 
                         <div class="ct_all_team_member_list">
 
-                            <div class="d-flex align-items-center gap-2">
-                                @if(participants.coach.avatar_url){
-                                <img [src]="participants.coach?.avatar_url ? participants.coach?.avatar_url : '/assets/img/np_pro.png'"
-                                    alt="" class="ct_img_40 ct_orange_border_1">
-                                } @else {
-                                <img [src]="participants.user?.avatar_url ? participants.user?.avatar_url : '/assets/img/np_pro.png'"
-                                    alt="" class="ct_img_40 ct_orange_border_1">
-                                }
-
-                                <p class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500">
-                                    {{participants.coach.full_name ? participants.coach.full_name :
-                                    participants.user.full_name}}</p>
-                            </div>
-                            <div class="dropdown ms-auto ct_chat_dropdown">
-                                <!-- <button class="btn  ct_dropdown_btn" type="button" id="dropdownMenuButton1"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa-solid fa-ellipsis-vertical ct_orange_text"></i>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                            <li><a class="dropdown-item">Remove</a></li>
-                                        </ul> -->
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="d-flex align-items-center gap-2">
+                                    @if(participants.coach.avatar_url){
+                                    <img [src]="participants.coach?.avatar_url ? participants.coach?.avatar_url : '/assets/img/np_pro.png'"
+                                        alt="" class="ct_img_40 ct_orange_border_1">
+                                    } @else {
+                                    <img [src]="participants.user?.avatar_url ? participants.user?.avatar_url : '/assets/img/np_pro.png'"
+                                        alt="" class="ct_img_40 ct_orange_border_1">
+                                    }
+    
+                                    <p class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500">
+                                        {{participants.coach.full_name ? participants.coach.full_name :
+                                        participants.user.full_name}}</p>
+                                </div>
+                                <!-- <div class="dropdown ms-auto ct_chat_dropdown">
+                                    <button class="btn  ct_dropdown_btn" type="button" id="dropdownMenuButton1"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa-solid fa-ellipsis-vertical ct_orange_text"></i>
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                <li><a class="dropdown-item py-0">Remove</a></li>
+                                            </ul>
+                                </div> -->
                             </div>
                         </div>
                     </li>

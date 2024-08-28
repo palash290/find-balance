@@ -10,17 +10,27 @@
         </div>
 
 
-        <div class=" mb-4 d-flex align-items-center gap-4" *ngIf="!isCoach">
-            <select class="ct_login_input form-control w-auto ms-auto" [(ngModel)]="categoryId"
-                (change)="onCategoryChange($event)">
-                <option value="">All</option>
-                <option *ngFor="let category of categories" [value]="category.id">{{ category.name
-                    }}</option>
-            </select>
+        <div class=" mb-4 mt-3" *ngIf="!isCoach">
+            <div class="row">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <label for="" class="text-white  ct_fw_600 mb-2">Filter by Category</label>
+                    <select class="ct_login_input form-control  ms-auto" [(ngModel)]="categoryId"
+                    (change)="onCategoryChange($event)">
+                    <option value="">All</option>
+                    <option *ngFor="let category of categories" [value]="category.id">{{ category.name
+                        }}</option>
+                </select>
+                   </div>
+                   <div class="col-md-6 mb-3 mb-md-0">
+                    <label for="" class="text-white ct_fw_600 mb-2">Select Experience (Years)</label>
+                    <input type="text" class="ct_login_input form-control" name="" id="" [(ngModel)]="experience" (ngModelChange)="getAllCoaches()">
+                   </div>
+
+            </div>
             <!-- <div class="w-100">
                 <hr class="ct_hr_line_op_5" style="opacity: 1;">
             </div> -->
-            <input type="text" name="" id="" [(ngModel)]="experience" (ngModelChange)="getAllCoaches()">
+         
         </div>
 
 
@@ -29,6 +39,7 @@
         </div>
 
         <div class="mt-4" *ngIf="data?.length > 0">
+            <h4 class="ct_fw_600 text-white ct_fs_20">All coaches</h4>
             <ul class="ct_mt_30 ct_all_notification px-2">
                 <li *ngFor="let categories of data;">
                     <div class="d-flex align-items-center justify-content-between">
@@ -38,7 +49,7 @@
                                     alt="" class="ct_img_44 ct_bor ct_orange_border_1">
                             </div>
                             <div>
-                                <h5 class="ct_fs_15 ct_orange_text ct_fw_600 mb-1 ct_ff_roboto">
+                                <h5 class="ct_fs_15 text-white ct_fw_600 mb-1 ct_ff_roboto">
                                     {{categories.full_name}}</h5>
                                 <div class="d-flex align-items-center  gap-2 mt-1">
                                     <img src="../assets/img/star.png" alt="star">

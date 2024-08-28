@@ -72,7 +72,7 @@
 }
 
 .ct_line_height_22 {
-    line-height: 22px;
+    line-height: 22px !important;
 }
 
 .ct_user_detail {
@@ -443,7 +443,9 @@
 .ct_all_notification li+li {
     margin-top: 20px;
 }
-
+.ct_all_notification  h5{
+    word-break: break-word;
+}
 .ct_all_notification {
     height: auto;
     max-height: 600px;
