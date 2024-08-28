@@ -12,11 +12,13 @@
 
 @media screen and (min-device-width: 1200px) and (max-device-width: 1284px) { 
     .ct_flex_wrap_res_123{
+        /* flex-direction: column;
+        align-items: start; */
         flex-wrap: wrap;
     }
-    .ct_ms_0_res_123{
+    /* .ct_ms_0_res_123{
         margin-left: 0px !important;
-    }
+    } */
 }
 
 @media screen and (max-width:1199px){
