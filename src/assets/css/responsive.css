@@ -10,6 +10,15 @@
     }
 }
 
+@media screen and (min-device-width: 1200px) and (max-device-width: 1284px) { 
+    .ct_flex_wrap_res_123{
+        flex-wrap: wrap;
+    }
+    .ct_ms_0_res_123{
+        margin-left: 0px !important;
+    }
+}
+
 @media screen and (max-width:1199px){
     .ct_chat_box_main{
         display: block;
@@ -204,6 +213,13 @@
         border-top-width: 1px !important;
         padding-left: 0px;
     }
+    .ct_flex_wrap_res_123{
+        flex-direction: column;
+        align-items: self-start;
+    }
+    .ct_ms_0_res_123{
+        margin-left: 0px !important;
+    }
 }
 @media screen and (max-width:575px){
     .ct_px_95 {
@@ -221,5 +237,11 @@
     }
     .ct_login_grid_2 {
         grid-template-columns: 27% auto;
+    }
+    .ct_flex_wrap_575{
+        flex-direction: column;
+    }
+    .ct_ms_0_575{
+        margin-left: 0px !important;
     }
 }

@@ -32,9 +32,9 @@
 
         </ul>
     </div>
-
-    <div class="ct_right_message_area" *ngIf="communityName">
-        <div class="ct_octen_team_box ct_mt_30 px-3 ct_message_head_bg">
+ 
+    <div class="ct_right_message_area active" *ngIf="communityName">
+        <div class="ct_octen_team_box ct_flex_wrap_res_123 ct_mt_30 px-3 ct_message_head_bg">
             <a href="javascript:void(0)" class="ct_orange_text ct_back_to_list ct_chat_back">Back</a>
 
             <div class="d-flex align-items-center gap-2">
@@ -51,7 +51,11 @@
                 </div>
 
             </div>
-            <div class="ms-auto" style="cursor: pointer;">
+            <div class="ms-auto ct_ms_0_res_123 d-flex align-items-center gap-3 " style="cursor: pointer;">
+                <p class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 ct_orange_text" (click)="seeGroupMembesr()">See All
+                    Members</p>
+                <i class="fa-regular fa-pen-to-square text-white" aria-hidden="true" data-bs-toggle="modal"
+                    data-bs-target="#ct_edit_community"></i>
                 @if(isParticipant){
                 <!-- <button
                     class="ct_orange_btn ct_white_border_1 ct_grey_btn ct_border_radius_10 px-4 py-2 h-auto d-flex align-items-center">Leave</button> -->
@@ -78,10 +82,7 @@
                 </button>
                 }
 
-                <p class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 ct_orange_text" (click)="seeGroupMembesr()">See All
-                    Members</p>
-                <i class="fa fa-plus text-white" aria-hidden="true" data-bs-toggle="modal"
-                    data-bs-target="#ct_edit_community"></i>
+               
             </div>
 
         </div>

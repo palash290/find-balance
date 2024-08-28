@@ -895,3 +895,21 @@ div#ct_followed_coaches .modal-content {
 .ct_add_member_scroll::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+button.ct_accept_btn {
+    background-color: #2cba11;
+    color: #fff;
+    border: 1px solid #2cba11;
+    outline: none;
+    border-radius: 10px;
+    padding: 5px 15px;
+}
+
+button.ct_reject_btn {
+    background-color: #ff0000;
+    color: #fff;
+    border: 1px solid #ff0000;
+    outline: none;
+    border-radius: 10px;
+    padding: 5px 15px;
+}
