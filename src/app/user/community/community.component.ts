@@ -539,6 +539,12 @@ export class CommunityComponent {
   loadMoreComments(id: number): void {
     this.commentsToShow[id] += 2; // Load 2 more comments
   }
+
+  ngOnDestroy() {
+    this.communityId = ''
+    localStorage.setItem('communityId', this.communityId)
+  }
+  //ngOnDestroy(){}
   
 
 }

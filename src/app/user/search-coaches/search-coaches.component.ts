@@ -73,7 +73,7 @@ export class SearchCoachesComponent {
     this.followId = coachId;
     this.btnLoader = true
 
-    this.service.postAPI(`coach/follow/${coachId}`, null).subscribe({
+    this.service.postAPI(this.isCoach ? `coach/follow/${coachId}` : `user/coach/follow/${coachId}`, null).subscribe({
       next: resp => {
         console.log(resp);
         this.getAllCoaches();

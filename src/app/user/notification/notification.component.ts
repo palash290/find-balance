@@ -28,7 +28,7 @@ export class NotificationComponent {
     this.getNotification();
   }
 
-  
+
   getNotification() {
     this.service.getApi(this.isCoach ? 'coach/notifications' : 'user/notifications').subscribe({
       next: resp => {
@@ -36,7 +36,7 @@ export class NotificationComponent {
         // debugger
         // this.chatId = resp.data.notifications.data.chatId;
         // console.log('========>', this.chatId);
-        
+
       },
       error: error => {
         console.log(error.message)
@@ -44,8 +44,8 @@ export class NotificationComponent {
     });
   }
 
-  getChat(chatid: any, type: any){
-    if(type == 'chat'){
+  getChat(chatid: any, type: any) {
+    if (type == 'chat') {
       localStorage.setItem('chatIdFb', chatid)
       this.router.navigateByUrl('/user/main/chat')
     }
@@ -121,5 +121,25 @@ export class NotificationComponent {
 
     return contentTrimmed;
   }
+
+  acceptLoader: boolean = false;
+  notificationId: any;
+  acceptTeam(teamId: any, notifId: any){
+    this.notificationId = notifId;
+    this.acceptLoader = true
+    const formURlData = new URLSearchParams();
+    formURlData.set('teamId', teamId);
+    formURlData.set('notifId', notifId);
+    this.service.loginUser(this.isCoach ? 'team/join1111' : 'user/login', formURlData.toString()).subscribe({
+      next: (resp) => {
+        this.acceptLoader = false
+      },
+      error: (error) => {
+        this.acceptLoader = false
+        console.error('Login error:', error.error.message);
+      }
+    });
+  }
+
 
 }

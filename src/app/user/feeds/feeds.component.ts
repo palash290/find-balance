@@ -23,6 +23,13 @@ export class FeedsComponent {
 
   ngOnInit() {
 
+    this.userId = localStorage.getItem('fbId');
+    this.role = this.visibilityService.getRole();
+    if (this.role == 'USER') {
+      this.isCoach = false;
+      this.currentComponent = 'notification'
+    }
+
     this.visibilityService.refreshSidebar$.subscribe(() => {
       this.getProfileData();
       //console.log('wprking ');
@@ -38,12 +45,7 @@ export class FeedsComponent {
     //   this.isActive = state;
     // });
 
-    this.userId = localStorage.getItem('fbId');
-    this.role = this.visibilityService.getRole();
-    if (this.role == 'USER') {
-      this.isCoach = false;
-      this.currentComponent = 'notification'
-    }
+
 
     this.visibilityService.showComponent$.subscribe(component => {
       this.currentComponent = component;
