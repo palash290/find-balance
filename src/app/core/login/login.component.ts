@@ -49,7 +49,7 @@ export class LoginComponent {
       ]),
       password: new FormControl('', Validators.required),
       //countryCode: new FormControl(defaultCountry.dialCode, Validators.required),
-      countryCode: new FormControl('+44', Validators.required),
+      countryCode: new FormControl('+91', Validators.required),
     })
   }
 

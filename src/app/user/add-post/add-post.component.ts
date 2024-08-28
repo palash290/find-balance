@@ -32,6 +32,7 @@ export class AddPostComponent {
 
   avatar_url_fb: any;
   categories: any[] = [];
+  communityId: any;
   
   constructor(private route: Router, private service: SharedService, private toastr: ToastrService) { }
 
@@ -41,7 +42,7 @@ export class AddPostComponent {
         this.categories = response.data;
       }
     });
-
+    
     this.avatar_url_fb = localStorage.getItem('avatar_url_fb');
   }
 
@@ -104,6 +105,7 @@ export class AddPostComponent {
 
   btnLoader: boolean = false;
   uploadFiles() {
+    this.communityId = localStorage.getItem('communityId');
     const trimmedMessage = this.postText ? this.postText?.trim() : '';
 
     if (!this.audioFile && !this.videoFile && trimmedMessage == '') {
@@ -124,6 +126,10 @@ export class AddPostComponent {
       if (this.postText) {
         formData.append('text', trimmedMessage);
       }
+    }
+
+    if (this.communityId) {
+      formData.append('communityId', this.communityId);
     }
 
     if (this.postText && !this.audioFile && !this.videoFile) {
