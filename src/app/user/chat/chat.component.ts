@@ -263,11 +263,17 @@ export class ChatComponent {
         this.getChatMessages(this.currentChatId);
         this.newMessage = '';
         this.isDisabled = false;
+        this.resetTextarea();
       },
       error: error => {
         console.log(error.message)
       }
     });
+  }
+
+  resetTextarea(): void {
+    const textarea = this.messageTextarea.nativeElement;
+    textarea.style.height = 'auto'; // Reset to the initial height
   }
 
   @ViewChild('messageTextarea') messageTextarea!: ElementRef<HTMLTextAreaElement>;
@@ -305,6 +311,18 @@ handleInput(): void {
     textarea.style.height = maxHeight + 'px';
   } else {
     textarea.style.overflowY = 'hidden';
+  }
+}
+
+handleKeyDown(event: KeyboardEvent) {
+  // If Shift + Enter is pressed, insert a new line
+  if (event.key === 'Enter' && event.shiftKey) {
+    // Allow Shift + Enter to insert a newline
+    return;
+  } else if (event.key === 'Enter') {
+    // Prevent default Enter key behavior and send the message
+    event.preventDefault();
+    this.sendMessage();
   }
 }
 

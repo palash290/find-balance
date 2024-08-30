@@ -20,12 +20,8 @@ import { ResetPasswordComponent } from './core/reset-password/reset-password.com
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OtpResetComponent } from './core/otp-reset/otp-reset.component';
 import { initializeApp } from 'firebase/app';
-import { FilterPipe } from './services/filter.pipe';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatFormFieldModule } from '@angular/material/form-field';
-
+import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
 initializeApp(environment.firebaseConfig)
-//const config: SocketIoConfig = { url: 'http://192.168.1.19:4005' };
 
 @NgModule({
   declarations: [
@@ -44,6 +40,7 @@ initializeApp(environment.firebaseConfig)
   imports: [
     AngularFireModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireMessagingModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,

@@ -106,8 +106,8 @@ export class SearchCoachesComponent {
     this.getAllCoaches()
   }
 
-  getCoachId(uderId: any) {
-    this.router.navigateByUrl(`user/main/my-profile/${uderId}`)
+  getCoachId(uderId: any, role: any) {
+    this.router.navigateByUrl(`user/main/my-profile/${uderId}/${role}`)
   }
 
 

@@ -43,6 +43,9 @@ export class CommunityComponent {
     this.getCommunityData();
     this.initForm();
     this.userId = localStorage.getItem('fbId');
+    this.service.refreshSidebar$.subscribe(() => {
+      this.getCommunityPosts();
+    });
   }
 
   initForm() {
@@ -63,78 +66,10 @@ export class CommunityComponent {
   isParticipant: boolean = false;
   isAdmin: boolean = false;
   communityParticipants: any;
-
-  getCommunityProfileData(cId: any, participantCheck: boolean) {
-    if(participantCheck){
-      this.communityId = cId;
-      localStorage.setItem('communityId', this.communityId)
-      this.service.getApi(this.isCoach ? `coach/communtiy/${cId}` : `user/communtiy/${cId}`).subscribe({
-        next: resp => {
-          if (this.isCoach) {
-            this.newForm.patchValue({
-              title: resp.data.title,
-              about: resp.data.description,
-            });
-          }
-  
-          this.eventImage = resp.data.mediaUrl;
-          this.communityName = resp.data.title;
-          this.numberOfParticipant = resp.data.numberOfParticipant;
-          this.numberOfPosts = resp.data.numberOfPosts;
-          this.isParticipant = resp.data.isParticipant;
-          this.isAdmin = resp.data.isAdmin;
-          this.communityImg = resp.data.mediaUrl;
-          //debugger
-          this.communityParticipants = resp.data.Participant;
-          this.getCommunityPosts();
-  
-        },
-        error: error => {
-          console.log(error.message)
-        }
-      });
-    } else {
-      this.toastr.warning('Please join community first.')
-    }
-  }
-
-  btnLoader: boolean = false;
-
-  joinCommunity(communityId: any) {
-    const formURlData = new URLSearchParams();
-    formURlData.set('communityId', communityId);
-    this.btnLoader = true;
-    this.service.postAPI('coach/communtiy/join', formURlData.toString()).subscribe({
-      next: (response) => {
-        this.btnLoader = false;
-        //this.getCommunityProfileData(this.communityId, true);
-        this.getCommunityData();
-      },
-      error: (error) => {
-        this.btnLoader = false;
-        console.error('Upload error', error);
-      }
-    });
-  }
-
-  btnLoader1: boolean = false;
-
-  leaveCommunity(communityId: any) {
-    const formURlData = new URLSearchParams();
-    formURlData.set('communityId', communityId);
-    this.btnLoader1 = true;
-    this.service.postAPI('coach/communtiy/leave', formURlData.toString()).subscribe({
-      next: (response) => {
-        this.btnLoader1 = false;
-        //this.getCommunityProfileData(this.communityId, false);
-        this.getCommunityData();
-      },
-      error: (error) => {
-        this.btnLoader1 = false;
-        console.error('Upload error', error);
-      }
-    });
-  }
+  communityAdminName: any;
+  communityAdminImg: any;
+  communityAdminid: any;
+  selectedCommunityId: number | null = null;
 
   getCommunityData() {
     this.service.getApi(this.isCoach ? 'coach/communtiy' : 'user/communtiy').subscribe({
@@ -147,9 +82,103 @@ export class CommunityComponent {
     });
   }
 
+  getCommunityProfileData(cId: any, participantCheck: boolean, isAdmin: boolean) {
+    
+    this.isAdmin = isAdmin
+    if (participantCheck || isAdmin) {
+      this.communityId = cId;
+      this.selectedCommunityId = cId;
+
+      localStorage.setItem('communityId', this.communityId)
+      this.service.getApi(this.isCoach ? `coach/communtiy/${cId}` : `user/communtiy/${cId}`).subscribe({
+        next: resp => {
+          if (this.isCoach) {
+            this.newForm.patchValue({
+              title: resp.data.title,
+              about: resp.data.description,
+            });
+          }
+
+          this.eventImage = resp.data.mediaUrl;
+          this.communityName = resp.data.title;
+          this.numberOfParticipant = resp.data.numberOfParticipant;
+          this.numberOfPosts = resp.data.numberOfPosts;
+          this.isParticipant = resp.data.isParticipant;
+          //this.isAdmin = resp.data.isAdmin;
+          this.communityImg = resp.data.mediaUrl;
+          //debugger
+          this.communityParticipants = resp.data.Participant;
+
+          this.communityAdminid = resp.data.admin.id;
+          this.communityAdminName = resp.data.admin.full_name;
+          this.communityAdminImg = resp.data.admin.avatar_url;
+
+          // this.communityParticipants = resp.data.Participant.filter(
+          //   (participant: any) => participant.id !== this.communityAdminid
+          // );
+
+          this.getCommunityPosts();
+
+        },
+        error: error => {
+          console.log(error.message)
+        }
+      });
+    } else {
+      this.toastr.warning('Please join community first.')
+    }
+  }
+
+  btnLoader: boolean = false;
+  followId1: any;
+
+  joinCommunity(communityId: any) {
+    this.followId1 = communityId;
+    const formURlData = new URLSearchParams();
+    formURlData.set('communityId', communityId);
+    this.btnLoader = true;
+    this.service.postAPI(this.isCoach ? 'coach/communtiy/join' : 'user/communtiy/join', formURlData.toString()).subscribe({
+      next: (response) => {
+        this.btnLoader = false;
+        this.getCommunityProfileData(communityId, true, true);
+        this.getCommunityData();
+      },
+      error: (error) => {
+        this.btnLoader = false;
+        console.error('Upload error', error);
+      }
+    });
+  }
+
+  btnLoader1: boolean = false;
+  followId: any;
+
+
+  leaveCommunity(communityId: any) {
+    this.followId = communityId;
+    const formURlData = new URLSearchParams();
+    formURlData.set('communityId', communityId);
+    this.btnLoader1 = true;
+    this.service.postAPI(this.isCoach ? 'coach/communtiy/leave' : 'user/communtiy/leave', formURlData.toString()).subscribe({
+      next: (response) => {
+        this.btnLoader1 = false;
+        //this.getCommunityProfileData(this.communityId, false);
+        this.getCommunityData();
+      },
+      error: (error) => {
+        this.btnLoader1 = false;
+        console.error('Upload error', error);
+      }
+    });
+  }
+
+  btnLoaderCreate: boolean = false;
+
+
   createCommunity() {
     this.newForm.markAllAsTouched();
     if (this.newForm.valid) {
+      this.btnLoaderCreate = true;
       const formURlData = new FormData();
       formURlData.set('title', this.newForm.value.title);
       if (this.UploadedFile) {
@@ -162,10 +191,12 @@ export class CommunityComponent {
             this.closeModal.nativeElement.click();
             this.getCommunityData();
           }
+          this.btnLoaderCreate = false;
           this.newForm.reset();
           this.toastr.success(resp.message);
         },
         error: error => {
+          this.btnLoaderCreate = false;
           this.toastr.warning('Something went wrong.');
           console.log(error.message)
         }
@@ -173,11 +204,12 @@ export class CommunityComponent {
     }
   }
 
+  btnLoaderEdit: boolean = false;
 
   editCommunity() {
     this.newForm.markAllAsTouched();
     if (this.newForm.valid) {
-      this.loading = true;
+      this.btnLoaderEdit = true;
       const formURlData = new FormData();
       formURlData.set('title', this.newForm.value.title)
       if (this.UploadedEditFile) {
@@ -190,15 +222,16 @@ export class CommunityComponent {
           if (resp.success === true) {
             this.closeModal1.nativeElement.click();
             this.toastr.success(resp.message);
-            this.loading = false;
+            this.btnLoaderEdit = false;
+            this.getCommunityData();
           } else {
             this.toastr.warning(resp.message);
-            this.loading = false;
+            this.btnLoaderEdit = false;
           }
           //this.newForm.reset();  
         },
         error: error => {
-          this.loading = false;
+          this.btnLoaderEdit = false;
           this.toastr.error('Something went wrong.');
           console.log(error.statusText)
         }
@@ -283,10 +316,10 @@ export class CommunityComponent {
   communityFeeds: any;
 
   getCommunityPosts() {
-    this.service.getApi(this.isCoach ? 'coach/post' : `user/allPosts?communityId=${this.communityId}`).subscribe({
+    this.service.getApi(this.isCoach ? `coach/communtiy/allPosts/${this.communityId}` : `user/allPosts?communityId=${this.communityId}`).subscribe({
       next: resp => {
         if (this.isCoach) {
-          this.communityFeeds = resp.data?.map((item: any) => ({ ...item, isExpanded: false, isPlaying: false })).reverse();
+          this.communityFeeds = resp.data?.map((item: any) => ({ ...item, isExpanded: false, isPlaying: false }));
         } else {
           this.communityFeeds = resp.data?.map((item: any) => ({ ...item, isExpanded: false, isPlaying: false }));
         }
@@ -425,7 +458,7 @@ export class CommunityComponent {
   postComments: any[] = [];
   showCmt: { [key: string]: boolean } = {};
   currentOpenCommentBoxId: number | null = null;
-  
+
   toggleCommentBox(id: number): void {
     if (this.currentOpenCommentBoxId === id) {
       // Toggle off if the same box is clicked again
@@ -551,6 +584,17 @@ export class CommunityComponent {
     localStorage.setItem('communityId', this.communityId)
   }
   //ngOnDestroy(){}
+
+
+  isChatActive = false;
+
+  //responsive hide/show
+  openChat() {
+    this.isChatActive = true;
+  }
+  closeChat() {
+    this.isChatActive = false;
+  }
   
 
 }

@@ -99,7 +99,7 @@
 </div>
 
 
-@if(!userId){
+@if((userRole === 'COACH' && !isCoach) || (isCoach && !userId)){
 <div class="ct_all_feed_boxex">
 
     <div *ngFor="let feed of postData; let i = index">
@@ -879,4 +879,6 @@
     </div>
 
 </div>
+} @else {
+
 }

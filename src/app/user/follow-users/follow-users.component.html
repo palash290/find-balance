@@ -16,8 +16,8 @@
         <div class="mt-4" *ngIf="data?.length > 0">
             <ul class="ct_mt_30 ct_all_notification px-2">
                 <li *ngFor="let follower of data;">
-                    <div class="d-flex align-items-center justify-content-between" >
-                        <div class="d-flex gap-2" (click)="getUserId(follower.follower.id)" style="cursor: pointer;">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex gap-2" (click)="getUserId(follower.follower.id, follower.follower.role)" style="cursor: pointer;">
                             <div class="ct_star_circle">
                                 <img [src]="follower.follower.avatar_url ? follower.follower.avatar_url : '/assets/img/np_pro.png'"
                                     alt="" class="ct_img_44 ct_bor ct_orange_border_1">
@@ -25,29 +25,49 @@
                             <div>
                                 <h5 class="ct_fs_15 ct_orange_text ct_fw_600 mb-1 ct_ff_roboto">
                                     {{follower.follower.full_name}}</h5>
+                                <div *ngIf="follower.follower.role == 'COACH'"
+                                    class="d-flex align-items-center gap-2 mt-1">
+                                    <img src="../assets/img/star.png" alt="star">
+                                    <span class="ct_orange_text">{{follower.follower.category.name}}</span>
+                                </div>
                                 <!-- <p class="mb-0 ct_fs_12 text-white">{{categories.following.totalPosts}}
                                     {{categories.following.totalPosts > 1 ? 'Posts' : 'Post'}}</p> -->
                             </div>
                         </div>
-                        <div>
-                            <!-- <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 px-2 py-2 h-auto ct_fs_13"
+                        <div *ngIf="follower.follower.role == 'COACH'">
+                            @if(follower.isFollowed){
+                            <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 px-2 py-2 h-auto ct_fs_13"
                                 style="min-width: 5rem;" [ngClass]="{'ct_active_follow': follower.isFollowing}"
-                                (click)="removeUser(follower.follower.id)">
+                                (click)="unfollowCoach(follower.follower.id)">
 
                                 <div class="d-flex align-items-center">
                                     <div class="spinner-border me-2" role="status"
-                                        *ngIf="btnLoader && follower.following.id == followId">
+                                        *ngIf="btnLoader && follower.following?.id == followId">
                                         <span class="visually-hidden">Loading...</span>
                                     </div>
                                     <span
-                                        *ngIf="btnLoader && follower.following.id != followId || !btnLoader">Remove</span>
+                                        *ngIf="btnLoader && follower.following?.id != followId || !btnLoader">Following</span>
                                 </div>
 
-                            </button> -->
-                            <!-- <p class="mb-0 ct_ff_roboto ct_fs_12 text-white text-center mt-2 ct_fw_400">
-                                {{follower.following.totalFollowers}} {{follower.following.totalFollowers > 1 ?
-                                'Followers' : 'Follower'}}
-                            </p> -->
+                            </button>
+                            } @else {
+                            <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 px-2 py-2 h-auto ct_fs_13"
+                                style="min-width: 5rem;" [ngClass]="{'ct_active_follow': follower.isFollowing}"
+                                (click)="followCoach(follower.follower.id)">
+
+                                <div class="d-flex align-items-center">
+                                    <div class="spinner-border me-2" role="status"
+                                        *ngIf="btnLoader && follower.following?.id == followId">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <span *ngIf="btnLoader && follower.following?.id != followId || !btnLoader">Follow
+                                        Back</span>
+                                </div>
+
+                            </button>
+                            }
+
+
                         </div>
                     </div>
                 </li>

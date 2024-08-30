@@ -33,6 +33,7 @@ export class AddPostComponent {
   avatar_url_fb: any;
   categories: any[] = [];
   communityId: any;
+  teamId: any;
   
   constructor(private route: Router, private service: SharedService, private toastr: ToastrService) { }
 
@@ -106,6 +107,7 @@ export class AddPostComponent {
   btnLoader: boolean = false;
   uploadFiles() {
     this.communityId = localStorage.getItem('communityId');
+    this.teamId = localStorage.getItem('teamId');
     const trimmedMessage = this.postText ? this.postText?.trim() : '';
 
     if (!this.audioFile && !this.videoFile && trimmedMessage == '') {
@@ -130,6 +132,9 @@ export class AddPostComponent {
 
     if (this.communityId) {
       formData.append('communityId', this.communityId);
+    }
+    if (this.teamId) {
+      formData.append('teamId', this.teamId);
     }
 
     if (this.postText && !this.audioFile && !this.videoFile) {

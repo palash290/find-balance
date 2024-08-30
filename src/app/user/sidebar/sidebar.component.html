@@ -11,7 +11,7 @@
                     <img src="../assets/img/setting_icon.svg" alt="">
                 </a>
                 <div>
-                    <img [src]="avatar_url ? avatar_url : '/assets/img/np_pro.png'" alt="" class="ct_img_84">
+                    <img [src]="avatar_url ? avatar_url : '/assets/img/np_pro.png'" alt="" class="ct_img_84 ct_border_radius_100">
                 </div>
                 @if (isCoach) {
                 <div class="ct_notification_icon" routerLink="/user/main/notifications" style="cursor: pointer;"
@@ -195,7 +195,7 @@
                         Community</a>
                 </li>
 
-                <li>
+                <li *ngIf="isCoach">
                     <a routerLink="/user/main/teams" (click)="onToggleMenu()"
                         [ngClass]="{ 'ct_menu_active1': isActive('user/main/teams')}">
                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">

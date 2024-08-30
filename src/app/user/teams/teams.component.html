@@ -1,645 +1,962 @@
 <div class="ct_chat_box_main">
     <div class="ct_left_message_list ct_community_left_width">
         <div class="ct_notification_search_input">
-            <input type="text" class="form-control ct_login_input" placeholder="Search">
+            <input type="text" class="form-control ct_login_input" placeholder="Search" [(ngModel)]="searchQueryFilter">
             <i class="fa-solid fa-magnifying-glass"></i>
         </div>
         <div class="d-flex align-items-center justify-content-between ct_pt_20">
-            <h4 class="mb-0 ct_fw_600 ct_fs_20 text-white ct_ff_roboto">All communities</h4>
-            <a href="javascript:void(0)" class="ct_orange_text" data-bs-toggle="modal"
-                data-bs-target="#ct_create_team">+ Create</a>
+            <h4 class="mb-0 ct_fw_600 ct_fs_20 text-white ct_ff_roboto">All Teams</h4>
+            <a href="javascript:void(0)" class="ct_orange_text" data-bs-toggle="modal" data-bs-target="#ct_add_team">+
+                Create</a>
         </div>
 
+        <!-- <div *ngIf="(teamData?.length == 0)" class="text-center mt-4">
+            <p class="ct_fs_15 text-white">No teams found</p>
+        </div> -->
 
-        <ul class="ct_message_user_lit ct_community_sidebar mt-3">
+        <ul class="ct_message_user_lit ct_community_sidebar mt-3" (click)="openChat()">
+            <div *ngIf="(!teamData || (teamData | filter:searchQueryFilter)?.length === 0)"
+                class="text-center mt-4">
+                <p class="ct_fs_15 text-white">No teams found</p>
+            </div>
             <!-- add This Class active when chat open  -->
-            <li class="active">
+            <li class="mt-3" *ngFor="let data of teamData | filter:searchQueryFilter"
+                [class.active]="data.id === selectedCommunityId">
                 <div class="d-flex align-items-center gap-2">
-                    <div class="d-flex align-items-center">
-                        <img src="../assets/img/user_img_1.png" alt="" class="ct_img_62 ct_border_radius_100">
+                    <div class="d-flex align-items-center" (click)="getCommunityProfileData(data.id, data.isAdmin)"
+                        style="cursor: pointer;">
+                        <img [src]="data.mediaUrl ? data.mediaUrl : '/assets/img/np_pro.png'" alt=""
+                            class="ct_img_62 ct_border_radius_100">
                     </div>
                     <div class="d-flex align-items-center justify-content-between" style="flex: 1;">
-                        <div>
-                            <h5 class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500 mb-2">Design community</h5>
-                            <p class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 text-white"> 17 K Post</p>
+                        <div (click)="getCommunityProfileData(data.id, data.isAdmin)" style="cursor: pointer;">
+                            <h5 class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500 mb-2">{{data.title}}</h5>
+                            <p *ngIf="data.numberOfPosts > 0" class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 text-white">
+                                {{data.numberOfPosts}}
+                                {{data.numberOfPosts > 1 ? 'Posts' : 'Post'}}</p>
                         </div>
-                        <p class="mb-0 ct_fs_12 ms-auto text-white">362 Members</p>
+                        <p class="mb-0 ct_fs_12 ms-auto text-white mt-2">{{data.numberOfParticipant - 1}}
+                            {{data.numberOfParticipant - 1 > 1 ? 'Members' : 'Member'}}
+                        </p>
                     </div>
                 </div>
             </li>
 
         </ul>
     </div>
-    <div class="ct_right_message_area">
-        <div class="ct_octen_team_box ct_mt_30 px-3 ct_message_head_bg">
-            <a href="javascript:void(0)" class="ct_orange_text ct_back_to_list ct_chat_back">Back</a>
+
+    <div class="ct_right_message_area" [ngClass]="{ 'active': isChatActive }" *ngIf="teamName">
+        <div
+            class="ct_octen_team_box ct_flex_wrap_res_123 ct_mt_30 px-3 ct_message_head_bg ct_flex_wrap_res_123 justify-content-between">
+            <a href="javascript:void(0)" class="ct_orange_text ct_back_to_list ct_chat_back"
+                (click)="closeChat()">Back</a>
 
             <div class="d-flex align-items-center gap-2">
                 <div class="d-flex align-items-center">
-                    <img src="../assets/img/user_img_1.png" alt="" class="ct_img_44 ct_border_radius_100">
+                    <img [src]="teamImg ? teamImg : '/assets/img/np_pro.png'" alt=""
+                        class="ct_img_44 ct_border_radius_100">
                 </div>
 
                 <div>
-                    <h5 class="mb-0 ct_fs_15 ct_ff_roboto ct_fw_500 mb-2 ct_orange_text">Design community</h5>
-                    <p class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 text-white"> 17 K Post <span> - 1 K Members</span>
+                    <h5 class="mb-0 ct_fs_15 ct_ff_roboto ct_fw_500 mb-2 ct_orange_text">{{teamName}}</h5>
+                    <p class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 text-white"> {{numberOfPosts}} {{numberOfPosts >
+                        1 ? 'Posts' : 'Post'}} <span> -
+                            {{numberOfParticipant}} {{numberOfParticipant > 1 ? 'Members' : 'Member'}}</span>
                     </p>
                 </div>
 
             </div>
-            <div class="ms-auto">
-                <p class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 ct_orange_text">See All 12 Members</p>
+
+            <div class=" ct_ms_0_res_123 d-flex align-items-center gap-3 " style="cursor: pointer;">
+                @if(toSee){
+                <p class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 ct_orange_text" (click)="seeGroupMembesr()">See All
+                    Members</p>
+                } @else {
+                <p *ngIf="isAdmin" class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 ct_orange_text" data-bs-toggle="modal"
+                    data-bs-target="#ct_request_coach" (click)="getCoachesToAddInTeam()">Add Team Members</p>
+                <p class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 ct_orange_text" (click)="seeGroupMembesr()">Back</p>
+                }
+
+                <i *ngIf="isAdmin" class="fa-regular fa-pen-to-square text-white" aria-hidden="true"
+                    data-bs-toggle="modal" data-bs-target="#ct_edit_team"></i>
             </div>
+
 
         </div>
 
         <div class="position-relative mt-3">
+            @if(toSee){
+
+            @if(isCoach){
             <app-add-post></app-add-post>
-
-
+            }
             <div class="ct_all_feed_boxex">
-                <div class="ct_feed_box mt-3">
-                    <div class="d-flex align-items-center gap-2">
-                        <img src="../assets/img/user_img_1.png" alt="" class="ct_img_44 ct_bor ct_white_border_1">
-                        <div>
-                            <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
+
+                <div *ngIf="teamFeeds?.length === 0" class="text-center">
+                    <p class="ct_fs_15 text-white mt-5">No posts found</p>
+                </div>
+
+                <div *ngFor="let feed of teamFeeds; let i = index">
+
+                    <div class="ct_feed_box mt-3" *ngIf="feed.type == 'PODCAST'">
+
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-2">
+                                <img [src]="feed.coach.avatar_url ? feed.coach.avatar_url : '/assets/img/np_pro.png'"
+                                    alt="" class="ct_img_44 ct_bor ct_white_border_1">
+                                <div>
+                                    <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">{{feed.coach.full_name}}</h5>
+
+                                    <div class="d-flex align-items-center gap-3">
+                                        <p class="mb-0  ct_fs_12 text-white ct_text_op_5">{{feed.createdAt |
+                                            date:'d/M/yy, h:mm a'}}
+                                        </p>
+                                        <div class="d-flex align-items-center justify-content-center gap-2">
+                                            <img src="../assets/img/star.png" alt="star">
+                                            <span class="ct_orange_text">{{feed.category?.name}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @if(feed.coachId == userId){
+                            <div class="dropdown">
+                                <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
+                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" (click)="deletePost(feed.id)">Delete</a></li>
+                                </ul>
+                            </div>
+                            }
+
+                        </div>
+
+
+                        <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 mt-3">
+                            <span>
+                                {{ feed.isExpanded ? feed.text : (feed.text?.length > shortTextLength ?
+                                (feed.text.substring(0, shortTextLength) + '...') : feed.text) }}
+                            </span>
+                            <a class="ct_orange_text" (click)="toggleContent(i)" href="javascript:void(0);"
+                                *ngIf="shouldShowReadMore(feed.text)">
+                                {{ feed.isExpanded ? 'Read less' : 'Read more' }}
+                            </a>
+                        </p>
+
+                        <div class="ct_show_uploaded_audio_box mt-3 ct_light_grey_bg">
+
                             <div class="d-flex align-items-center gap-3">
-                                <p class="mb-0  ct_fs_12 text-white ct_text_op_5">14 Aug at 04:21 PM</p>
-                                <div class="d-flex align-items-center justify-content-center gap-2">
-                                    <img src="../assets/img/star.png" alt="star">
-                                    <span class="ct_orange_text">Fitness</span>
+                                <audio *ngIf="feed.mediaUrl" controls class="custom-audio-player">
+                                    <source [src]="feed.mediaUrl" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+
+                        </div>
+
+                        <div class="ct_like_comment_div">
+                            <ul>
+                                <li>
+                                    <div class="ct_like_btn d-flex align-items-center gap-3"
+                                        [class.ct_active_like]="feed.alreadyLiked" (click)="likePost(feed.id)"
+                                        style="cursor: pointer;">
+
+                                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z"
+                                                stroke="#E58934" stroke-width="1.3" />
+                                        </svg>
+                                        <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">{{feed.numberOfLikes}}</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="ct_comment_bnt  d-flex align-items-center gap-3"
+                                        (click)="toggleCommentBox(feed.id)" style="cursor: pointer;">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M10 1.75C5.44366 1.75 1.75001 5.44365 1.75001 10C1.75001 11.365 2.08093 12.6505 2.66626 13.7828C2.74503 13.9352 2.76918 14.1099 2.7347 14.278L1.96334 18.0367L5.72204 17.2653C5.89007 17.2308 6.06484 17.255 6.21722 17.3338C7.3495 17.9191 8.63502 18.25 10 18.25C14.5564 18.25 18.25 14.5563 18.25 10C18.25 5.44365 14.5564 1.75 10 1.75ZM0.250013 10C0.250013 4.61522 4.61524 0.25 10 0.25C15.3848 0.25 19.75 4.61522 19.75 10C19.75 15.3848 15.3848 19.75 10 19.75C8.48564 19.75 7.05008 19.4042 5.76973 18.7868L1.15079 19.7347C0.903835 19.7854 0.647943 19.7086 0.469683 19.5303C0.291422 19.3521 0.214644 19.0962 0.265324 18.8492L1.21323 14.2303C0.595784 12.9499 0.250013 11.5144 0.250013 10Z"
+                                                fill="#E58934" />
+                                        </svg>
+                                        <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">{{feed.numberOfComments}}
+                                            {{feed.numberOfComments > 1 ? 'Comments' : 'Comment'}}
+                                        </p>
+                                    </div>
+                                </li>
+                                <li *ngIf="!isCoach" class="ct_book_mark_icon ms-auto"
+                                    [class.ct_book_mark_icon_active]="feed.alreadySaved" (click)="bookmarkPost(feed.id)"
+                                    style="cursor: pointer;">
+                                    <svg width="14" height="18" viewBox="0 0 14 18" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg" class="">
+                                        <path
+                                            d="M0 18V2C0 1.45 0.196 0.979333 0.588 0.588C0.98 0.196667 1.45067 0.000666667 2 0H12C12.55 0 13.021 0.196 13.413 0.588C13.805 0.98 14.0007 1.45067 14 2V18L7 15L0 18Z"
+                                            fill="#fff" />
+                                    </svg>
+                                </li>
+                            </ul>
+                            <!-- show this div when user click on comment -->
+                            <div class="ct_comment_area_main mt-4" [class.d-none]="!showCmt[feed.id]">
+                                <div class="position-relative">
+                                    <input type="text" class="form-control ct_custom_input w-100"
+                                        placeholder="Write comment..." [(ngModel)]="commentText"
+                                        [ngModelOptions]="{standalone: true}" maxlength="250"
+                                        (keyup.enter)="addComment(feed.id)">
+
+                                    <i (click)="addComment(feed.id)" *ngIf="!btnLoaderCmt"
+                                        class="fa fa-paper-plane ct_send_msg_plane text-white" aria-hidden="true">
+                                    </i>
+                                    <div class="d-flex align-items-center ct_send_msg_plane text-white"
+                                        *ngIf="btnLoaderCmt">
+                                        <div class="spinner-border" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="d-flex align-items-center" (click)="addComment(feed.id)">
+                                    <button type="button"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                                </div> -->
+
+                                <div class="ct_comment_area_scroll">
+                                    <div
+                                        *ngFor="let comments of postComments?.slice(0, commentsToShow[feed.id]); let i = index">
+                                        @if(comments.coach){
+                                        <div class="d-flex justify-content-between gap-2 mt-3">
+                                            <div class="d-flex  gap-3 ">
+                                                <img [src]="comments.coach.avatar_url ? comments.coach.avatar_url : '/assets/img/np_pro.png'"
+                                                    alt="" class="ct_img_40 ct_bor ct_white_border_1">
+                                                <div style="flex: 1;">
+                                                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                        <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">
+                                                            {{comments.coach.full_name}}
+                                                        </h5>
+                                                        <div class="d-flex align-items-center gap-3">
+                                                            <!-- <div
+                                                                class="d-flex align-items-center justify-content-center gap-2">
+                                                                <img src="../assets/img/star.png" alt="star">
+                                                                <span class="ct_orange_text">Fitness</span>
+                                                            </div> -->
+                                                            <p class="mb-0  ct_fs_12 text-white ct_text_op_5">
+                                                                {{comments.createdAt |
+                                                                date:'d/M/yy, h:mm a'}}</p>
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <p style="word-break: break-all;"
+                                                        class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 ct_commented_text mt-3">
+                                                        <span>
+                                                            {{ comments.isExpanded ? comments.content :
+                                                            (comments.content?.length > shortTextLength ?
+                                                            (comments.content.substring(0, shortTextLength) + '...') :
+                                                            comments.content) }}
+                                                        </span>
+                                                        <a class="ct_orange_text" (click)="toggleCommentText(i)"
+                                                            href="javascript:void(0);"
+                                                            *ngIf="shouldShowReadMore(comments.content)">
+                                                            {{ comments.isExpanded ? 'Read less' : 'Read more' }}
+                                                        </a>
+                                                    </p>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="ms-auto me-2" *ngIf="userId == comments.coach.id"
+                                                style="cursor: pointer;"><i
+                                                    *ngIf="btnLoaderCmtDel && comments.id != deleteId || !btnLoaderCmtDel"
+                                                    (click)="deleteComment(comments.id, feed.id)"
+                                                    class="fa-solid fa-trash text-white"></i>
+                                                <div class="text-white"
+                                                    *ngIf="btnLoaderCmtDel && comments.id == deleteId">
+                                                    <div class="spinner-border" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="ct_like_btn" [class.ct_active_like]="comments.alreadyLiked"
+                                                (click)="likeComment(comments.id, feed.id)" style="cursor: pointer;">
+                                                <!-- show this class ct_active_like when user will like  -->
+                                                <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z"
+                                                        stroke="#E58934" stroke-width="1.3" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        } @else {
+                                        <div class="d-flex justify-content-between gap-2 mt-3">
+                                            <div class="d-flex  gap-3 ">
+                                                <img [src]="comments.user.avatar_url ? comments.user.avatar_url : '/assets/img/np_pro.png'"
+                                                    alt="" class="ct_img_40 ct_bor ct_white_border_1">
+                                                <div style="flex: 1;">
+                                                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                        <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">
+                                                            {{comments.user.full_name}}
+                                                        </h5>
+                                                        <div class="d-flex align-items-center gap-3">
+                                                            <!-- <div
+                                                                class="d-flex align-items-center justify-content-center gap-2">
+                                                                <img src="../assets/img/star.png" alt="star">
+                                                                <span class="ct_orange_text">Fitness</span>
+                                                            </div> -->
+                                                            <p class="mb-0  ct_fs_12 text-white ct_text_op_5">
+                                                                {{comments.createdAt |
+                                                                date:'d/M/yy, h:mm a'}}</p>
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <p style="word-break: break-all;"
+                                                        class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 ct_commented_text mt-3">
+                                                        <span>
+                                                            {{ comments.isExpanded ? comments.content :
+                                                            (comments.content?.length > shortTextLength ?
+                                                            (comments.content.substring(0, shortTextLength) + '...') :
+                                                            comments.content) }}
+                                                        </span>
+                                                        <a class="ct_orange_text" (click)="toggleCommentText(i)"
+                                                            href="javascript:void(0);"
+                                                            *ngIf="shouldShowReadMore(comments.content)">
+                                                            {{ comments.isExpanded ? 'Read less' : 'Read more' }}
+                                                        </a>
+                                                    </p>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="ms-auto me-2" *ngIf="userId == comments.user.id"
+                                                style="cursor: pointer;"><i
+                                                    *ngIf="btnLoaderCmtDel && comments.id != deleteId || !btnLoaderCmtDel"
+                                                    (click)="deleteComment(comments.id, feed.id)"
+                                                    class="fa-solid fa-trash text-white"></i>
+                                                <div class="text-white"
+                                                    *ngIf="btnLoaderCmtDel && comments.id == deleteId">
+                                                    <div class="spinner-border" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="ct_like_btn" [class.ct_active_like]="comments.alreadyLiked"
+                                                (click)="likeComment(comments.id, feed.id)" style="cursor: pointer;">
+                                                <!-- show this class ct_active_like when user will like  -->
+                                                <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z"
+                                                        stroke="#E58934" stroke-width="1.3" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="mt-4" *ngIf="shouldShowLoadMore(feed.id)">
+                                    <button (click)="loadMoreComments(feed.id)"
+                                        class="ct_orange_btn ct_tansparent_btn w-100 ct_white_border_1 ct_border_radius_10">Load
+                                        more comments</button>
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
-                    <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22  mt-3"><span>Design Shot is an
-                            invitation to ponder cn design as a living entity. capture of embodying and
-                            influencing the flow of thoughts and sensations in an changing reality Design Shot is an
-                            invitation to ponder cn design as a living entity. capture of embodying and
-                            influencing the flow of thoughts and sensations in an changing reality Design Shot is an
-                            invitation to ponder cn design as a living entity. capture of embodying and
-                            influencing the flow of thoughts and sensations in an changing reality Design Shot is an
-                            invitation to ponder cn design as a living entity. capture of embodying and
-                            influencing the flow of thoughts and sensations in an changing reality</span> <a href="#"
-                            class="ct_orange_text">Read more</a></p>
+                    <div class="ct_feed_box mt-3" *ngIf="feed.type == 'ARTICLE'">
 
+                        <div class="d-flex align-items-center justify-content-between">
 
-
-                    <div class="ct_like_comment_div">
-                        <ul>
-                            <li>
-                                <div class="ct_like_btn d-flex align-items-center gap-3">
-                                    <!-- show this class ct_active_like when user will like  -->
-                                    <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z"
-                                            stroke="#E58934" stroke-width="1.3"></path>
-                                    </svg>
-                                    <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">1.6k</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="ct_comment_bnt  d-flex align-items-center gap-3">
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M10 1.75C5.44366 1.75 1.75001 5.44365 1.75001 10C1.75001 11.365 2.08093 12.6505 2.66626 13.7828C2.74503 13.9352 2.76918 14.1099 2.7347 14.278L1.96334 18.0367L5.72204 17.2653C5.89007 17.2308 6.06484 17.255 6.21722 17.3338C7.3495 17.9191 8.63502 18.25 10 18.25C14.5564 18.25 18.25 14.5563 18.25 10C18.25 5.44365 14.5564 1.75 10 1.75ZM0.250013 10C0.250013 4.61522 4.61524 0.25 10 0.25C15.3848 0.25 19.75 4.61522 19.75 10C19.75 15.3848 15.3848 19.75 10 19.75C8.48564 19.75 7.05008 19.4042 5.76973 18.7868L1.15079 19.7347C0.903835 19.7854 0.647943 19.7086 0.469683 19.5303C0.291422 19.3521 0.214644 19.0962 0.265324 18.8492L1.21323 14.2303C0.595784 12.9499 0.250013 11.5144 0.250013 10Z"
-                                            fill="#E58934"></path>
-                                    </svg>
-                                    <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">Comment</p>
-                                </div>
-                            </li>
-                            <li class="ct_book_mark_icon  ms-auto">
-                                <!-- add this class ct_book_mark_icon_active when user will book marked  -->
-                                <svg width="14" height="18" viewBox="0 0 14 18" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg" class="">
-                                    <path
-                                        d="M0 18V2C0 1.45 0.196 0.979333 0.588 0.588C0.98 0.196667 1.45067 0.000666667 2 0H12C12.55 0 13.021 0.196 13.413 0.588C13.805 0.98 14.0007 1.45067 14 2V18L7 15L0 18Z"
-                                        fill="#fff"></path>
-                                </svg>
-                            </li>
-                        </ul>
-                        <!-- show this div when user click on comment -->
-                        <div class="ct_comment_area_main mt-4 d-none">
-                            <input type="text" class="form-control ct_custom_input w-100"
-                                placeholder="Write comment...">
-
-                            <div class="ct_comment_area_scroll">
-                                <div class="d-flex justify-content-between gap-2 mt-3">
-                                    <div class="d-flex  gap-3 ">
-                                        <img src="../assets/img/user_img_1.png" alt=""
-                                            class="ct_img_40 ct_bor ct_white_border_1">
-                                        <div style="flex: 1;">
-                                            <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
-                                                <div class="d-flex align-items-center gap-3">
-                                                    <div class="d-flex align-items-center justify-content-center gap-2">
-                                                        <img src="../assets/img/star.png" alt="star">
-                                                        <span class="ct_orange_text">Fitness</span>
-                                                    </div>
-                                                    <p class="mb-0  ct_fs_12 text-white ct_text_op_5">2 days ago</p>
-                                                </div>
-
-                                            </div>
-                                            <p
-                                                class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 ct_commented_text mt-3">
-                                                <span>Design Shot is an invitation to ponder cn design as a living
-                                                    entity. capture of embodying and
-                                                    influencing the flow of thoughts and sensations in</span> <a
-                                                    href="#" class="ct_orange_text">Read more</a></p>
-
-                                            <div class="mt-4">
-                                                <button
-                                                    class="ct_orange_btn ct_tansparent_btn w-100 ct_white_border_1 ct_border_radius_10">Load
-                                                    more comments</button>
-                                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <img [src]="feed.coach.avatar_url ? feed.coach.avatar_url : '/assets/img/np_pro.png'"
+                                    alt="" class="ct_img_44 ct_bor ct_white_border_1">
+                                <div>
+                                    <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">{{feed.coach.full_name}}</h5>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <p class="mb-0  ct_fs_12 text-white ct_text_op_5">{{feed.createdAt |
+                                            date:'d/M/yy, h:mm a'}}</p>
+                                        <div class="d-flex align-items-center justify-content-center gap-2">
+                                            <img src="../assets/img/star.png" alt="star">
+                                            <span class="ct_orange_text">{{feed.category?.name}}</span>
                                         </div>
                                     </div>
-                                    <div class="ct_like_btn">
+                                </div>
+                            </div>
+                            @if(feed.coachId == userId){
+                            <div class="dropdown">
+                                <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
+                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" (click)="deletePost(feed.id)">Delete</a></li>
+                                </ul>
+                            </div>
+                            }
+
+                        </div>
+
+
+                        <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 mt-3">
+                            <span>
+                                {{ feed.isExpanded ? feed.text : (feed.text?.length > shortTextLength ?
+                                (feed.text.substring(0, shortTextLength) + '...') : feed.text) }}
+                            </span>
+                            <a class="ct_orange_text" (click)="toggleContent(i)" href="javascript:void(0);"
+                                *ngIf="shouldShowReadMore(feed.text)">
+                                {{ feed.isExpanded ? 'Read less' : 'Read more' }}
+                            </a>
+                        </p>
+
+                        <div class="ct_like_comment_div">
+                            <ul>
+                                <li>
+                                    <div class="ct_like_btn d-flex align-items-center gap-3"
+                                        [class.ct_active_like]="feed.alreadyLiked" (click)="likePost(feed.id)"
+                                        style="cursor: pointer;">
                                         <!-- show this class ct_active_like when user will like  -->
                                         <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z"
-                                                stroke="#E58934" stroke-width="1.3"></path>
+                                                stroke="#E58934" stroke-width="1.3" />
                                         </svg>
-
+                                        <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">{{feed.numberOfLikes}}</p>
                                     </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="ct_feed_box mt-3">
-                    <div class="d-flex align-items-center gap-2">
-                        <img src="../assets/img/user_img_1.png" alt="" class="ct_img_44 ct_bor ct_white_border_1">
-                        <div>
-                            <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
-                            <div class="d-flex align-items-center gap-3">
-                                <p class="mb-0  ct_fs_12 text-white ct_text_op_5">14 Aug at 04:21 PM</p>
-                                <div class="d-flex align-items-center justify-content-center gap-2">
-                                    <img src="../assets/img/star.png" alt="star">
-                                    <span class="ct_orange_text">Fitness</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22  mt-3"><span>Design Shot is an
-                            invitation to ponder cn design as a living entity. capture of embodying and
-                            influencing the flow of thoughts and sensations in an changing reality Design Shot is an
-                            invitation to ponder cn design as a living entity. capture of embodying and
-                            influencing the flow of thoughts and sensations in an changing reality Design Shot is an
-                            invitation to ponder cn design as a living entity. capture of embodying and
-                            influencing the flow of thoughts and sensations in an changing reality Design Shot is an
-                            invitation to ponder cn design as a living entity. capture of embodying and
-                            influencing the flow of thoughts and sensations in an changing reality</span> <a href="#"
-                            class="ct_orange_text">Read more</a></p>
-
-
-
-                    <div class="ct_like_comment_div">
-                        <ul>
-                            <li>
-                                <div class="ct_like_btn d-flex align-items-center gap-3">
-                                    <!-- show this class ct_active_like when user will like  -->
-                                    <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
+                                </li>
+                                <li>
+                                    <div class="ct_comment_bnt  d-flex align-items-center gap-3"
+                                        (click)="toggleCommentBox(feed.id)" style="cursor: pointer;">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M10 1.75C5.44366 1.75 1.75001 5.44365 1.75001 10C1.75001 11.365 2.08093 12.6505 2.66626 13.7828C2.74503 13.9352 2.76918 14.1099 2.7347 14.278L1.96334 18.0367L5.72204 17.2653C5.89007 17.2308 6.06484 17.255 6.21722 17.3338C7.3495 17.9191 8.63502 18.25 10 18.25C14.5564 18.25 18.25 14.5563 18.25 10C18.25 5.44365 14.5564 1.75 10 1.75ZM0.250013 10C0.250013 4.61522 4.61524 0.25 10 0.25C15.3848 0.25 19.75 4.61522 19.75 10C19.75 15.3848 15.3848 19.75 10 19.75C8.48564 19.75 7.05008 19.4042 5.76973 18.7868L1.15079 19.7347C0.903835 19.7854 0.647943 19.7086 0.469683 19.5303C0.291422 19.3521 0.214644 19.0962 0.265324 18.8492L1.21323 14.2303C0.595784 12.9499 0.250013 11.5144 0.250013 10Z"
+                                                fill="#E58934" />
+                                        </svg>
+                                        <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">{{feed.numberOfComments }}
+                                            {{feed.numberOfComments > 1 ? 'Comments' : 'Comment'}}
+                                        </p>
+                                    </div>
+                                </li>
+                                <li *ngIf="!isCoach" class="ct_book_mark_icon ms-auto"
+                                    [class.ct_book_mark_icon_active]="feed.alreadySaved" (click)="bookmarkPost(feed.id)"
+                                    style="cursor: pointer;">
+                                    <!-- add this class ct_book_mark_icon_active when user will book marked  -->
+                                    <svg width="14" height="18" viewBox="0 0 14 18" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg" class="">
                                         <path
-                                            d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z"
-                                            stroke="#E58934" stroke-width="1.3"></path>
+                                            d="M0 18V2C0 1.45 0.196 0.979333 0.588 0.588C0.98 0.196667 1.45067 0.000666667 2 0H12C12.55 0 13.021 0.196 13.413 0.588C13.805 0.98 14.0007 1.45067 14 2V18L7 15L0 18Z"
+                                            fill="#fff" />
                                     </svg>
-                                    <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">1.6k</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="ct_comment_bnt  d-flex align-items-center gap-3">
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M10 1.75C5.44366 1.75 1.75001 5.44365 1.75001 10C1.75001 11.365 2.08093 12.6505 2.66626 13.7828C2.74503 13.9352 2.76918 14.1099 2.7347 14.278L1.96334 18.0367L5.72204 17.2653C5.89007 17.2308 6.06484 17.255 6.21722 17.3338C7.3495 17.9191 8.63502 18.25 10 18.25C14.5564 18.25 18.25 14.5563 18.25 10C18.25 5.44365 14.5564 1.75 10 1.75ZM0.250013 10C0.250013 4.61522 4.61524 0.25 10 0.25C15.3848 0.25 19.75 4.61522 19.75 10C19.75 15.3848 15.3848 19.75 10 19.75C8.48564 19.75 7.05008 19.4042 5.76973 18.7868L1.15079 19.7347C0.903835 19.7854 0.647943 19.7086 0.469683 19.5303C0.291422 19.3521 0.214644 19.0962 0.265324 18.8492L1.21323 14.2303C0.595784 12.9499 0.250013 11.5144 0.250013 10Z"
-                                            fill="#E58934"></path>
-                                    </svg>
-                                    <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">Comment</p>
-                                </div>
-                            </li>
-                            <li class="ct_book_mark_icon  ms-auto">
-                                <!-- add this class ct_book_mark_icon_active when user will book marked  -->
-                                <svg width="14" height="18" viewBox="0 0 14 18" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg" class="">
-                                    <path
-                                        d="M0 18V2C0 1.45 0.196 0.979333 0.588 0.588C0.98 0.196667 1.45067 0.000666667 2 0H12C12.55 0 13.021 0.196 13.413 0.588C13.805 0.98 14.0007 1.45067 14 2V18L7 15L0 18Z"
-                                        fill="#fff"></path>
-                                </svg>
-                            </li>
-                        </ul>
-                        <!-- show this div when user click on comment -->
-                        <div class="ct_comment_area_main mt-4 d-none">
-                            <input type="text" class="form-control ct_custom_input w-100"
-                                placeholder="Write comment...">
+                                </li>
+                            </ul>
+                            <!-- show this div when user click on comment -->
+                            <div class="ct_comment_area_main mt-4" [class.d-none]="!showCmt[feed.id]">
 
-                            <div class="ct_comment_area_scroll">
-                                <div class="d-flex justify-content-between gap-2 mt-3">
-                                    <div class="d-flex  gap-3 ">
-                                        <img src="../assets/img/user_img_1.png" alt=""
-                                            class="ct_img_40 ct_bor ct_white_border_1">
-                                        <div style="flex: 1;">
-                                            <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
-                                                <div class="d-flex align-items-center gap-3">
-                                                    <div class="d-flex align-items-center justify-content-center gap-2">
-                                                        <img src="../assets/img/star.png" alt="star">
-                                                        <span class="ct_orange_text">Fitness</span>
-                                                    </div>
-                                                    <p class="mb-0  ct_fs_12 text-white ct_text_op_5">2 days ago</p>
-                                                </div>
-
-                                            </div>
-                                            <p
-                                                class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 ct_commented_text mt-3">
-                                                <span>Design Shot is an invitation to ponder cn design as a living
-                                                    entity. capture of embodying and
-                                                    influencing the flow of thoughts and sensations in</span> <a
-                                                    href="#" class="ct_orange_text">Read more</a></p>
-
-                                            <div class="mt-4">
-                                                <button
-                                                    class="ct_orange_btn ct_tansparent_btn w-100 ct_white_border_1 ct_border_radius_10">Load
-                                                    more comments</button>
-                                            </div>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control ct_custom_input w-100"
+                                        placeholder="Write comment..." [(ngModel)]="commentText"
+                                        [ngModelOptions]="{standalone: true}" maxlength="250"
+                                        (keyup.enter)="addComment(feed.id)">
+                                    <!-- <i (click)="addComment(feed.id)" class="fa fa-paper-plane ct_send_msg_plane text-white"
+                                        aria-hidden="true"></i> -->
+                                    <i (click)="addComment(feed.id)" *ngIf="!btnLoaderCmt"
+                                        class="fa fa-paper-plane ct_send_msg_plane text-white" aria-hidden="true">
+                                    </i>
+                                    <div class="d-flex align-items-center ct_send_msg_plane text-white"
+                                        *ngIf="btnLoaderCmt">
+                                        <div class="spinner-border" role="status">
+                                            <span class="visually-hidden">Loading...</span>
                                         </div>
                                     </div>
-                                    <div class="ct_like_btn">
+                                </div>
+
+                                <div class="ct_comment_area_scroll">
+
+                                    <div
+                                        *ngFor="let comments of postComments?.slice(0, commentsToShow[feed.id]); let i = index">
+                                        @if(comments.coach){
+                                        <div class="d-flex justify-content-between gap-2 mt-3"
+                                            *ngIf="feed.id == comments.postId">
+                                            <div class="d-flex  gap-3 ">
+                                                <img [src]="comments.coach.avatar_url ? comments.coach.avatar_url : '/assets/img/np_pro.png'"
+                                                    alt="" class="ct_img_40 ct_bor ct_white_border_1">
+                                                <div style="flex: 1;">
+                                                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                        <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">
+                                                            {{comments.coach.full_name}}</h5>
+                                                        <div class="d-flex align-items-center gap-3">
+                                                            <!-- <div
+                                                                class="d-flex align-items-center justify-content-center gap-2">
+                                                                <img src="../assets/img/star.png" alt="star">
+                                                                <span class="ct_orange_text">Fitness</span>
+                                                            </div> -->
+                                                            <p class="mb-0  ct_fs_12 text-white ct_text_op_5">
+                                                                {{comments.createdAt |
+                                                                date:'d/M/yy, h:mm a'}}</p>
+                                                        </div>
+
+                                                    </div>
+                                                    <p style="word-break: break-all;"
+                                                        class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 ct_commented_text mt-3">
+                                                        <span>
+                                                            {{ comments.isExpanded ? comments.content :
+                                                            (comments.content?.length > shortTextLength ?
+                                                            (comments.content.substring(0, shortTextLength) + '...') :
+                                                            comments.content) }}
+                                                        </span>
+                                                        <a class="ct_orange_text" (click)="toggleCommentText(i)"
+                                                            href="javascript:void(0);"
+                                                            *ngIf="shouldShowReadMore(comments.content)">
+                                                            {{ comments.isExpanded ? 'Read less' : 'Read more' }}
+                                                        </a>
+                                                    </p>
+
+
+                                                </div>
+                                            </div>
+
+                                            <div class="ms-auto me-2" *ngIf="userId == comments.coach.id"
+                                                style="cursor: pointer;"><i
+                                                    *ngIf="btnLoaderCmtDel && comments.id != deleteId || !btnLoaderCmtDel"
+                                                    (click)="deleteComment(comments.id, feed.id)"
+                                                    class="fa-solid fa-trash text-white"></i>
+                                                <div class="text-white"
+                                                    *ngIf="btnLoaderCmtDel && comments.id == deleteId">
+                                                    <div class="spinner-border" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="ct_like_btn" [class.ct_active_like]="comments.alreadyLiked"
+                                                (click)="likeComment(comments.id, feed.id)" style="cursor: pointer;">
+                                                <!-- show this class ct_active_like when user will like  -->
+                                                <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z"
+                                                        stroke="#E58934" stroke-width="1.3" />
+                                                </svg>
+
+                                            </div>
+                                        </div>
+                                        } @else {
+                                        <div class="d-flex justify-content-between gap-2 mt-3"
+                                            *ngIf="feed.id == comments.postId">
+                                            <div class="d-flex  gap-3 ">
+                                                <img [src]="comments.user.avatar_url ? comments.user.avatar_url : '/assets/img/np_pro.png'"
+                                                    alt="" class="ct_img_40 ct_bor ct_white_border_1">
+                                                <div style="flex: 1;">
+                                                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                        <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">
+                                                            {{comments.user.full_name}}</h5>
+                                                        <div class="d-flex align-items-center gap-3">
+                                                            <!-- <div
+                                                                class="d-flex align-items-center justify-content-center gap-2">
+                                                                <img src="../assets/img/star.png" alt="star">
+                                                                <span class="ct_orange_text">Fitness</span>
+                                                            </div> -->
+                                                            <p class="mb-0  ct_fs_12 text-white ct_text_op_5">
+                                                                {{comments.createdAt |
+                                                                date:'d/M/yy, h:mm a'}}</p>
+                                                        </div>
+
+                                                    </div>
+                                                    <p style="word-break: break-all;"
+                                                        class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 ct_commented_text mt-3">
+                                                        <span>
+                                                            {{ comments.isExpanded ? comments.content :
+                                                            (comments.content?.length > shortTextLength ?
+                                                            (comments.content.substring(0, shortTextLength) + '...') :
+                                                            comments.content) }}
+                                                        </span>
+                                                        <a class="ct_orange_text" (click)="toggleCommentText(i)"
+                                                            href="javascript:void(0);"
+                                                            *ngIf="shouldShowReadMore(comments.content)">
+                                                            {{ comments.isExpanded ? 'Read less' : 'Read more' }}
+                                                        </a>
+                                                    </p>
+
+
+                                                </div>
+                                            </div>
+
+                                            <div class="ms-auto me-2" *ngIf="userId == comments.user.id"
+                                                style="cursor: pointer;"><i
+                                                    *ngIf="btnLoaderCmtDel && comments.id != deleteId || !btnLoaderCmtDel"
+                                                    (click)="deleteComment(comments.id, feed.id)"
+                                                    class="fa-solid fa-trash text-white"></i>
+                                                <div class="text-white"
+                                                    *ngIf="btnLoaderCmtDel && comments.id == deleteId">
+                                                    <div class="spinner-border" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="ct_like_btn" [class.ct_active_like]="comments.alreadyLiked"
+                                                (click)="likeComment(comments.id, feed.id)" style="cursor: pointer;">
+                                                <!-- show this class ct_active_like when user will like  -->
+                                                <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z"
+                                                        stroke="#E58934" stroke-width="1.3" />
+                                                </svg>
+
+                                            </div>
+                                        </div>
+                                        }
+
+                                    </div>
+
+                                </div>
+                                <div class="mt-4" *ngIf="shouldShowLoadMore(feed.id)">
+                                    <button (click)="loadMoreComments(feed.id)"
+                                        class="ct_orange_btn ct_tansparent_btn w-100 ct_white_border_1 ct_border_radius_10">Load
+                                        more comments</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="ct_feed_box mt-3" *ngIf="feed.type == 'VIDEO'">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-2">
+                                <img [src]="feed.coach.avatar_url ? feed.coach.avatar_url : '/assets/img/np_pro.png'"
+                                    alt="" class="ct_img_44 ct_bor ct_white_border_1">
+                                <div>
+                                    <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">{{feed.coach.full_name}}</h5>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <p class="mb-0  ct_fs_12 text-white ct_text_op_5">{{feed.createdAt |
+                                            date:'d/M/yy, h:mm a'}}</p>
+                                        <div class="d-flex align-items-center justify-content-center gap-2">
+                                            <img src="../assets/img/star.png" alt="star">
+                                            <span class="ct_orange_text">{{feed.category?.name}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @if(feed.coachId == userId){
+                            <div class="dropdown">
+                                <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
+                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" (click)="deletePost(feed.id)">Delete</a></li>
+                                </ul>
+                            </div>
+                            }
+
+                        </div>
+
+                        <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 mt-3">
+                            <span>
+                                {{ feed.isExpanded ? feed.text : (feed.text?.length > shortTextLength ?
+                                (feed.text.substring(0, shortTextLength) + '...') : feed.text) }}
+                            </span>
+                            <a class="ct_orange_text" (click)="toggleContent(i)" href="javascript:void(0);"
+                                *ngIf="shouldShowReadMore(feed.text)">
+                                {{ feed.isExpanded ? 'Read less' : 'Read more' }}
+                            </a>
+                        </p>
+
+                        <div class="ct_show_uploaded_video mt-2" style="position: relative;">
+
+                            <div class="play-button" *ngIf="!isVideoPlaying(videoPlayer)"
+                                (click)="toggleVideo(videoPlayer)">
+                                <img src="../assets/img/play.png" alt="Play Button" />
+                            </div>
+
+                            <video [src]="feed.mediaUrl" #videoPlayer (timeupdate)="onTimeUpdate(videoPlayer)"
+                                (loadedmetadata)="setVideoDuration(videoPlayer)" width="100%" height="390"
+                                (click)="toggleVideo(videoPlayer)">
+                            </video>
+
+                            <input type="range" *ngIf="currentVideoId === videoPlayer" class="custom-seekbar"
+                                (input)="onSeek($event, videoPlayer)" />
+
+                            <div *ngIf="currentVideoId === videoPlayer" class="video-timing text-white pb-4">
+                                {{ formatTime(currentTime) }} / {{ formatTime(videoDuration) }}
+                            </div>
+                        </div>
+
+
+                        <div class="ct_like_comment_div">
+                            <ul>
+                                <li>
+                                    <div class="ct_like_btn d-flex align-items-center gap-3"
+                                        [class.ct_active_like]="feed.alreadyLiked" (click)="likePost(feed.id)"
+                                        style="cursor: pointer;">
                                         <!-- show this class ct_active_like when user will like  -->
                                         <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z"
-                                                stroke="#E58934" stroke-width="1.3"></path>
+                                                stroke="#E58934" stroke-width="1.3" />
                                         </svg>
-
+                                        <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">{{feed.numberOfLikes}}</p>
                                     </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="ct_feed_box mt-3">
-                    <div class="d-flex align-items-center gap-2">
-                        <img src="../assets/img/user_img_1.png" alt="" class="ct_img_44 ct_bor ct_white_border_1">
-                        <div>
-                            <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
-                            <div class="d-flex align-items-center gap-3">
-                                <p class="mb-0  ct_fs_12 text-white ct_text_op_5">14 Aug at 04:21 PM</p>
-                                <div class="d-flex align-items-center justify-content-center gap-2">
-                                    <img src="../assets/img/star.png" alt="star">
-                                    <span class="ct_orange_text">Fitness</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22  mt-3"><span>Design Shot is an
-                            invitation to ponder cn design as a living entity. capture of embodying and
-                            influencing the flow of thoughts and sensations in an changing reality Design Shot is an
-                            invitation to ponder cn design as a living entity. capture of embodying and
-                            influencing the flow of thoughts and sensations in an changing reality Design Shot is an
-                            invitation to ponder cn design as a living entity. capture of embodying and
-                            influencing the flow of thoughts and sensations in an changing reality Design Shot is an
-                            invitation to ponder cn design as a living entity. capture of embodying and
-                            influencing the flow of thoughts and sensations in an changing reality</span> <a href="#"
-                            class="ct_orange_text">Read more</a></p>
-
-
-
-                    <div class="ct_like_comment_div">
-                        <ul>
-                            <li>
-                                <div class="ct_like_btn d-flex align-items-center gap-3">
-                                    <!-- show this class ct_active_like when user will like  -->
-                                    <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
+                                </li>
+                                <li>
+                                    <div class="ct_comment_bnt  d-flex align-items-center gap-3"
+                                        (click)="toggleCommentBox(feed.id)" style="cursor: pointer;">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M10 1.75C5.44366 1.75 1.75001 5.44365 1.75001 10C1.75001 11.365 2.08093 12.6505 2.66626 13.7828C2.74503 13.9352 2.76918 14.1099 2.7347 14.278L1.96334 18.0367L5.72204 17.2653C5.89007 17.2308 6.06484 17.255 6.21722 17.3338C7.3495 17.9191 8.63502 18.25 10 18.25C14.5564 18.25 18.25 14.5563 18.25 10C18.25 5.44365 14.5564 1.75 10 1.75ZM0.250013 10C0.250013 4.61522 4.61524 0.25 10 0.25C15.3848 0.25 19.75 4.61522 19.75 10C19.75 15.3848 15.3848 19.75 10 19.75C8.48564 19.75 7.05008 19.4042 5.76973 18.7868L1.15079 19.7347C0.903835 19.7854 0.647943 19.7086 0.469683 19.5303C0.291422 19.3521 0.214644 19.0962 0.265324 18.8492L1.21323 14.2303C0.595784 12.9499 0.250013 11.5144 0.250013 10Z"
+                                                fill="#E58934" />
+                                        </svg>
+                                        <p style="cursor: pointer;" class="mb-0 ct_fw_500 ct_ff_roboto text-white">
+                                            {{feed.numberOfComments}} {{feed.numberOfComments > 1 ? 'Comments' :
+                                            'Comment'}}
+                                        </p>
+                                    </div>
+                                </li>
+                                <li *ngIf="!isCoach" class="ct_book_mark_icon ms-auto"
+                                    [class.ct_book_mark_icon_active]="feed.alreadySaved" (click)="bookmarkPost(feed.id)"
+                                    style="cursor: pointer;">
+                                    <!-- add this class ct_book_mark_icon_active when user will book marked  -->
+                                    <svg width="14" height="18" viewBox="0 0 14 18" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg" class="">
                                         <path
-                                            d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z"
-                                            stroke="#E58934" stroke-width="1.3"></path>
+                                            d="M0 18V2C0 1.45 0.196 0.979333 0.588 0.588C0.98 0.196667 1.45067 0.000666667 2 0H12C12.55 0 13.021 0.196 13.413 0.588C13.805 0.98 14.0007 1.45067 14 2V18L7 15L0 18Z"
+                                            fill="#fff" />
                                     </svg>
-                                    <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">1.6k</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="ct_comment_bnt  d-flex align-items-center gap-3">
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M10 1.75C5.44366 1.75 1.75001 5.44365 1.75001 10C1.75001 11.365 2.08093 12.6505 2.66626 13.7828C2.74503 13.9352 2.76918 14.1099 2.7347 14.278L1.96334 18.0367L5.72204 17.2653C5.89007 17.2308 6.06484 17.255 6.21722 17.3338C7.3495 17.9191 8.63502 18.25 10 18.25C14.5564 18.25 18.25 14.5563 18.25 10C18.25 5.44365 14.5564 1.75 10 1.75ZM0.250013 10C0.250013 4.61522 4.61524 0.25 10 0.25C15.3848 0.25 19.75 4.61522 19.75 10C19.75 15.3848 15.3848 19.75 10 19.75C8.48564 19.75 7.05008 19.4042 5.76973 18.7868L1.15079 19.7347C0.903835 19.7854 0.647943 19.7086 0.469683 19.5303C0.291422 19.3521 0.214644 19.0962 0.265324 18.8492L1.21323 14.2303C0.595784 12.9499 0.250013 11.5144 0.250013 10Z"
-                                            fill="#E58934"></path>
-                                    </svg>
-                                    <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">Comment</p>
-                                </div>
-                            </li>
-                            <li class="ct_book_mark_icon  ms-auto">
-                                <!-- add this class ct_book_mark_icon_active when user will book marked  -->
-                                <svg width="14" height="18" viewBox="0 0 14 18" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg" class="">
-                                    <path
-                                        d="M0 18V2C0 1.45 0.196 0.979333 0.588 0.588C0.98 0.196667 1.45067 0.000666667 2 0H12C12.55 0 13.021 0.196 13.413 0.588C13.805 0.98 14.0007 1.45067 14 2V18L7 15L0 18Z"
-                                        fill="#fff"></path>
-                                </svg>
-                            </li>
-                        </ul>
-                        <!-- show this div when user click on comment -->
-                        <div class="ct_comment_area_main mt-4 d-none">
-                            <input type="text" class="form-control ct_custom_input w-100"
-                                placeholder="Write comment...">
-
-                            <div class="ct_comment_area_scroll">
-                                <div class="d-flex justify-content-between gap-2 mt-3">
-                                    <div class="d-flex  gap-3 ">
-                                        <img src="../assets/img/user_img_1.png" alt=""
-                                            class="ct_img_40 ct_bor ct_white_border_1">
-                                        <div style="flex: 1;">
-                                            <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
-                                                <div class="d-flex align-items-center gap-3">
-                                                    <div class="d-flex align-items-center justify-content-center gap-2">
-                                                        <img src="../assets/img/star.png" alt="star">
-                                                        <span class="ct_orange_text">Fitness</span>
-                                                    </div>
-                                                    <p class="mb-0  ct_fs_12 text-white ct_text_op_5">2 days ago</p>
-                                                </div>
-
-                                            </div>
-                                            <p
-                                                class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 ct_commented_text mt-3">
-                                                <span>Design Shot is an invitation to ponder cn design as a living
-                                                    entity. capture of embodying and
-                                                    influencing the flow of thoughts and sensations in</span> <a
-                                                    href="#" class="ct_orange_text">Read more</a></p>
-
-                                            <div class="mt-4">
-                                                <button
-                                                    class="ct_orange_btn ct_tansparent_btn w-100 ct_white_border_1 ct_border_radius_10">Load
-                                                    more comments</button>
-                                            </div>
+                                </li>
+                            </ul>
+                            <!-- show this div when user click on comment -->
+                            <div class="ct_comment_area_main mt-4" [class.d-none]="!showCmt[feed.id]">
+                                <!-- <input type="text" class="form-control ct_custom_input w-100" placeholder="Write comment..."
+                                     [(ngModel)]="commentText" [ngModelOptions]="{standalone: true}">
+     
+                                 <div class="d-flex align-items-center" (click)="addComment(feed.id)">
+                                     <button type="button"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                                 </div> -->
+                                <div class="position-relative">
+                                    <input type="text" class="form-control ct_custom_input w-100"
+                                        placeholder="Write comment..." [(ngModel)]="commentText"
+                                        [ngModelOptions]="{standalone: true}" maxlength="250"
+                                        (keyup.enter)="addComment(feed.id)">
+                                    <!-- <i (click)="addComment(feed.id)" class="fa fa-paper-plane ct_send_msg_plane text-white"
+                                         aria-hidden="true"></i> -->
+                                    <i (click)="addComment(feed.id)" *ngIf="!btnLoaderCmt"
+                                        class="fa fa-paper-plane ct_send_msg_plane text-white" aria-hidden="true">
+                                    </i>
+                                    <div class="d-flex align-items-center ct_send_msg_plane text-white"
+                                        *ngIf="btnLoaderCmt">
+                                        <div class="spinner-border" role="status">
+                                            <span class="visually-hidden">Loading...</span>
                                         </div>
                                     </div>
-                                    <div class="ct_like_btn">
-                                        <!-- show this class ct_active_like when user will like  -->
-                                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z"
-                                                stroke="#E58934" stroke-width="1.3"></path>
-                                        </svg>
-
-                                    </div>
                                 </div>
 
-                            </div>
+                                <div class="ct_comment_area_scroll">
+                                    <div
+                                        *ngFor="let comments of postComments?.slice(0, commentsToShow[feed.id]); let i = index">
+                                        @if(comments.coach){
+                                        <div class="d-flex justify-content-between gap-2 mt-3">
+                                            <div class="d-flex  gap-3 ">
+                                                <img [src]="comments.coach.avatar_url ? comments.coach.avatar_url : '/assets/img/np_pro.png'"
+                                                    alt="" class="ct_img_40 ct_bor ct_white_border_1">
+                                                <div style="flex: 1;">
+                                                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                        <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">
+                                                            {{comments.coach.full_name}}</h5>
+                                                        <div class="d-flex align-items-center gap-3">
+                                                            <!-- <div
+                                                                 class="d-flex align-items-center justify-content-center gap-2">
+                                                                 <img src="../assets/img/star.png" alt="star">
+                                                                 <span class="ct_orange_text">Fitness</span>
+                                                             </div> -->
+                                                            <p class="mb-0  ct_fs_12 text-white ct_text_op_5">
+                                                                {{comments.createdAt | date:'d/M/yy, h:mm a'}}</p>
+                                                        </div>
 
-                        </div>
-                    </div>
-                </div>
-                <div class="ct_feed_box mt-3">
-                    <div class="d-flex align-items-center gap-2">
-                        <img src="../assets/img/user_img_1.png" alt="" class="ct_img_44 ct_bor ct_white_border_1">
-                        <div>
-                            <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
-                            <div class="d-flex align-items-center gap-3">
-                                <p class="mb-0  ct_fs_12 text-white ct_text_op_5">14 Aug at 04:21 PM</p>
-                                <div class="d-flex align-items-center justify-content-center gap-2">
-                                    <img src="../assets/img/star.png" alt="star">
-                                    <span class="ct_orange_text">Fitness</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22  mt-3"><span>Design Shot is an
-                            invitation to ponder cn design as a living entity. capture of embodying and
-                            influencing the flow of thoughts and sensations in an changing reality Design Shot is an
-                            invitation to ponder cn design as a living entity. capture of embodying and
-                            influencing the flow of thoughts and sensations in an changing reality Design Shot is an
-                            invitation to ponder cn design as a living entity. capture of embodying and
-                            influencing the flow of thoughts and sensations in an changing reality Design Shot is an
-                            invitation to ponder cn design as a living entity. capture of embodying and
-                            influencing the flow of thoughts and sensations in an changing reality</span> <a href="#"
-                            class="ct_orange_text">Read more</a></p>
-
-
-
-                    <div class="ct_like_comment_div">
-                        <ul>
-                            <li>
-                                <div class="ct_like_btn d-flex align-items-center gap-3">
-                                    <!-- show this class ct_active_like when user will like  -->
-                                    <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z"
-                                            stroke="#E58934" stroke-width="1.3"></path>
-                                    </svg>
-                                    <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">1.6k</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="ct_comment_bnt  d-flex align-items-center gap-3">
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M10 1.75C5.44366 1.75 1.75001 5.44365 1.75001 10C1.75001 11.365 2.08093 12.6505 2.66626 13.7828C2.74503 13.9352 2.76918 14.1099 2.7347 14.278L1.96334 18.0367L5.72204 17.2653C5.89007 17.2308 6.06484 17.255 6.21722 17.3338C7.3495 17.9191 8.63502 18.25 10 18.25C14.5564 18.25 18.25 14.5563 18.25 10C18.25 5.44365 14.5564 1.75 10 1.75ZM0.250013 10C0.250013 4.61522 4.61524 0.25 10 0.25C15.3848 0.25 19.75 4.61522 19.75 10C19.75 15.3848 15.3848 19.75 10 19.75C8.48564 19.75 7.05008 19.4042 5.76973 18.7868L1.15079 19.7347C0.903835 19.7854 0.647943 19.7086 0.469683 19.5303C0.291422 19.3521 0.214644 19.0962 0.265324 18.8492L1.21323 14.2303C0.595784 12.9499 0.250013 11.5144 0.250013 10Z"
-                                            fill="#E58934"></path>
-                                    </svg>
-                                    <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">Comment</p>
-                                </div>
-                            </li>
-                            <li class="ct_book_mark_icon  ms-auto">
-                                <!-- add this class ct_book_mark_icon_active when user will book marked  -->
-                                <svg width="14" height="18" viewBox="0 0 14 18" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg" class="">
-                                    <path
-                                        d="M0 18V2C0 1.45 0.196 0.979333 0.588 0.588C0.98 0.196667 1.45067 0.000666667 2 0H12C12.55 0 13.021 0.196 13.413 0.588C13.805 0.98 14.0007 1.45067 14 2V18L7 15L0 18Z"
-                                        fill="#fff"></path>
-                                </svg>
-                            </li>
-                        </ul>
-                        <!-- show this div when user click on comment -->
-                        <div class="ct_comment_area_main mt-4 d-none">
-                            <input type="text" class="form-control ct_custom_input w-100"
-                                placeholder="Write comment...">
-
-                            <div class="ct_comment_area_scroll">
-                                <div class="d-flex justify-content-between gap-2 mt-3">
-                                    <div class="d-flex  gap-3 ">
-                                        <img src="../assets/img/user_img_1.png" alt=""
-                                            class="ct_img_40 ct_bor ct_white_border_1">
-                                        <div style="flex: 1;">
-                                            <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
-                                                <div class="d-flex align-items-center gap-3">
-                                                    <div class="d-flex align-items-center justify-content-center gap-2">
-                                                        <img src="../assets/img/star.png" alt="star">
-                                                        <span class="ct_orange_text">Fitness</span>
                                                     </div>
-                                                    <p class="mb-0  ct_fs_12 text-white ct_text_op_5">2 days ago</p>
+                                                    <p style="word-break: break-all;"
+                                                        class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 ct_commented_text mt-3">
+                                                        <span>
+                                                            {{ comments.isExpanded ? comments.content :
+                                                            (comments.content?.length > shortTextLength ?
+                                                            (comments.content.substring(0, shortTextLength) + '...') :
+                                                            comments.content) }}
+                                                        </span>
+                                                        <a class="ct_orange_text" (click)="toggleCommentText(i)"
+                                                            href="javascript:void(0);"
+                                                            *ngIf="shouldShowReadMore(comments.content)">
+                                                            {{ comments.isExpanded ? 'Read less' : 'Read more' }}
+                                                        </a>
+                                                    </p>
                                                 </div>
-
                                             </div>
-                                            <p
-                                                class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 ct_commented_text mt-3">
-                                                <span>Design Shot is an invitation to ponder cn design as a living
-                                                    entity. capture of embodying and
-                                                    influencing the flow of thoughts and sensations in</span> <a
-                                                    href="#" class="ct_orange_text">Read more</a></p>
 
-                                            <div class="mt-4">
-                                                <button
-                                                    class="ct_orange_btn ct_tansparent_btn w-100 ct_white_border_1 ct_border_radius_10">Load
-                                                    more comments</button>
+                                            <div class="ms-auto me-2" *ngIf="userId == comments.coach.id"
+                                                style="cursor: pointer;"><i
+                                                    *ngIf="btnLoaderCmtDel && comments.id != deleteId || !btnLoaderCmtDel"
+                                                    (click)="deleteComment(comments.id, feed.id)"
+                                                    class="fa-solid fa-trash text-white"></i>
+                                                <div class="text-white"
+                                                    *ngIf="btnLoaderCmtDel && comments.id == deleteId">
+                                                    <div class="spinner-border" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="ct_like_btn" [class.ct_active_like]="comments.alreadyLiked"
+                                                (click)="likeComment(comments.id, feed.id)" style="cursor: pointer;">
+                                                <!-- <div><i class="fa-solid fa-trash text-white"></i></div> -->
+                                                <!-- show this class ct_active_like when user will like  -->
+                                                <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z"
+                                                        stroke="#E58934" stroke-width="1.3" />
+                                                </svg>
+
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="ct_like_btn">
-                                        <!-- show this class ct_active_like when user will like  -->
-                                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z"
-                                                stroke="#E58934" stroke-width="1.3"></path>
-                                        </svg>
+                                        } @else {
+                                        <div class="d-flex justify-content-between gap-2 mt-3">
+                                            <div class="d-flex  gap-3 ">
+                                                <img [src]="comments.user.avatar_url ? comments.user.avatar_url : '/assets/img/np_pro.png'"
+                                                    alt="" class="ct_img_40 ct_bor ct_white_border_1">
+                                                <div style="flex: 1;">
+                                                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                        <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">
+                                                            {{comments.user.full_name}}</h5>
+                                                        <div class="d-flex align-items-center gap-3">
+                                                            <!-- <div
+                                                                 class="d-flex align-items-center justify-content-center gap-2">
+                                                                 <img src="../assets/img/star.png" alt="star">
+                                                                 <span class="ct_orange_text">Fitness</span>
+                                                             </div> -->
+                                                            <p class="mb-0  ct_fs_12 text-white ct_text_op_5">
+                                                                {{comments.createdAt | date:'d/M/yy, h:mm a'}}</p>
+                                                        </div>
 
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="ct_feed_box mt-3">
-                    <div class="d-flex align-items-center gap-2">
-                        <img src="../assets/img/user_img_1.png" alt="" class="ct_img_44 ct_bor ct_white_border_1">
-                        <div>
-                            <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
-                            <div class="d-flex align-items-center gap-3">
-                                <p class="mb-0  ct_fs_12 text-white ct_text_op_5">14 Aug at 04:21 PM</p>
-                                <div class="d-flex align-items-center justify-content-center gap-2">
-                                    <img src="../assets/img/star.png" alt="star">
-                                    <span class="ct_orange_text">Fitness</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="ct_show_uploaded_video mt-2">
-                        <iframe width="100%" height="390"
-                            src="https://www.youtube.com/embed/D0UnqGm_miA?si=stUsA1BTtk2p_3AH"
-                            title="YouTube video player" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
-                    </div>
-
-                    <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22  mt-3"><span>Design Shot is an
-                            invitation to ponder cn design as a living entity. capature of embodying and
-                            influencing the flow of thoughts and sensations in an changing reality...</span> <a href="#"
-                            class="ct_orange_text">Read more</a></p>
-
-
-
-                    <div class="ct_like_comment_div">
-                        <ul>
-                            <li>
-                                <div class="ct_like_btn d-flex align-items-center gap-3">
-                                    <!-- show this class ct_active_like when user will like  -->
-                                    <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z"
-                                            stroke="#E58934" stroke-width="1.3"></path>
-                                    </svg>
-                                    <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">1.6k</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="ct_comment_bnt  d-flex align-items-center gap-3">
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M10 1.75C5.44366 1.75 1.75001 5.44365 1.75001 10C1.75001 11.365 2.08093 12.6505 2.66626 13.7828C2.74503 13.9352 2.76918 14.1099 2.7347 14.278L1.96334 18.0367L5.72204 17.2653C5.89007 17.2308 6.06484 17.255 6.21722 17.3338C7.3495 17.9191 8.63502 18.25 10 18.25C14.5564 18.25 18.25 14.5563 18.25 10C18.25 5.44365 14.5564 1.75 10 1.75ZM0.250013 10C0.250013 4.61522 4.61524 0.25 10 0.25C15.3848 0.25 19.75 4.61522 19.75 10C19.75 15.3848 15.3848 19.75 10 19.75C8.48564 19.75 7.05008 19.4042 5.76973 18.7868L1.15079 19.7347C0.903835 19.7854 0.647943 19.7086 0.469683 19.5303C0.291422 19.3521 0.214644 19.0962 0.265324 18.8492L1.21323 14.2303C0.595784 12.9499 0.250013 11.5144 0.250013 10Z"
-                                            fill="#E58934"></path>
-                                    </svg>
-                                    <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">Comment</p>
-                                </div>
-                            </li>
-                            <li class="ct_book_mark_icon  ms-auto">
-                                <!-- add this class ct_book_mark_icon_active when user will book marked  -->
-                                <svg width="14" height="18" viewBox="0 0 14 18" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg" class="">
-                                    <path
-                                        d="M0 18V2C0 1.45 0.196 0.979333 0.588 0.588C0.98 0.196667 1.45067 0.000666667 2 0H12C12.55 0 13.021 0.196 13.413 0.588C13.805 0.98 14.0007 1.45067 14 2V18L7 15L0 18Z"
-                                        fill="#fff"></path>
-                                </svg>
-                            </li>
-                        </ul>
-                        <!-- show this div when user click on comment -->
-                        <div class="ct_comment_area_main mt-4 d-none">
-                            <input type="text" class="form-control ct_custom_input w-100"
-                                placeholder="Write comment...">
-
-                            <div class="ct_comment_area_scroll">
-                                <div class="d-flex justify-content-between gap-2 mt-3">
-                                    <div class="d-flex  gap-3 ">
-                                        <img src="../assets/img/user_img_1.png" alt=""
-                                            class="ct_img_40 ct_bor ct_white_border_1">
-                                        <div style="flex: 1;">
-                                            <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">Bradford Bogisich</h5>
-                                                <div class="d-flex align-items-center gap-3">
-                                                    <div class="d-flex align-items-center justify-content-center gap-2">
-                                                        <img src="../assets/img/star.png" alt="star">
-                                                        <span class="ct_orange_text">Fitness</span>
                                                     </div>
-                                                    <p class="mb-0  ct_fs_12 text-white ct_text_op_5">2 days ago</p>
+                                                    <p style="word-break: break-all;"
+                                                        class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 ct_commented_text mt-3">
+                                                        <span>
+                                                            {{ comments.isExpanded ? comments.content :
+                                                            (comments.content?.length > shortTextLength ?
+                                                            (comments.content.substring(0, shortTextLength) + '...') :
+                                                            comments.content) }}
+                                                        </span>
+                                                        <a class="ct_orange_text" (click)="toggleCommentText(i)"
+                                                            href="javascript:void(0);"
+                                                            *ngIf="shouldShowReadMore(comments.content)">
+                                                            {{ comments.isExpanded ? 'Read less' : 'Read more' }}
+                                                        </a>
+                                                    </p>
                                                 </div>
-
                                             </div>
-                                            <p
-                                                class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 ct_commented_text mt-3">
-                                                <span>Design Shot is an invitation to ponder cn design as a living
-                                                    entity. capture of embodying and
-                                                    influencing the flow of thoughts and sensations in</span> <a
-                                                    href="#" class="ct_orange_text">Read more</a></p>
 
-                                            <div class="mt-4">
-                                                <button
-                                                    class="ct_orange_btn ct_tansparent_btn w-100 ct_white_border_1 ct_border_radius_10">Load
-                                                    more comments</button>
+                                            <div class="ms-auto me-2" *ngIf="userId == comments.user.id"
+                                                style="cursor: pointer;"><i
+                                                    *ngIf="btnLoaderCmtDel && comments.id != deleteId || !btnLoaderCmtDel"
+                                                    (click)="deleteComment(comments.id, feed.id)"
+                                                    class="fa-solid fa-trash text-white"></i>
+                                                <div class="text-white"
+                                                    *ngIf="btnLoaderCmtDel && comments.id == deleteId">
+                                                    <div class="spinner-border" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="ct_like_btn" [class.ct_active_like]="comments.alreadyLiked"
+                                                (click)="likeComment(comments.id, feed.id)" style="cursor: pointer;">
+                                                <!-- show this class ct_active_like when user will like  -->
+                                                <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z"
+                                                        stroke="#E58934" stroke-width="1.3" />
+                                                </svg>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="ct_like_btn">
-                                        <!-- show this class ct_active_like when user will like  -->
-                                        <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M9.89087 3.72644L10.5 5.36195L11.1091 3.72644C11.7765 1.93453 13.526 0.65 15.5846 0.65C18.2251 0.65 20.35 2.75864 20.35 5.34124C20.35 9.36765 17.8894 12.6195 15.3175 14.9115C14.0405 16.0496 12.7606 16.9283 11.7989 17.5227C11.3187 17.8195 10.9197 18.0443 10.6423 18.194C10.5905 18.222 10.543 18.2473 10.5 18.27C10.457 18.2473 10.4095 18.222 10.3577 18.194C10.0803 18.0442 9.68127 17.8195 9.20111 17.5227C8.23945 16.9283 6.95952 16.0495 5.68246 14.9114C3.11056 12.6194 0.65 9.36754 0.65 5.34124C0.65 2.75864 2.77494 0.65 5.41536 0.65C7.47396 0.65 9.2235 1.93453 9.89087 3.72644Z"
-                                                stroke="#E58934" stroke-width="1.3"></path>
-                                        </svg>
+                                        }
 
                                     </div>
+
+
                                 </div>
-
+                                <div class="mt-4" *ngIf="shouldShowLoadMore(feed.id)">
+                                    <button (click)="loadMoreComments(feed.id)"
+                                        class="ct_orange_btn ct_tansparent_btn w-100 ct_white_border_1 ct_border_radius_10">Load
+                                        more comments</button>
+                                </div>
                             </div>
-
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
+            } @else {
+            <div class="ct_all_team_member_list">
+                <ul class="ct_message_user_lit mt-3" style="max-height: 670px;" (click)="openChat()">
+
+                    <li>
+                        <div class="ct_all_team_member_list">
+                            <div class="d-flex align-items-center gap-3">
+                                <p class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500">
+                                    Admin</p>
+                                <div class="d-flex align-items-center gap-2">
+                                    <img [src]="teamAdminImg ? teamAdminImg : '/assets/img/np_pro.png'" alt=""
+                                        class="ct_img_40 ct_orange_border_1">
+                                    <p class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500">
+                                        {{teamAdminName}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- add This Class active when chat open  -->
+                    <li class="" *ngFor="let participants of teamParticipants;">
+
+                        <div class="ct_all_team_member_list">
+
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="d-flex align-items-center gap-2">
+                                    @if(participants.coach?.avatar_url){
+                                    <img [src]="participants.avatar_url ? participants.avatar_url : '/assets/img/np_pro.png'"
+                                        alt="" class="ct_img_40 ct_orange_border_1">
+                                    } @else {
+                                    <img [src]="participants.avatar_url ? participants.avatar_url : '/assets/img/np_pro.png'"
+                                        alt="" class="ct_img_40 ct_orange_border_1">
+                                    }
+
+                                    <p class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500">
+                                        {{participants.full_name ? participants.full_name :
+                                        participants.full_name}}</p>
+                                </div>
+
+                                @if(participants.id == userId){
+                                <div class="dropdown ms-auto ct_chat_dropdown">
+                                    <button class="btn  ct_dropdown_btn" type="button" id="dropdownMenuButton1"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa-solid fa-ellipsis-vertical ct_orange_text"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item py-0" (click)="leaveTeam()">Leave</a></li>
+                                    </ul>
+                                </div>
+                                }
+
+
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            }
 
         </div>
 
@@ -652,7 +969,7 @@
 
 <!-- Create Team Modal S -->
 
-<div class="modal fade" id="ct_create_team" tabindex="-1" aria-labelledby="ct_create_teamLabel" aria-hidden="true">
+<div class="modal fade" id="ct_add_team" tabindex="-1" aria-labelledby="ct_add_team" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header border-0 pt-0 px-0 d-block text-center">
@@ -662,41 +979,175 @@
                         class="fa-solid fa-x"></i></button>
             </div>
             <div class="modal-body">
-                <div>
-                    <input type="text" class="form-control ct_login_input" placeholder="My Community Name">
-                </div>
-                <div class="ct_uploaded_cnt">
-                    <div id="ct_audio" class="ct_audio_upload_first" style="max-width: 100%;"><label
-                            for="ct_upload_audio"><input type="file" id="ct_upload_audio" accept="audio/*"
-                                class="d-none"><!--bindings={
-                "ng-reflect-ng-if": null
-              }-->
-                            <div>
-                                <p class="mb-2 text-white ct_fs_13">Click to upload audio file</p>
-                                <p class="mb-0 text-white ct_text_op_5 ct_fs_13">Max upload file 50 MB</p>
-                            </div><!--bindings={
-                "ng-reflect-ng-if": "true"
-              }-->
-                        </label></div>
-                    <div id="ct_video" class="ct_audio_upload_first d-block" style="max-width: 100%;"><label
-                            for="ct_upload_video"><input type="file" id="ct_upload_video" accept="video/*"
-                                class="d-none"><!--bindings={
-                "ng-reflect-ng-if": null
-              }-->
-                            <div>
-                                <p class="mb-2 text-white ct_fs_13">Click to upload video file</p>
-                                <p class="mb-0 text-white ct_text_op_5 ct_fs_13">Max upload file 50 MB</p>
-                            </div><!--bindings={
-                "ng-reflect-ng-if": "true"
-              }-->
-                        </label></div>
-                </div>
+                <form [formGroup]="newForm">
+                    <div>
+                        <input type="text" class="form-control ct_login_input" placeholder="My Community Name"
+                            formControlName="title">
+                    </div>
 
+                    <div class="mt-3">
+                        <input type="text" class="form-control ct_login_input" placeholder="My Community Description"
+                            formControlName="about">
+                    </div>
 
-                <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 w-100 mt-4">Create</button>
+                    <div class="ct_uploaded_cnt">
+                        <div id="ct_video" class="ct_audio_upload_first d-block" style="max-width: 100%;"><label
+                                for="imgInp">
+                                <input accept="image/*" type="file" id="imgInp" class="d-none" formControlName="image"
+                                    (change)="handleCommittedFileInput($event)" />
+                                <div *ngIf="!croppedImage">
+                                    <p class="mb-2 text-white ct_fs_13">Click to upload image</p>
+                                    <p class="mb-0 text-white ct_text_op_5 ct_fs_13">Max upload file 5 MB</p>
+                                </div>
+                                <img *ngIf="croppedImage" class="ct_img_h_200"
+                                    [src]="croppedImage ? croppedImage : '/assets/img/np_pro.png'"
+                                    alt="Uploaded Image" />
+                            </label>
+                        </div>
+                    </div>
+
+                    <button hidden type="button" class="btn btn-secondary" #closeModal
+                        data-bs-dismiss="modal">Close</button>
+                    <button (click)="createTeam()" class="ct_orange_btn ct_grey_btn ct_border_radius_10 w-100 mt-4"
+                        [disabled]="btnLoader">
+                        <div class="d-flex align-items-center">
+                            <div class="spinner-border me-2" role="status" *ngIf="btnLoader">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span *ngIf="!btnLoader">Create</span>
+                        </div>
+                    </button>
+                </form>
+
             </div>
 
         </div>
     </div>
 </div>
+
 <!-- Create Team Modal E -->
+
+<div class="modal fade" id="ct_edit_team" tabindex="-1" aria-labelledby="ct_edit_team" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pt-0 px-0 d-block text-center">
+                <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Create New
+                    Community</h5>
+                <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="fa-solid fa-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="newForm">
+                    <div>
+                        <input type="text" class="form-control ct_login_input" placeholder="My Community Name"
+                            formControlName="title">
+                    </div>
+
+                    <div class="mt-3">
+                        <input type="text" class="form-control ct_login_input" placeholder="My Community Description"
+                            formControlName="about">
+                    </div>
+
+                    <div class="ct_uploaded_cnt">
+                        <div id="ct_video" class="ct_audio_upload_first d-block" style="max-width: 100%;"><label
+                                for="imgInp1">
+                                <input accept="image/*" type="file" id="imgInp1" class="d-none" formControlName="image"
+                                    (change)="handleCommittedFileInput1($event)" />
+                                <div *ngIf="!eventImage">
+                                    <p class="mb-2 text-white ct_fs_13">Click to upload image</p>
+                                    <p class="mb-0 text-white ct_text_op_5 ct_fs_13">Max upload file 5 MB</p>
+                                </div>
+                                <img *ngIf="eventImage" class="ct_img_h_200"
+                                    [src]="eventImage ? eventImage : '/assets/img/np_pro.png'" alt="Uploaded Image" />
+                            </label>
+                        </div>
+                    </div>
+
+                    <button hidden type="button" class="btn btn-secondary" #closeModal1
+                        data-bs-dismiss="modal">Close</button>
+                    <button (click)="editTeam()" class="ct_orange_btn ct_grey_btn ct_border_radius_10 w-100 mt-4"
+                        [disabled]="btnLoader1">
+                        <div class="d-flex align-items-center">
+                            <div class="spinner-border me-2" role="status" *ngIf="btnLoader1">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span *ngIf="!btnLoader1">Save</span>
+                        </div>
+                    </button>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div *ngIf="loading" class="ct_loader_main">
+    <div class="loader"></div>
+</div>
+
+
+<!-- request team members -->
+<div class="modal fade" id="ct_request_coach" tabindex="-1" aria-labelledby="ct_request_coach" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pt-0 px-0 d-block text-center">
+                <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Send Request
+                </h5>
+                <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="fa-solid fa-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <input type="text" class="form-control ct_login_input" placeholder="Team Name"
+                        [(ngModel)]="searchQueryFilterReq">
+                </div>
+
+                <div *ngIf="(followedCoaches | filter:searchQueryFilterReq)?.length === 0 && searchQueryFilterReq"
+                    class="text-center mt-4">
+                    <p class="ct_fs_15 text-white">No community found</p>
+                </div>
+
+                <div class="ct_add_member_scroll" *ngFor="let coach of followedCoaches | filter:searchQueryFilterReq;">
+                    <div class="d-flex align-items-center gap-2 mt-4">
+
+                        <img [src]="coach.avatar_url ? coach.avatar_url : '/assets/img/np_pro.png'" alt=""
+                            class="ct_img_62 ct_border_radius_100">
+
+
+                        <div>
+                            <h4 class="ct_ff_roboto ct_fw_600 text-white ct_fs_15 mb-0">{{coach.full_name}}</h4>
+                            <div class="d-flex align-items-center  gap-2 mt-1">
+                                <img src="../assets/img/star.png" alt="star">
+                                <span class="ct_orange_text">{{coach.category?.name}}</span>
+                            </div>
+                        </div>
+                        <!-- <div class="form-check ms-auto ct_custom_checkbox">
+                            <input class="form-check-input" type="checkbox" (change)="onCategoryChange($event, coach)">
+                        </div> -->
+                        <div class="form-check ms-auto ct_custom_radio">
+                            <input class="form-check-input" type="checkbox"
+                                [checked]="selectedCategoryIds.includes(coach.id)" id="flexRadioDefault1"
+                                (change)="onCategoryChange($event, coach)">
+                        </div>
+                    </div>
+
+                    <button hidden type="button" class="btn btn-secondary" #closeModal2
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="button"
+                        class=" ct_orange_btn ct_grey_btn ct_custom_btn mt-5 px-4 w-auto mx-auto d-block"
+                        (click)="sendRequest()" [disabled]="sendReqLoader">
+                        <div class="d-flex align-items-center">
+                            <div class="spinner-border me-2" role="status" *ngIf="sendReqLoader">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span *ngIf="!sendReqLoader">Send Request</span>
+                        </div>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

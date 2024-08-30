@@ -18,7 +18,7 @@
             <ul class="ct_mt_30 ct_all_notification px-2">
                 <li *ngFor="let categories of data;">
                     <div class="d-flex align-items-center justify-content-between" >
-                        <div class="d-flex gap-2" (click)="getCoachId(categories.following.id)" style="cursor: pointer;">
+                        <div class="d-flex gap-2" (click)="getCoachId(categories.following.id, categories.following.role)" style="cursor: pointer;">
                             <div class="ct_star_circle">
                                 <img [src]="categories.following.avatar_url ? categories.following.avatar_url : '/assets/img/np_pro.png'" alt="" class="ct_img_44 ct_bor ct_orange_border_1">
                             </div>
@@ -41,7 +41,7 @@
                                 </div>
                                 
                             </button>
-                            <p class="mb-0 ct_ff_roboto ct_fs_12 text-white text-center mt-2 ct_fw_400">
+                            <p *ngIf="categories.following.totalFollowers > 0" class="mb-0 ct_ff_roboto ct_fs_12 text-white text-center mt-2 ct_fw_400">
                                 {{categories.following.totalFollowers}} {{categories.following.totalFollowers > 1 ? 'Followers' : 'Follower'}}
                             </p>
                         </div>

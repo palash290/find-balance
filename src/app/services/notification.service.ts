@@ -20,6 +20,7 @@ export class NotificationService {
   requestPermission() {
     this.afMessaging.requestToken.subscribe(
       (token: any) => {
+        console.log('FCM Token Working:');
         localStorage.setItem('fcmFbToken', token)
         console.log('FCM Token:', token);
       },

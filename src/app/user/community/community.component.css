@@ -16,7 +16,7 @@ div#ct_edit_community .modal-content {
 .ct_community_sidebar li.active,.ct_community_sidebar li:hover {
     background-color: var(--orange);
 }
-.ct_community_sidebar li:hover button{
+.ct_community_sidebar li:hover button,.ct_community_sidebar li.active button{
   background-color: #fff !important;
   color: var(--orange);
 }
@@ -26,7 +26,7 @@ div#ct_edit_community .modal-content {
 .ct_community_left_width{
     max-width: 350px;
 }
-.ct_community_sidebar li:hover h5{
+.ct_community_sidebar li:hover h5,.ct_community_sidebar li.active h5{
   color: #fff;
 } 
 @media screen and (max-width:1199px) {

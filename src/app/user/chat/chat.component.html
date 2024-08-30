@@ -59,7 +59,7 @@
 
         <ul class="ct_message_user_lit mt-3" (click)="openChat()">
 
-            <div *ngIf="(chatsList | chatFilter:searchQueryFilter)?.length === 0 && searchQueryFilter"
+            <div *ngIf="(!chatsList || (chatsList | chatFilter:searchQueryFilter)?.length === 0)"
                 class="text-center mt-4">
                 <p class="ct_fs_15 text-white">No chats found</p>
             </div>
@@ -256,8 +256,9 @@
                             placeholder="Type here..."
                             maxlength="250"
                             rows="1"
-                            
                             [ngModelOptions]="{standalone: true}"
+                            (keyup.enter)="sendMessage()"
+                            (keydown)="handleKeyDown($event)"
                             (input)="handleInput()"></textarea>
 
                         <div class="d-flex align-items-center" style="cursor: pointer;">

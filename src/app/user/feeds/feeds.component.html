@@ -14,18 +14,18 @@
             <span class="text-white">Category</span>
             <select class="" [(ngModel)]="categoryId"
             (change)="onCategoryChange($event)">
-            <option value="0">All</option>
+            <option value="">All</option>
             <option *ngFor="let category of categories" [value]="category.id">{{ category.name
                 }}</option>
         </select>
           </div>
           <div class="ct_filter_search_input_140">
             <span class="text-white">Type</span>
-            <select>
+            <select [(ngModel)]="selectedOption" (change)="getProfileData()">
                 <option value="">All</option>
-                <option value="Following">Video</option>
-                <option value="Following">Audio</option>
-                <option value="Following">Podcast</option>
+                <option value="VIDEO">Video</option>
+                <option value="PODCAST">Audio</option>
+                <option value="ARTICLE">Article</option>
             </select>
             </div>
             <div class="w-100">
@@ -37,6 +37,10 @@
 
 
         <hr class="ct_hr_line_op_5">
+
+        <div *ngIf="data?.length === 0" class="text-center mt-4">
+            <p class="ct_fs_15 text-white">No posts found</p>
+        </div>
 
         <div class="ct_all_feed_boxex">
             <div *ngFor="let feed of data; let i = index">
@@ -55,7 +59,7 @@
                                     </p>
                                     <div class="d-flex align-items-center justify-content-center gap-2">
                                         <img src="../assets/img/star.png" alt="star">
-                                        <span class="ct_orange_text">{{feed.coach.category.name}}</span>
+                                        <span class="ct_orange_text">{{feed.category.name}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -349,7 +353,7 @@
                                         date:'d/M/yy, h:mm a'}}</p>
                                     <div class="d-flex align-items-center justify-content-center gap-2">
                                         <img src="../assets/img/star.png" alt="star">
-                                        <span class="ct_orange_text">{{feed.coach.category.name}}</span>
+                                        <span class="ct_orange_text">{{feed.category.name}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -601,7 +605,7 @@
                                         date:'d/M/yy, h:mm a'}}</p>
                                     <div class="d-flex align-items-center justify-content-center gap-2">
                                         <img src="../assets/img/star.png" alt="star">
-                                        <span class="ct_orange_text">{{feed.coach.category.name}}</span>
+                                        <span class="ct_orange_text">{{feed.category.name}}</span>
                                     </div>
                                 </div>
                             </div>

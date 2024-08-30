@@ -38,7 +38,25 @@ export class FollowUsersComponent {
 
   followId: any;
 
-  removeUser(postId: any) {
+  // removeUser(postId: any) {
+  //   //this.isLike = !this.isLike;
+  //   this.followId = postId;
+  //   this.btnLoader = true
+
+  //   this.service.postAPI(`coach/follow/unfollow/${postId}`, null).subscribe({
+  //     next: resp => {
+  //       console.log(resp);
+  //       this.searchFollowUsersList();
+  //       this.btnLoader = false;
+  //     },
+  //     error: error => {
+  //       this.btnLoader = false
+  //       console.log(error.message)
+  //     }
+  //   });
+  // }
+
+  unfollowCoach(postId: any) {
     //this.isLike = !this.isLike;
     this.followId = postId;
     this.btnLoader = true
@@ -56,9 +74,27 @@ export class FollowUsersComponent {
     });
   }
 
+  followCoach(postId: any) {
+    //this.isLike = !this.isLike;
+    this.followId = postId;
+    this.btnLoader = true
 
-  getUserId(uderId: any) {
-    this.router.navigateByUrl(`user/main/my-profile/${uderId}`)
+    this.service.postAPI(`coach/follow/${postId}`, null).subscribe({
+      next: resp => {
+        console.log(resp);
+        this.searchFollowUsersList();
+        this.btnLoader = false;
+      },
+      error: error => {
+        this.btnLoader = false
+        console.log(error.message)
+      }
+    });
+  }
+
+
+  getUserId(uderId: any, role:any) {
+    this.router.navigateByUrl(`user/main/my-profile/${uderId}/${role}`)
   }
 
 

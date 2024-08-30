@@ -124,15 +124,35 @@ export class NotificationComponent {
 
   acceptLoader: boolean = false;
   notificationId: any;
+
   acceptTeam(teamId: any, notifId: any){
     this.notificationId = notifId;
     this.acceptLoader = true
     const formURlData = new URLSearchParams();
     formURlData.set('teamId', teamId);
-    formURlData.set('notifId', notifId);
-    this.service.loginUser(this.isCoach ? 'team/join1111' : 'user/login', formURlData.toString()).subscribe({
+    formURlData.set('notificationId', notifId);
+    this.service.postAPI(this.isCoach ? 'coach/team/join' : 'user/login', formURlData.toString()).subscribe({
       next: (resp) => {
-        this.acceptLoader = false
+        this.acceptLoader = false;
+        this.getNotification();
+      },
+      error: (error) => {
+        this.acceptLoader = false;
+        console.error('Login error:', error.error.message);
+      }
+    });
+  }
+
+  rejectTeam(notifId: any){
+    this.notificationId = notifId;
+    this.acceptLoader = true
+    const formURlData = new URLSearchParams();
+    //formURlData.set('teamId', teamId);
+    formURlData.set('notificationId', notifId);
+    this.service.deleteAcc(this.isCoach ? `coach/notifications/${notifId}` : 'user/login').subscribe({
+      next: (resp) => {
+        this.acceptLoader = false;
+        this.getNotification();
       },
       error: (error) => {
         this.acceptLoader = false

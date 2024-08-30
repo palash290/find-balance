@@ -104,6 +104,7 @@ export class SidebarComponent {
   }
 
   getEventData() {
+    //debugger
     this.visibilityService.getApi(this.isCoach ? 'coach/event' : 'user/event/allEvents').subscribe({
       next: resp => {
         if (this.isCoach) {

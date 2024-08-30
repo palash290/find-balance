@@ -37,23 +37,76 @@
                                 </div>
                             </button>
                         </div>
-                        
+
                         <div>
-                            <button class="ct_reject_btn">Reject</button>
+                            <button class="ct_reject_btn" (click)="rejectTeam(notify.id)">Reject</button>
                         </div>
                     </div>
+
+                    <!-- <div class="d-flex align-items-center gap-2 ms-auto ct_ms_0_575">
+
+                        <button class="ct_accept_btn" (click)="acceptTeam(notify.data.teamId, notify.id)">
+                            <div class="d-flex align-items-center">
+
+                                <span>Accepted</span>
+                            </div>
+                        </button>
+
+
+
+                    </div> -->
+
                 </div>
             </div>
 
-            <div *ngIf="notify.type == 'post'">
-                <div class="d-flex ct_flex_wrap_575 gap-3" (click)="getChat(notify.data.chatId, notify.type)"
-                    style="cursor: pointer;">
+            <div *ngIf="notify.type == 'chat'">
+                <div class="d-flex ct_flex_wrap_575 gap-3" style="cursor: pointer;">
                     <img [src]="notify.byUser.avatar_url ? notify.byUser.avatar_url : '/assets/img/np_pro.png'" alt=""
                         class="ct_img_40 ct_bor ct_white_border_1">
                     <div>
                         <h5 class="ct_fs_15 text-white ct_fw_600 mb-1">{{notify.byUser.full_name}}</h5>
                         <p class="mb-0 ct_fs_12 text-white">{{cleanNotificationContent(notify.byUser.full_name,
                             notify.content)}}</p>
+                    </div>
+            
+
+                    <!-- <div class="d-flex align-items-center gap-2 ms-auto ct_ms_0_575">
+
+                        <button class="ct_accept_btn" (click)="acceptTeam(notify.data.teamId, notify.id)">
+                            <div class="d-flex align-items-center">
+
+                                <span>Accepted</span>
+                            </div>
+                        </button>
+
+
+
+                    </div> -->
+
+                </div>
+            </div>
+
+            <div *ngIf="notify.type == 'post'">
+                <div class="d-flex ct_flex_wrap_575 gap-3" (click)="getChat(notify.data.chatId, notify.type)"
+                    style="cursor: pointer;">
+                    @if(notify.byUser?.avatar_url){
+                        <img [src]="notify.byCoach.avatar_url ? notify.byCoach.avatar_url : '/assets/img/np_pro.png'" alt=""
+                        class="ct_img_40 ct_bor ct_white_border_1">
+                    } @else {
+                        <img [src]="notify.byCoach.avatar_url ? notify.byCoach.avatar_url : '/assets/img/np_pro.png'" alt=""
+                        class="ct_img_40 ct_bor ct_white_border_1">
+                    }
+                   
+                    <div>
+                        <h5 class="ct_fs_15 text-white ct_fw_600 mb-1">{{notify.byUser?.full_name ? notify.byUser?.full_name : notify.byCoach?.full_name}}</h5>
+                        @if(notify.byUser?.full_name){
+                            <p class="mb-0 ct_fs_12 text-white">{{cleanNotificationContent(notify.byUser.full_name,
+                            notify.content)}}</p>
+                        } @else {
+                            <p class="mb-0 ct_fs_12 text-white">{{cleanNotificationContent(notify.byCoach.full_name,
+                            notify.content)}}</p>
+                        }
+                       
                     </div>
 
                 </div>

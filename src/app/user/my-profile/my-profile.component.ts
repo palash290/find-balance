@@ -34,10 +34,12 @@ export class MyProfileComponent {
   userId: any;
   userRole: any;
   loginuserId: any;
+  routerole: any;
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.userId = params.get('id');
+      this.routerole = params.get('role');
     });
 
     if (this.userId) {
@@ -50,8 +52,9 @@ export class MyProfileComponent {
     this.loginuserId = localStorage.getItem('fbId');
   }
 
+  //if coach see coach profile
   isCoachPosts: boolean = false;
-  getCoachProfile(userId: any){
+  getCoachProfile(userId: any) {
     const url = `coach/getCoachProfile/${userId}`;
     this.service.getApi(url).subscribe({
       next: resp => {
@@ -80,10 +83,15 @@ export class MyProfileComponent {
     });
   }
 
-
+  url: any;
   getUserProfile(userId: any) {
-    const url = this.isCoach ? `coach/userProfile/${userId}` : `user/getCoachProfile/${userId}`;
-    this.service.getApi(url).subscribe({
+    if(this.routerole == 'COACH'){
+      this.url = this.isCoach ? `coach/getCoachProfile/${userId}` : `user/getCoachProfile/${userId}`;
+    } else {
+      this.url = this.isCoach ? `coach/userProfile/${userId}` : `user/getCoachProfile/${userId}`;
+    }
+    //const url = this.isCoach ? `coach/userProfile/${userId}` : `user/getCoachProfile/${userId}`;
+    this.service.getApi(this.url).subscribe({
       next: resp => {
 
         this.userRole = resp.data.role;
@@ -101,6 +109,9 @@ export class MyProfileComponent {
 
         this.selectedCategoryNames = resp.data.CoachCategory?.map((item: { category: { name: any; }; }) => item.category.name);
 
+        if(!this.isCoach){
+          this.getSingleCoachPosts(userId);
+        }
       },
       error: error => {
         this.getCoachProfile(this.userId);
@@ -149,6 +160,17 @@ export class MyProfileComponent {
 
   postData: any;
   shortTextLength: number = 270;
+
+  getSingleCoachPosts(coachId: any) {
+    this.service.getApi(`user/allPosts/coach/${coachId}`).subscribe({
+      next: resp => {
+        this.postData = resp.data?.map((item: any) => ({ ...item, isExpanded: false, isPlaying: false })).reverse();
+      },
+      error: error => {
+        console.log(error.message)
+      }
+    });
+  }
 
   getProfileData() {
     this.service.getApi(this.isCoach ? 'coach/post' : 'user/allPosts').subscribe({
@@ -232,6 +254,9 @@ export class MyProfileComponent {
       next: resp => {
         console.log(resp);
         this.getProfileData();
+        if(!this.isCoach){
+          this.getSingleCoachPosts(this.userId);
+        }
       },
       error: error => {
         console.log(error.message)
@@ -247,6 +272,9 @@ export class MyProfileComponent {
       next: resp => {
         console.log(resp);
         this.getProfileData();
+        if(!this.isCoach){
+          this.getSingleCoachPosts(this.userId);
+        }
       },
       error: error => {
         console.log(error.message)
@@ -273,6 +301,9 @@ export class MyProfileComponent {
         this.getPostComments(id);
         this.btnLoader = false;
         this.getProfileData();
+        if(!this.isCoach){
+          this.getSingleCoachPosts(this.userId);
+        }
       },
       error: (error) => {
         //this.toastr.error('Error uploading files!');
@@ -322,8 +353,14 @@ export class MyProfileComponent {
                 'success'
               );
               this.getProfileData();
+              if(!this.isCoach){
+                this.getSingleCoachPosts(this.userId);
+              }
             } else {
               this.getProfileData();
+              if(!this.isCoach){
+                this.getSingleCoachPosts(this.userId);
+              }
             }
           },
           error: (error) => {
@@ -333,6 +370,9 @@ export class MyProfileComponent {
               'error'
             );
             this.getProfileData();
+            if(!this.isCoach){
+              this.getSingleCoachPosts(this.userId);
+            }
             //this.toastr.error('Error deleting account!');
             console.error('Error deleting account', error);
           }
@@ -354,6 +394,9 @@ export class MyProfileComponent {
         this.getPostComments(postId);
         this.btnLoaderCmt = false;
         this.getProfileData();
+        if(!this.isCoach){
+          this.getSingleCoachPosts(this.userId);
+        }
       },
       error: error => {
         console.log(error.message);
@@ -362,7 +405,7 @@ export class MyProfileComponent {
     });
   }
 
-  
+
 
 
 
@@ -373,7 +416,7 @@ export class MyProfileComponent {
   videoDuration: number = 0;
 
   toggleVideo(videoElement: HTMLVideoElement) {
-    
+
     // if (this.currentAudio) {
     //   this.currentAudio.pause();
     // }
@@ -424,6 +467,6 @@ export class MyProfileComponent {
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
-  
+
 
 }

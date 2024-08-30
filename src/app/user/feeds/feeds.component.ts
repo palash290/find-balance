@@ -54,7 +54,7 @@ export class FeedsComponent {
     this.visibilityService.triggerRefresh()
   }
 
-  categoryId: any = '0';
+  categoryId: any = '';
   selectedCategoryName: string | undefined;
 
   onCategoryChange(event: any): void {
@@ -67,14 +67,16 @@ export class FeedsComponent {
       console.log('Selected Category ID:', this.categoryId);
       console.log('Selected Category Name:', this.selectedCategoryName);
     }
+    this.getProfileData();
   }
 
 
   shortTextLength: number = 270;
   durationOrg: any;
+  selectedOption: string = '';
 
   getProfileData() {
-    this.visibilityService.getApi(this.isCoach ? 'coach/post' : 'user/allPosts').subscribe({
+    this.visibilityService.getApi(this.isCoach ? `coach/post/allPosts?type=${this.selectedOption}&categoryId=${this.categoryId}` : `user/allPosts?type=${this.selectedOption}&categoryId=${this.categoryId}`).subscribe({
       next: resp => {
         if (this.isCoach) {
           this.data = resp.data?.map((item: any) => ({ ...item, isExpanded: false, isPlaying: false })).reverse();
