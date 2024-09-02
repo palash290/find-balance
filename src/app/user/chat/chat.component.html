@@ -257,7 +257,7 @@
                             maxlength="250"
                             rows="1"
                             [ngModelOptions]="{standalone: true}"
-                            (keyup.enter)="sendMessage()"
+                            
                             (keydown)="handleKeyDown($event)"
                             (input)="handleInput()"></textarea>
 
@@ -392,12 +392,12 @@
             </div>
             <div class="modal-body">
                 <div *ngIf="!isCoach">
-                    <input type="text" class="form-control ct_login_input" placeholder="Enter Name"
+                    <input type="text" class="form-control ct_login_input" placeholder="Search..."
                         [(ngModel)]="searchQuery" (ngModelChange)="searchCoachesList()">
                 </div>
 
                 <div *ngIf="isCoach">
-                    <input type="text" class="form-control ct_login_input" placeholder="Enter Name"
+                    <input type="text" class="form-control ct_login_input" placeholder="Search..."
                         [(ngModel)]="searchQuery" (ngModelChange)="searchFollowUsersList()">
                 </div>
 
@@ -406,7 +406,7 @@
                         <p class="ct_fs_15 text-white">No users found</p>
                     </div>
                     <div *ngFor="let follower of followersList;">
-                        <div class="d-flex align-items-center gap-2 mt-4" style="cursor: pointer;"
+                        <div *ngIf="follower.follower.role == 'USER'" class="d-flex align-items-center gap-2 mt-4" style="cursor: pointer;"
                             (click)="createChat(follower.follower.id)">
                             <img [src]="follower.follower.avatar_url ? follower.follower.avatar_url : '/assets/img/np_pro.png'"
                                 alt="" class="ct_img_62 ct_border_radius_100">

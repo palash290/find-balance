@@ -11,7 +11,8 @@ export class SocketService {
   role: any;
   isCoach: boolean = true;
   private socket!: Socket;
-  private readonly serverUrl = 'http://18.175.98.27:4000';
+  // private readonly serverUrl = 'http://18.175.98.27:4000';
+  private readonly serverUrl = 'https://www.fbcoach.com:4000';
   authToken = localStorage.getItem('fbToken');
   constructor(private service: SharedService) {
     

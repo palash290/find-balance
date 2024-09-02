@@ -51,7 +51,7 @@ export class CommunityComponent {
   initForm() {
     this.newForm = new FormGroup({
       title: new FormControl('', Validators.required),
-      about: new FormControl('', Validators.required),
+      about: new FormControl(''),
       image: new FormControl(null)
     })
   }
@@ -69,6 +69,7 @@ export class CommunityComponent {
   communityAdminName: any;
   communityAdminImg: any;
   communityAdminid: any;
+  communityAdminRole: any;
   selectedCommunityId: number | null = null;
 
   getCommunityData() {
@@ -83,7 +84,7 @@ export class CommunityComponent {
   }
 
   getCommunityProfileData(cId: any, participantCheck: boolean, isAdmin: boolean) {
-    
+
     this.isAdmin = isAdmin
     if (participantCheck || isAdmin) {
       this.communityId = cId;
@@ -112,6 +113,7 @@ export class CommunityComponent {
           this.communityAdminid = resp.data.admin.id;
           this.communityAdminName = resp.data.admin.full_name;
           this.communityAdminImg = resp.data.admin.avatar_url;
+          this.communityAdminRole = resp.data.admin.role;
 
           // this.communityParticipants = resp.data.Participant.filter(
           //   (participant: any) => participant.id !== this.communityAdminid
@@ -140,7 +142,7 @@ export class CommunityComponent {
     this.service.postAPI(this.isCoach ? 'coach/communtiy/join' : 'user/communtiy/join', formURlData.toString()).subscribe({
       next: (response) => {
         this.btnLoader = false;
-        this.getCommunityProfileData(communityId, true, true);
+        this.getCommunityProfileData(communityId, true, false);
         this.getCommunityData();
       },
       error: (error) => {
@@ -164,6 +166,7 @@ export class CommunityComponent {
         this.btnLoader1 = false;
         //this.getCommunityProfileData(this.communityId, false);
         this.getCommunityData();
+        this.communityName = '';
       },
       error: (error) => {
         this.btnLoader1 = false;
@@ -184,7 +187,9 @@ export class CommunityComponent {
       if (this.UploadedFile) {
         formURlData.append('file', this.UploadedFile);
       }
-      formURlData.set('description', this.newForm.value.about);
+      if (this.newForm.value.about) {
+        formURlData.set('description', this.newForm.value.about);
+      }
       this.service.postAPIFormData('coach/communtiy', formURlData).subscribe({
         next: (resp) => {
           if (resp.success === true) {
@@ -595,6 +600,53 @@ export class CommunityComponent {
   closeChat() {
     this.isChatActive = false;
   }
-  
+
+  deleteCommunity() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this community!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.deleteAcc(`coach/communtiy/${this.communityId}`).subscribe({
+          next: (resp) => {
+            if (resp.success) {
+              Swal.fire(
+                'Deleted!',
+                'Your community has been deleted successfully.',
+                'success'
+              );
+              this.getCommunityData();
+              this.communityName = '';
+            } else {
+              this.getCommunityData();
+            }
+          },
+          error: (error) => {
+            Swal.fire(
+              'Error!',
+              'There was an error deleting your community.',
+              'error'
+            );
+            this.getCommunityData();
+            console.error('Error deleting account', error);
+          }
+        });
+      }
+    });
+  }
+
+  getCoachId(uderId: any, role: any) {
+    if (uderId == this.userId) {
+      this.route.navigateByUrl('/user/main/my-profile')
+    } else {
+      this.route.navigateByUrl(`user/main/my-profile/${uderId}/${role}`);
+    }
+  }
+
 
 }

@@ -3,6 +3,8 @@ import { SharedService } from '../../services/shared.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SocketService } from '../../services/socket.service';
 import Swal from 'sweetalert2';
+import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'app-notification',
@@ -16,7 +18,7 @@ export class NotificationComponent {
 
   data: any;
 
-  constructor(private service: SharedService, private route: ActivatedRoute, private socketService: SocketService, private router: Router) { }
+  constructor(private service: SharedService, private route: ActivatedRoute, private socketService: SocketService, private router: Router, private location: Location) { }
 
   ngOnInit() {
 
@@ -26,6 +28,10 @@ export class NotificationComponent {
     }
     this.readAllNotification();
     this.getNotification();
+  }
+
+  backClicked() {
+    this.location.back();
   }
 
 
@@ -143,19 +149,21 @@ export class NotificationComponent {
     });
   }
 
-  rejectTeam(notifId: any){
+  rejectLoader: boolean = false;
+  
+  rejectTeam(teamId: any, notifId: any){
     this.notificationId = notifId;
-    this.acceptLoader = true
+    this.rejectLoader = true
     const formURlData = new URLSearchParams();
     //formURlData.set('teamId', teamId);
     formURlData.set('notificationId', notifId);
     this.service.deleteAcc(this.isCoach ? `coach/notifications/${notifId}` : 'user/login').subscribe({
       next: (resp) => {
-        this.acceptLoader = false;
+        this.rejectLoader = false;
         this.getNotification();
       },
       error: (error) => {
-        this.acceptLoader = false
+        this.rejectLoader = false
         console.error('Login error:', error.error.message);
       }
     });

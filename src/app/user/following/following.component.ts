@@ -15,10 +15,13 @@ export class FollowingComponent {
   avatar_url_fb: any;
   isCoach: boolean = true;
   role: any;
+  userId: any;
 
   constructor(private router: Router, private service: SharedService) { }
 
   ngOnInit() {
+    this.userId = localStorage.getItem('fbId');
+
     this.role = this.service.getRole();
     if (this.role == "USER") {
       this.isCoach = false;
@@ -83,8 +86,10 @@ export class FollowingComponent {
     });
   }
 
-  getCoachId(uderId: any, role:any) {
-    this.router.navigateByUrl(`user/main/my-profile/${uderId}/${role}`)
+  getCoachId(uderId: any, role: any) {
+   
+      this.router.navigateByUrl(`user/main/my-profile/${uderId}/${role}`)
+    
   }
 
 

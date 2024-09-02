@@ -23,7 +23,8 @@ messaging.onBackgroundMessage(function (payload) {
     body: payload.notification?.body || 'No Body',
     icon: payload.notification?.icon || '/firebase-logo.png'
   };
-  //console.log('Received background message ', notificationOptions);
-  //self.registration.showNotification(notificationTitle, notificationOptions);
+  console.log('Received background message ', notificationTitle);
+  console.log('Received background message1 ', notificationOptions);
+  self.registration.showNotification(notificationTitle, notificationOptions);
  
 });

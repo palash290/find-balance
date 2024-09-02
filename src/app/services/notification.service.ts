@@ -13,8 +13,9 @@ export class NotificationService {
     this.afMessaging.messages.subscribe((message) => {
       console.log('Message received: ', message);
       this.currentMessage.next(message);
-      //.showNotification(message);
+      //this.showNotification(message);
     });
+
   }
 
   requestPermission() {
@@ -40,17 +41,17 @@ export class NotificationService {
   }
 
 
-  // private showNotification(payload: any) {
-  //   const notificationTitle = payload.notification?.title || 'New Notification';
-  //   const notificationOptions = {
-  //     body: payload.notification?.body,
-  //     icon: payload.notification?.icon || '/firebase-logo.png'
-  //   };
+  private showNotification(payload: any) {
+    const notificationTitle = payload.notification?.title || 'New Notification';
+    const notificationOptions = {
+      body: payload.notification?.body,
+      icon: payload.notification?.icon || '/firebase-logo.png'
+    };
   
-  //   if ('Notification' in window && Notification.permission === 'granted') {
-  //     new Notification(notificationTitle, notificationOptions);
-  //   }
-  // }
+    if ('Notification' in window && Notification.permission === 'granted') {
+      new Notification(notificationTitle, notificationOptions);
+    }
+  }
   
  
 

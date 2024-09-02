@@ -46,7 +46,9 @@ export class ChatComponent {
         if (chat) {
           chat.unreadCount = (chat.unreadCount || 0) + 1;
         }
-
+        // console.log('notify working!');
+        
+        // this.service.triggerRefresh();
         // Update the view by triggering change detection if needed
         // this.changeDetectorRef.detectChanges(); // Uncomment if change detection is not automatic
         this.getAllChats();
@@ -227,20 +229,20 @@ export class ChatComponent {
     });
   }
 
-  deactivateChat(chatId: any) {
-    const formURlData = new URLSearchParams();
-    formURlData.set('chatId', chatId);
-    this.service.postAPI(this.isCoach ? `coach/chat/chatStatus` : `user/chat/chatStatus`, formURlData.toString()).subscribe({
-      next: (resp) => {
-        // this.getChatMessages(this.currentChatId);
-        // this.newMessage = '';
-        // this.isDisabled = false;
-      },
-      error: error => {
-        console.log(error.message)
-      }
-    });
-  }
+  // deactivateChat(chatId: any) {
+  //   const formURlData = new URLSearchParams();
+  //   formURlData.set('chatId', chatId);
+  //   this.service.postAPI(this.isCoach ? `coach/chat/chatStatus` : `user/chat/chatStatus`, formURlData.toString()).subscribe({
+  //     next: (resp) => {
+  //       // this.getChatMessages(this.currentChatId);
+  //       // this.newMessage = '';
+  //       // this.isDisabled = false;
+  //     },
+  //     error: error => {
+  //       console.log(error.message)
+  //     }
+  //   });
+  // }
 
   isDisabled: boolean = false;
 

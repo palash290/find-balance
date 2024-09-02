@@ -1,3 +1,5 @@
+<a (click)="backClicked()" class="ct_orange_text ct_back_to_list ct_chat_back" style="cursor: pointer;">Back</a>
+
 <div class="ct_cover_img">
     <img [src]="cover_photo_url ? cover_photo_url : '/assets/img/no_event.png'" alt="" class="ct_img_h_200">
 </div>
@@ -27,74 +29,78 @@
     <div class="ct_grid_4">
 
         @if(education){
-            <div>
-        <h4 class="ct_ff_roboto ct_orange_text ct_fs_18 ct_fw_600 mt-3">Education</h4>
-        <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{ education ? education : 'Not found'
-            }}</p>
-            </div>
+        <div>
+            <h4 class="ct_ff_roboto ct_orange_text ct_fs_18 ct_fw_600 mt-3">Education</h4>
+            <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{ education ? education : 'Not
+                found'
+                }}</p>
+        </div>
         }
-    
+
         @if(experience){
-            <div>
-        <h4 class="ct_ff_roboto ct_orange_text ct_fs_18 ct_fw_600 mt-3">Experience</h4>
-        <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{ experience
-            }}</p>
-            </div>
+        <div>
+            <h4 class="ct_ff_roboto ct_orange_text ct_fs_18 ct_fw_600 mt-3">Experience</h4>
+            <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{ experience
+                }}</p>
+        </div>
         }
-    
+
         <!-- <div *ngIf="isCoach && userRole=='COACH'"> -->
         <!-- <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600 mt-3">Accomplishments</h4>
             <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{accomplishments}}</p> -->
         @if(accomplishments){
-            <div>
-        <h4 class="ct_ff_roboto ct_orange_text ct_fs_18 ct_fw_600 mt-3">Accomplishments</h4>
-        <ng-container *ngIf="accomplishments; else noAccomplishments">
-            <ul class="custom-list mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22 ct_list_style_unset">
-                <li *ngFor="let accomplishment of accomplishments">{{ accomplishment }}</li>
-            </ul>
-        </ng-container>
-    
-        <ng-template #noAccomplishments>
-            <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">Not found</p>
-        </ng-template>
+        <div>
+            <h4 class="ct_ff_roboto ct_orange_text ct_fs_18 ct_fw_600 mt-3">Accomplishments</h4>
+            <ng-container *ngIf="accomplishments; else noAccomplishments">
+                <ul
+                    class="custom-list mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22 ct_list_style_unset">
+                    <li *ngFor="let accomplishment of accomplishments">{{ accomplishment }}</li>
+                </ul>
+            </ng-container>
+
+            <ng-template #noAccomplishments>
+                <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">Not found</p>
+            </ng-template>
         </div>
         }
 
-    
-    
-        @if(certificates){
-            <div>
 
-                <h4 class="ct_ff_roboto ct_orange_text ct_fs_18 ct_fw_600 mt-3">Certificates</h4>
-                <ng-container *ngIf="certificates; else nocertificate">
-                    <ul class="custom-list mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22 ct_list_style_unset">
-                        <li *ngFor="let certificate of certificates">{{ certificate }}</li>
-                    </ul>
-                </ng-container>
-                <ng-template #nocertificate>
-                    <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">Not found</p>
-                </ng-template>
-            </div>
+
+        @if(certificates){
+        <div>
+
+            <h4 class="ct_ff_roboto ct_orange_text ct_fs_18 ct_fw_600 mt-3">Certificates</h4>
+            <ng-container *ngIf="certificates; else nocertificate">
+                <ul
+                    class="custom-list mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22 ct_list_style_unset">
+                    <li *ngFor="let certificate of certificates">{{ certificate }}</li>
+                </ul>
+            </ng-container>
+            <ng-template #nocertificate>
+                <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">Not found</p>
+            </ng-template>
+        </div>
         }
         @if(selectedCategoryNames && selectedCategoryNames.length > 0){
-          <div>
+        <div>
             <h4 class="ct_ff_roboto ct_orange_text ct_fs_18 ct_fw_600 mt-3">Other Categories</h4>
             <ng-container *ngIf="selectedCategoryNames && selectedCategoryNames.length > 0; else noSelectedCategory">
-                <ul class="custom-list mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22 ct_list_style_unset">
+                <ul
+                    class="custom-list mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22 ct_list_style_unset">
                     <li *ngFor="let selectedCategoryName of selectedCategoryNames">{{ selectedCategoryName }}</li>
                 </ul>
             </ng-container>
-        
+
             <ng-template #noSelectedCategory>
                 <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">Not found</p>
             </ng-template>
-          </div>
-            }
+        </div>
+        }
     </div>
 
 
 
-    
+
     <!-- </div> -->
 </div>
 

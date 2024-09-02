@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if(isCoach){
+                        @if(feed.coachId == userId){
                         <div class="dropdown">
                             <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
                                 id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
@@ -358,7 +358,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if(isCoach){
+                        @if(feed.coachId == userId){
                         <div class="dropdown">
                             <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
                                 id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
@@ -610,7 +610,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if(isCoach){
+                        @if(feed.coachId == userId){
                         <div class="dropdown">
                             <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
                                 id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>

@@ -3,6 +3,8 @@ import { SharedService } from '../../services/shared.service';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'app-setting',
@@ -15,7 +17,7 @@ export class SettingComponent implements OnInit {
   role: any;
   isCoach: boolean = true;
 
-  constructor(private srevice: SharedService, private toastr: ToastrService, private route: Router) { }
+  constructor(private srevice: SharedService, private toastr: ToastrService, private route: Router, private location: Location) { }
   ngOnInit(): void {
     this.getSettings();
     this.role = this.srevice.getRole();
@@ -25,6 +27,10 @@ export class SettingComponent implements OnInit {
     const jaonData: any = localStorage.getItem('userDetailFb');
     const data = JSON.parse(jaonData)
     this.userDetails = data;
+  }
+
+  backClicked() {
+    this.location.back();
   }
 
   chatNotification!: boolean;
@@ -40,7 +46,7 @@ export class SettingComponent implements OnInit {
   }
 
   updateChatNotification(): void {
-  
+
     const chatSettings = {
       chatNotification: this.chatNotification,
       feedNotification: this.feedNotification

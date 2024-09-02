@@ -1,5 +1,9 @@
 <div class="ct_all_feed_boxex">
 
+    <div *ngIf="data?.length === 0" class="text-center mt-5">
+        <p class="ct_fs_15 text-white">No saved posts found</p>
+    </div>
+
     <div *ngFor="let feed of data; let i = index">
 
         <div class="ct_feed_box mt-3" *ngIf="feed.post.type == 'PODCAST'">
@@ -488,14 +492,30 @@
                 </a>
             </p>
 
-            <div class="ct_show_uploaded_video mt-2">
-                <!-- <iframe width="100%" height="390"
-                    [src]="feed.post.coach.mediaUrl"
-                    title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
+            <!-- <div class="ct_show_uploaded_video mt-2">
+               
                 <video [src]="feed.post.mediaUrl" controls width="100%" height="390"></video>
-            </div>
+            </div> -->
+
+            <div class="ct_show_uploaded_video mt-2" style="position: relative;">
+
+                <div class="play-button" *ngIf="!isVideoPlaying(videoPlayer)"  (click)="toggleVideo(videoPlayer)">
+                 <img src="../assets/img/play.png" 
+                 alt="Play Button" />
+                </div>
+
+                 <video [src]="feed.post.mediaUrl" #videoPlayer (timeupdate)="onTimeUpdate(videoPlayer)"
+                     (loadedmetadata)="setVideoDuration(videoPlayer)" width="100%" height="390"
+                     (click)="toggleVideo(videoPlayer)">
+                 </video>
+
+                 <input type="range" *ngIf="currentVideoId === videoPlayer" class="custom-seekbar"
+                     (input)="onSeek($event, videoPlayer)" />
+
+                 <div *ngIf="currentVideoId === videoPlayer" class="video-timing text-white pb-4">
+                     {{ formatTime(currentTime) }} / {{ formatTime(videoDuration) }}
+                 </div>
+             </div>
 
 
             <div class="ct_like_comment_div">

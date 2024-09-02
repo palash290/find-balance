@@ -4,6 +4,7 @@ import { environment } from '../environments/environment';
 import { NotificationService } from './services/notification.service';
 import { SocketService } from './services/socket.service';
 import { Subscription } from 'rxjs';
+import { SharedService } from './services/shared.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,7 @@ export class AppComponent {
   messages: string[] = [];
   private messageSubscription!: Subscription;
 
-  constructor(private notificationService: NotificationService, private socketService: SocketService) { }
+  constructor(private notificationService: NotificationService, private socketService: SocketService, private service: SharedService) { }
 
   ngOnInit() {
     //this.notificationService.requestPermission();
@@ -28,6 +29,7 @@ export class AppComponent {
     //   }
     // });
     this.requestPermission();
+    //this.service.triggerRefresh();
     //console.log(this.notificationService.requestPermission())
 
     // this.messageSubscription = this.socketService.getMessage().subscribe((message: any) => {

@@ -15,8 +15,7 @@
         </div> -->
 
         <ul class="ct_message_user_lit ct_community_sidebar mt-3" (click)="openChat()">
-            <div *ngIf="(!teamData || (teamData | filter:searchQueryFilter)?.length === 0)"
-                class="text-center mt-4">
+            <div *ngIf="(!teamData || (teamData | filter:searchQueryFilter)?.length === 0)" class="text-center mt-4">
                 <p class="ct_fs_15 text-white">No teams found</p>
             </div>
             <!-- add This Class active when chat open  -->
@@ -35,8 +34,8 @@
                                 {{data.numberOfPosts}}
                                 {{data.numberOfPosts > 1 ? 'Posts' : 'Post'}}</p>
                         </div>
-                        <p class="mb-0 ct_fs_12 ms-auto text-white mt-2">{{data.numberOfParticipant - 1}}
-                            {{data.numberOfParticipant - 1 > 1 ? 'Members' : 'Member'}}
+                        <p class="mb-0 ct_fs_12 ms-auto text-white mt-2">{{data.numberOfParticipant}}
+                            {{data.numberOfParticipant > 1 ? 'Members' : 'Member'}}
                         </p>
                     </div>
                 </div>
@@ -77,8 +76,21 @@
                 <p class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 ct_orange_text" (click)="seeGroupMembesr()">Back</p>
                 }
 
-                <i *ngIf="isAdmin" class="fa-regular fa-pen-to-square text-white" aria-hidden="true"
-                    data-bs-toggle="modal" data-bs-target="#ct_edit_team"></i>
+                <!-- <i *ngIf="isAdmin" class="fa-regular fa-pen-to-square text-white" aria-hidden="true"
+                    data-bs-toggle="modal" data-bs-target="#ct_edit_team"></i> -->
+                <div *ngIf="isAdmin" class="dropdown ms-auto ct_chat_dropdown">
+                    <button class="btn ct_dropdown_btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="fa-solid fa-ellipsis-vertical ct_orange_text"></i>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#ct_edit_team">Edit</a></li>
+                        <li><a class="dropdown-item" (click)="deleteTeam()">Delete</a></li>
+                    </ul>
+
+                </div>
+
+
             </div>
 
 
@@ -908,7 +920,8 @@
                             <div class="d-flex align-items-center gap-3">
                                 <p class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500">
                                     Admin</p>
-                                <div class="d-flex align-items-center gap-2">
+                                <div class="d-flex align-items-center gap-2" style="cursor: pointer;"
+                                    (click)="getCoachId(teamAdminid, teamAdminRole)">
                                     <img [src]="teamAdminImg ? teamAdminImg : '/assets/img/np_pro.png'" alt=""
                                         class="ct_img_40 ct_orange_border_1">
                                     <p class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500">
@@ -924,18 +937,18 @@
                         <div class="ct_all_team_member_list">
 
                             <div class="d-flex align-items-center gap-3">
-                                <div class="d-flex align-items-center gap-2">
-                                    @if(participants.coach?.avatar_url){
+                                <div class="d-flex align-items-center gap-2"
+                                    (click)="getCoachId(participants.id, participants.role)" style="cursor: pointer;">
+                                    <!-- @if(participants.coach?.avatar_url){
                                     <img [src]="participants.avatar_url ? participants.avatar_url : '/assets/img/np_pro.png'"
                                         alt="" class="ct_img_40 ct_orange_border_1">
-                                    } @else {
+                                    } @else { -->
                                     <img [src]="participants.avatar_url ? participants.avatar_url : '/assets/img/np_pro.png'"
                                         alt="" class="ct_img_40 ct_orange_border_1">
-                                    }
+                                    <!-- } -->
 
                                     <p class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500">
-                                        {{participants.full_name ? participants.full_name :
-                                        participants.full_name}}</p>
+                                        {{participants.full_name}}</p>
                                 </div>
 
                                 @if(participants.id == userId){
@@ -945,7 +958,7 @@
                                         <i class="fa-solid fa-ellipsis-vertical ct_orange_text"></i>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item py-0" (click)="leaveTeam()">Leave</a></li>
+                                        <li><a class="dropdown-item " (click)="leaveTeam()">Leave</a></li>
                                     </ul>
                                 </div>
                                 }
@@ -974,19 +987,24 @@
         <div class="modal-content">
             <div class="modal-header border-0 pt-0 px-0 d-block text-center">
                 <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Create New
-                    Community</h5>
+                    Team</h5>
                 <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i
                         class="fa-solid fa-x"></i></button>
             </div>
             <div class="modal-body">
                 <form [formGroup]="newForm">
                     <div>
-                        <input type="text" class="form-control ct_login_input" placeholder="My Community Name"
+                        <input type="text" class="form-control ct_login_input" placeholder="My Team Name"
                             formControlName="title">
+                        <div *ngIf="newForm.controls['title'].invalid && newForm.controls['title'].touched"
+                            class="error-message">
+                            <div *ngIf="newForm.controls['title'].errors?.['required']">Team name is
+                                required.</div>
+                        </div>
                     </div>
 
                     <div class="mt-3">
-                        <input type="text" class="form-control ct_login_input" placeholder="My Community Description"
+                        <input type="text" class="form-control ct_login_input" placeholder="My Team Description"
                             formControlName="about">
                     </div>
 
@@ -1031,20 +1049,24 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header border-0 pt-0 px-0 d-block text-center">
-                <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Create New
-                    Community</h5>
+                <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Edit Team</h5>
                 <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i
                         class="fa-solid fa-x"></i></button>
             </div>
             <div class="modal-body">
                 <form [formGroup]="newForm">
                     <div>
-                        <input type="text" class="form-control ct_login_input" placeholder="My Community Name"
+                        <input type="text" class="form-control ct_login_input" placeholder="My Team Name"
                             formControlName="title">
+                        <div *ngIf="newForm.controls['title'].invalid && newForm.controls['title'].touched"
+                            class="error-message">
+                            <div *ngIf="newForm.controls['title'].errors?.['required']">Team name is
+                                required.</div>
+                        </div>
                     </div>
 
                     <div class="mt-3">
-                        <input type="text" class="form-control ct_login_input" placeholder="My Community Description"
+                        <input type="text" class="form-control ct_login_input" placeholder="My Team Description"
                             formControlName="about">
                     </div>
 
@@ -1092,7 +1114,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header border-0 pt-0 px-0 d-block text-center">
-                <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Send Request
+                <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Add Team Members
                 </h5>
                 <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i
                         class="fa-solid fa-x"></i></button>

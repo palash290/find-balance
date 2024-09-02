@@ -3,6 +3,8 @@ import { SharedService } from '../../services/shared.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'app-my-profile',
@@ -14,11 +16,15 @@ export class MyProfileComponent {
   isCoach: boolean = true;
   role: any;
 
-  constructor(private route: ActivatedRoute, private service: SharedService) {
+  constructor(private route: ActivatedRoute, private service: SharedService, private location: Location) {
     this.role = this.service.getRole();
     if (this.role == "USER") {
       this.isCoach = false;
     }
+  }
+
+  backClicked() {
+    this.location.back();
   }
 
   profileForm!: FormGroup;

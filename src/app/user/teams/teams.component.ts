@@ -54,7 +54,7 @@ export class TeamsComponent {
   initForm() {
     this.newForm = new FormGroup({
       title: new FormControl('', Validators.required),
-      about: new FormControl('', Validators.required),
+      about: new FormControl(''),
       image: new FormControl(null)
     })
   }
@@ -63,8 +63,8 @@ export class TeamsComponent {
     this.service.getApi(this.isCoach ? 'coach/team' : 'user/team').subscribe({
       next: resp => {
         this.teamData = resp.data;
-        console.log('dfsdf',this.teamData);
-        
+        console.log('dfsdf', this.teamData);
+
       },
       error: error => {
         console.log(error.message)
@@ -117,7 +117,9 @@ export class TeamsComponent {
       if (this.UploadedFile) {
         formURlData.append('file', this.UploadedFile);
       }
-      formURlData.set('description', this.newForm.value.about);
+      if (this.newForm.value.about) {
+        formURlData.set('description', this.newForm.value.about);
+      }
       this.btnLoader = true;
       this.service.postAPIFormData('coach/team', formURlData).subscribe({
         next: (resp) => {
@@ -191,6 +193,7 @@ export class TeamsComponent {
   teamAdminName: any;
   teamAdminImg: any;
   teamAdminid: any;
+  teamAdminRole: any;
 
   getCommunityProfileData(cId: any, isAdmin: boolean) {
     this.isAdmin = isAdmin
@@ -201,6 +204,7 @@ export class TeamsComponent {
     localStorage.setItem('teamId', this.teamId)
     this.service.getApi(this.isCoach ? `coach/team/${cId}` : `user/team/${cId}`).subscribe({
       next: resp => {
+        
         if (this.isCoach) {
           this.newForm.patchValue({
             title: resp.data.title,
@@ -221,6 +225,7 @@ export class TeamsComponent {
         this.teamAdminid = resp.data.admin.id;
         this.teamAdminName = resp.data.admin.full_name;
         this.teamAdminImg = resp.data.admin.avatar_url;
+        this.teamAdminRole = resp.data.admin.role;
 
         this.getTeamPosts();
       },
@@ -549,6 +554,9 @@ export class TeamsComponent {
     // const formData: any = new URLSearchParams();
     // formData.set('receiverIds', this.selectedCategoryIds);
     // formData.set('teamId', this.teamId);
+    if (this.selectedCategoryIds?.length == 0) {
+      return; // Exit the function if no categories are selected
+    }
     const chatSettings = {
       receiverIds: this.selectedCategoryIds,
       teamId: this.teamId
@@ -597,6 +605,49 @@ export class TeamsComponent {
   }
   closeChat() {
     this.isChatActive = false;
+  }
+
+  deleteTeam() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this team!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.deleteAcc(`coach/team/${this.teamId}`).subscribe({
+          next: (resp) => {
+            if (resp.success) {
+              Swal.fire(
+                'Deleted!',
+                'Your team has been deleted successfully.',
+                'success'
+              );
+              this.getTeamData();
+              this.teamName = '';
+            } else {
+              this.getTeamData();
+            }
+          },
+          error: (error) => {
+            Swal.fire(
+              'Error!',
+              'There was an error deleting your team.',
+              'error'
+            );
+            this.getTeamData();
+            console.error('Error deleting account', error);
+          }
+        });
+      }
+    });
+  }
+
+  getCoachId(uderId: any, role: any) {
+    this.route.navigateByUrl(`user/main/my-profile/${uderId}/${role}`);
   }
 
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
 
 @Component({
@@ -181,6 +181,67 @@ export class SavedPostsComponent {
       }
     });
   }
+
+
+    //For video
+    @ViewChildren('videoPlayer') videoPlayers!: QueryList<ElementRef>;
+
+    currentVideoId: any | null = null;
+    currentTime: number = 0;
+    videoDuration: number = 0;
+  
+    toggleVideo(videoElement: HTMLVideoElement) {
+      
+      // if (this.currentAudio) {
+      //   this.currentAudio.pause();
+      // }
+  
+      if (this.currentVideoId && this.currentVideoId !== videoElement) {
+        this.currentVideoId.pause(); // Pause the currently playing video
+      }
+  
+      if (videoElement.paused) {
+        videoElement.play();
+        this.currentVideoId = videoElement;
+      } else {
+        videoElement.pause();
+        this.currentVideoId = null;
+      }
+    }
+  
+    isVideoPlaying(videoElement: HTMLVideoElement): boolean {
+      return videoElement === this.currentVideoId && !videoElement.paused;
+    }
+  
+    onTimeUpdate(videoElement: HTMLVideoElement) {
+      if (this.isVideoPlaying(videoElement)) {
+        const seekBar: HTMLInputElement = document.querySelector('.custom-seekbar')!;
+        seekBar.value = (videoElement.currentTime / videoElement.duration * 100).toString();
+        this.currentTime = videoElement.currentTime;
+        this.setVideoDuration(videoElement);
+      }
+    }
+  
+    setVideoDuration(videoElement: HTMLVideoElement) {
+      if (this.isVideoPlaying(videoElement)) {
+        const seekBar: HTMLInputElement = document.querySelector('.custom-seekbar')!;
+        seekBar.max = "100";
+        this.videoDuration = videoElement.duration;
+      }
+    }
+  
+    onSeek(event: Event, videoElement: HTMLVideoElement) {
+      const input = event.target as HTMLInputElement;
+      const value = input.value;
+      const time = (parseFloat(value) / 100) * videoElement.duration;
+      videoElement.currentTime = time;
+    }
+  
+    formatTime(time: number): string {
+      const minutes = Math.floor(time / 60);
+      const seconds = Math.floor(time % 60);
+      return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
 
 
 }

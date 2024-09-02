@@ -1,3 +1,5 @@
+<a (click)="backClicked()" *ngIf="isCoach" class="ct_orange_text ct_back_to_list ct_chat_back" style="cursor: pointer;">Back</a>
+
 <div>
     <div class="d-flex align-items-center gap-2 justify-content-between flex-wrap" *ngIf="isCoach">
         <h4 class="ct_ff_roboto ct_fw_500 text-white ct_fs_20">All Notifications </h4>
@@ -39,7 +41,16 @@
                         </div>
 
                         <div>
-                            <button class="ct_reject_btn" (click)="rejectTeam(notify.id)">Reject</button>
+                            <button class="ct_reject_btn" (click)="rejectTeam(notify.data.teamId, notify.id)">
+                                <div class="d-flex align-items-center">
+                                    <div class="spinner-border me-2" role="status"
+                                        *ngIf="rejectLoader && notify.id == notificationId">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <span
+                                        *ngIf="rejectLoader && notify.id != notificationId || !rejectLoader">Reject</span>
+                                </div>
+                            </button>
                         </div>
                     </div>
 
@@ -60,7 +71,7 @@
             </div>
 
             <div *ngIf="notify.type == 'chat'">
-                <div class="d-flex ct_flex_wrap_575 gap-3" style="cursor: pointer;">
+                <div class="d-flex ct_flex_wrap_575 gap-3" style="cursor: pointer;" (click)="getChat(notify.data.chatId, notify.type)">
                     <img [src]="notify.byUser.avatar_url ? notify.byUser.avatar_url : '/assets/img/np_pro.png'" alt=""
                         class="ct_img_40 ct_bor ct_white_border_1">
                     <div>
@@ -87,13 +98,13 @@
             </div>
 
             <div *ngIf="notify.type == 'post'">
-                <div class="d-flex ct_flex_wrap_575 gap-3" (click)="getChat(notify.data.chatId, notify.type)"
+                <div class="d-flex ct_flex_wrap_575 gap-3" 
                     style="cursor: pointer;">
-                    @if(notify.byUser?.avatar_url){
-                        <img [src]="notify.byCoach.avatar_url ? notify.byCoach.avatar_url : '/assets/img/np_pro.png'" alt=""
+                    @if(notify.byCoach?.avatar_url){
+                        <img [src]="notify.byCoach?.avatar_url ? notify.byCoach?.avatar_url : '/assets/img/np_pro.png'" alt=""
                         class="ct_img_40 ct_bor ct_white_border_1">
                     } @else {
-                        <img [src]="notify.byCoach.avatar_url ? notify.byCoach.avatar_url : '/assets/img/np_pro.png'" alt=""
+                        <img [src]="notify.byUser?.avatar_url ? notify.byUser?.avatar_url : '/assets/img/np_pro.png'" alt=""
                         class="ct_img_40 ct_bor ct_white_border_1">
                     }
                    

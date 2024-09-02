@@ -51,7 +51,7 @@ export class FeedsComponent {
       this.currentComponent = component;
     });
     this.getProfileData();
-    this.visibilityService.triggerRefresh()
+    this.visibilityService.triggerRefresh();
   }
 
   categoryId: any = '';
@@ -79,7 +79,7 @@ export class FeedsComponent {
     this.visibilityService.getApi(this.isCoach ? `coach/post/allPosts?type=${this.selectedOption}&categoryId=${this.categoryId}` : `user/allPosts?type=${this.selectedOption}&categoryId=${this.categoryId}`).subscribe({
       next: resp => {
         if (this.isCoach) {
-          this.data = resp.data?.map((item: any) => ({ ...item, isExpanded: false, isPlaying: false })).reverse();
+          this.data = resp.data?.map((item: any) => ({ ...item, isExpanded: false, isPlaying: false }));
         } else {
           this.data = resp.data?.map((item: any) => ({ ...item, isExpanded: false, isPlaying: false }));
         }
