@@ -28,7 +28,7 @@
                     </div>
                     <div class="d-flex align-items-center justify-content-between" style="flex: 1;">
                         <div (click)="getCommunityProfileData(data.id, data.isParticipant, data.isAdmin)"
-                            style="cursor: pointer;">
+                            style="cursor: pointer; flex: 1;">
                             <h5 class="mb-0 ct_fs_15 ct_orange_text ct_ff_roboto ct_fw_500 mb-2">{{data.title}}</h5>
                             <p *ngIf="data.numberOfPosts > 0" class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 text-white">
                                 {{data.numberOfPosts}}
@@ -36,7 +36,6 @@
                         </div>
                         <div>
                             @if(!data.isAdmin){
-
                             @if(data.isParticipant){
                             <button type="button" (click)="leaveCommunity(data.id)"
                                 class="ct_orange_btn ct_grey_btn ct_border_radius_10 px-4 mx-auto py-2 h-auto ct_fs_13 ct_active_follow"

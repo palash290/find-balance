@@ -25,6 +25,9 @@
     --clr_D1D5DB:#D1D5DB;
     --daek_blue_text:#312E81
 }
+img{
+    object-fit: cover;
+}
 
 body{
     background-color: #0F100F;
@@ -273,6 +276,9 @@ header{
 }
 .ct_close_menu:hover{
     transform: rotate(360deg);
+}
+section,body{
+    overflow-x: hidden;
 }
 /* Menu Css E */
 /* Banner css S */
@@ -830,4 +836,16 @@ img.ct_i_am_coach_img.ct_show_img12 ,.ct_i_am_user_img.ct_show_img12 {
     top: 10px;
     color: #fff;
     display: none;
+}
+
+.ct_book_mark_icon svg{
+    fill: transparent;
+    stroke: #e58934;
+    stroke-width: 2px;
+}
+.ct_book_mark_icon svg path{
+    fill: transparent;
+}
+.ct_book_mark_icon_active svg path{
+    fill: var(--orange);
 }

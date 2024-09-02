@@ -6,7 +6,8 @@
 .ct_category_filter123 select{
     border: 0px;
     background-color: transparent;
-    width: 100px;
+    /* width: 100px; */
+    width: fit-content;
     color: #fff;
     
     

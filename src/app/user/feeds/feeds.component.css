@@ -134,7 +134,8 @@
 .ct_filter_search_input_140 select{
   border: 0px;
   background-color: transparent;
-  width: 60px;
+  /* width: 60px; */
+  width: fit-content;
 
   color: #fff;
   
@@ -149,3 +150,4 @@
   color: #fff;
   background-color: #0F100F;
 }
+

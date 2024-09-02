@@ -238,7 +238,7 @@
         padding-inline: 10px;
     }
     .ct_login_grid_2 {
-        grid-template-columns: 27% auto;
+        grid-template-columns: 79px auto;
     }
     .ct_flex_wrap_575{
         flex-direction: column;
