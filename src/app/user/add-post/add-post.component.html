@@ -34,7 +34,7 @@
         <div class="ct_category_filter123">
             <span class="ct_text_op_5 text-white ct_fs_13">Post Category :</span>
             <select [(ngModel)]="categoryId"
-            (change)="onCategoryChange($event)">
+            (change)="onCategoryChange($event)" style="cursor: pointer;">
             <option disabled>Post Catagory</option>
             <option *ngFor="let category of categories" [value]="category.id">{{ category.name
                 }}</option>

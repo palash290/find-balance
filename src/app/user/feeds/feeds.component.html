@@ -7,31 +7,30 @@
         <app-add-post></app-add-post>
         }
 
-        <div class=" mb-4 d-flex align-items-center gap-4 mt-3 ct_flex_wrap_575">
+        <div class=" mb-4 d-flex align-items-center gap-4 mt-3 ct_flex_wrap_575 flex-wrap">
             <p class="mb-0 text-white" style="white-space: nowrap;">Filter post by :</p>
-            
-          <div class="ct_filter_search_input_140">
-            <span class="text-white">Category</span>
-            <select class="" [(ngModel)]="categoryId"
-            (change)="onCategoryChange($event)">
-            <option value="">All</option>
-            <option *ngFor="let category of categories" [value]="category.id">{{ category.name
-                }}</option>
-        </select>
-          </div>
-          <div class="ct_filter_search_input_140">
-            <span class="text-white">Type</span>
-            <select [(ngModel)]="selectedOption" (change)="getProfileData()">
-                <option value="">All</option>
-                <option value="VIDEO">Video</option>
-                <option value="PODCAST">Audio</option>
-                <option value="ARTICLE">Article</option>
-            </select>
+
+            <div class="ct_filter_search_input_140">
+                <span class="text-white ct_text_op_5 ">Category:</span>
+                <select class="" [(ngModel)]="categoryId" (change)="onCategoryChange($event)" style="cursor: pointer;">
+                    <option value="">All</option>
+                    <option *ngFor="let category of categories" [value]="category.id">{{ category.name
+                        }}</option>
+                </select>
+            </div>
+            <div class="ct_filter_search_input_140">
+                <span class="text-white ct_text_op_5 ">Type:</span>
+                <select [(ngModel)]="selectedOption" (change)="getProfileData()" style="cursor: pointer;">
+                    <option value="">All</option>
+                    <option value="VIDEO">Video</option>
+                    <option value="PODCAST">Audio</option>
+                    <option value="ARTICLE">Article</option>
+                </select>
             </div>
             <div class="w-100">
                 <hr class="ct_hr_line_op_5" style="opacity: 1;">
             </div>
-        
+
         </div>
 
 
@@ -646,10 +645,10 @@
 
                     <div class="ct_show_uploaded_video mt-2" style="position: relative;">
 
-                       <div class="play-button" *ngIf="!isVideoPlaying(videoPlayer)"  (click)="toggleVideo(videoPlayer)">
-                        <img src="../assets/img/play.png" 
-                        alt="Play Button" />
-                       </div>
+                        <div class="play-button" *ngIf="!isVideoPlaying(videoPlayer)"
+                            (click)="toggleVideo(videoPlayer)">
+                            <img src="../assets/img/play.png" alt="Play Button" />
+                        </div>
 
                         <video [src]="feed.mediaUrl" #videoPlayer (timeupdate)="onTimeUpdate(videoPlayer)"
                             (loadedmetadata)="setVideoDuration(videoPlayer)" width="100%" height="390"

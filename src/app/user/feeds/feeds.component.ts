@@ -258,6 +258,7 @@ export class FeedsComponent {
 
   toggleCommentBox(id: number): void {
     if (this.currentOpenCommentBoxId === id) {
+      this.commentText = '';
       // Toggle off if the same box is clicked again
       this.showCmt[id] = !this.showCmt[id];
       if (!this.showCmt[id]) {
@@ -269,6 +270,7 @@ export class FeedsComponent {
       this.currentOpenCommentBoxId = id;
       this.showCmt[id] = true;
       this.getPostComments(id);
+      this.commentText = '';
     }
   }
 

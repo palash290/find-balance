@@ -15,10 +15,17 @@ export class ChangePasswordComponent {
   passwordMismatch = false;
   loading: boolean = false;
 
+  role: any;
+  isCoach: boolean = true;
+
   constructor(private route: Router, private service: SharedService, private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.initForm()
+    this.role = this.service.getRole();
+    if (this.role == 'USER') {
+      this.isCoach = false;
+    }
+    this.initForm();
   }
 
   initForm() {
@@ -36,21 +43,20 @@ export class ChangePasswordComponent {
 
   submitForm() {
     this.form.markAllAsTouched();
-    this.loading = true;
     if (this.form.valid && !this.passwordMismatch) {
       const formURlData = new URLSearchParams();
-      //console.log()
       formURlData.set('current_password', this.form.value.current_password);
       formURlData.set('new_password', this.form.value.new_password);
       //formURlData.set('confirm_password', this.form.value.confirm_password);
-      this.service.postAPI('user/changePassword', formURlData).subscribe({
+      this.loading = true;
+      this.service.postAPI(this.isCoach ? 'coach/changePassword' : 'user/changePassword', formURlData).subscribe({
         next: (resp) => {
           if (resp.status == 200) {
             this.toastr.success(resp.message);
             console.log(resp.message)
             this.form.reset();
             this.loading = false;
-            //this.closeModal.nativeElement.click();
+            //this.route.navigateByUrl('');
           } else {
             this.loading = false;
             this.toastr.warning(resp.message);

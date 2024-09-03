@@ -131,7 +131,7 @@
                                 </div>
                             </div>
                             @if(feed.coachId == userId){
-                            <div class="dropdown">
+                            <div class="dropdown ct_chat_dropdown">
                                 <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
                                     id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -398,7 +398,7 @@
                                 </div>
                             </div>
                             @if(feed.coachId == userId){
-                            <div class="dropdown">
+                            <div class="dropdown ct_chat_dropdown">
                                 <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
                                     id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -653,7 +653,7 @@
                                 </div>
                             </div>
                             @if(feed.coachId == userId){
-                            <div class="dropdown">
+                            <div class="dropdown ct_chat_dropdown">
                                 <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
                                     id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -1054,13 +1054,13 @@
                         class="fa-solid fa-x"></i></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="newForm">
+                <form [formGroup]="updateForm">
                     <div>
                         <input type="text" class="form-control ct_login_input" placeholder="My Team Name"
                             formControlName="title">
-                        <div *ngIf="newForm.controls['title'].invalid && newForm.controls['title'].touched"
+                        <div *ngIf="updateForm.controls['title'].invalid && updateForm.controls['title'].touched"
                             class="error-message">
-                            <div *ngIf="newForm.controls['title'].errors?.['required']">Team name is
+                            <div *ngIf="updateForm.controls['title'].errors?.['required']">Team name is
                                 required.</div>
                         </div>
                     </div>
@@ -1121,7 +1121,7 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <input type="text" class="form-control ct_login_input" placeholder="Team Name"
+                    <input type="text" class="form-control ct_login_input" placeholder="Search..."
                         [(ngModel)]="searchQueryFilterReq">
                 </div>
 

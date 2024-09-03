@@ -91,11 +91,16 @@
             placeholder="Type here..." maxlength="500">
       </textarea>
 
-      <div *ngIf="newForm.controls['about_me'].invalid && newForm.controls['about_me'].touched"
-      class="error-message">
-      <div *ngIf="newForm.controls['about_me'].errors?.['required']">Category is
-          required.</div>
-  </div>
+        <div *ngIf="newForm.controls['about_me'].invalid && newForm.controls['about_me'].touched" class="error-message">
+            <div *ngIf="newForm.controls['about_me'].errors?.['required']">This field is
+                required.</div>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Email</label>
+        <input type="text" class="ct_login_input form-control ct_border_radius_10" placeholder="Email"
+            formControlName="email">
     </div>
 
     <div class="form-group mb-3">
@@ -224,9 +229,9 @@
                 <div class="ct_add_member_scroll" *ngFor="let coach of filteredCategories;">
                     <div class="d-flex align-items-center gap-2 mt-4">
                         <div class="ct_star_circle">
-                            <img src="../assets/img/star.png" alt="" >
+                            <img src="../assets/img/star.png" alt="">
                         </div>
-                        
+
                         <div>
                             <h4 class="ct_ff_roboto ct_fw_600 text-white ct_fs_15 mb-0">{{coach.name}}</h4>
                             <div class="d-flex align-items-center  gap-2 mt-1">
@@ -245,7 +250,8 @@
                     </div>
                 </div>
                 <!-- ct_orange_btn ct_grey_btn ct_border_radius_10 -->
-                <button type="button" class=" ct_orange_btn ct_grey_btn ct_custom_btn mt-5 px-4 w-auto mx-auto d-block" data-bs-dismiss="modal">Save
+                <button type="button" class=" ct_orange_btn ct_grey_btn ct_custom_btn mt-5 px-4 w-auto mx-auto d-block"
+                    data-bs-dismiss="modal">Save
                     Categories</button>
 
                 <!-- <button hidden type="button" class="btn btn-secondary" #closeModal2

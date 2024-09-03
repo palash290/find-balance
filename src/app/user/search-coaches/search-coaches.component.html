@@ -15,22 +15,23 @@
                 <div class="col-md-6 mb-3 mb-md-0">
                     <label for="" class="text-white  ct_fw_600 mb-2">Filter by Category</label>
                     <select class="ct_login_input form-control  ms-auto" [(ngModel)]="categoryId"
-                    (change)="onCategoryChange($event)">
-                    <option value="">All</option>
-                    <option *ngFor="let category of categories" [value]="category.id">{{ category.name
-                        }}</option>
-                </select>
-                   </div>
-                   <div class="col-md-6 mb-3 mb-md-0">
+                        (change)="onCategoryChange($event)">
+                        <option value="">All</option>
+                        <option *ngFor="let category of categories" [value]="category.id">{{ category.name
+                            }}</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3 mb-md-0">
                     <label for="" class="text-white ct_fw_600 mb-2">Select Experience (Years)</label>
-                    <input type="text" class="ct_login_input form-control" name="" id="" [(ngModel)]="experience" (ngModelChange)="getAllCoaches()">
-                   </div>
+                    <input type="text" class="ct_login_input form-control" name="" id="" [(ngModel)]="experience"
+                        (ngModelChange)="getAllCoaches()" placeholder="Enter here..." maxlength="2">
+                </div>
 
             </div>
             <!-- <div class="w-100">
                 <hr class="ct_hr_line_op_5" style="opacity: 1;">
             </div> -->
-         
+
         </div>
 
 
@@ -43,7 +44,8 @@
             <ul class="ct_mt_30 ct_all_notification px-2">
                 <li *ngFor="let categories of data;">
                     <div class="d-flex align-items-center justify-content-between">
-                        <div class="d-flex gap-2" (click)="getCoachId(categories.id, categories.role)" style="cursor: pointer;">
+                        <div class="d-flex gap-2" (click)="getCoachId(categories.id, categories.role)"
+                            style="cursor: pointer;">
                             <div class="ct_star_circle">
                                 <img [src]="categories.avatar_url ? categories.avatar_url : '/assets/img/np_pro.png'"
                                     alt="" class="ct_img_44 ct_bor ct_orange_border_1">

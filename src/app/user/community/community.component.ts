@@ -42,6 +42,7 @@ export class CommunityComponent {
     }
     this.getCommunityData();
     this.initForm();
+    this.initUpdateForm();
     this.userId = localStorage.getItem('fbId');
     this.service.refreshSidebar$.subscribe(() => {
       this.getCommunityPosts();
@@ -55,6 +56,15 @@ export class CommunityComponent {
       image: new FormControl(null)
     })
   }
+
+  initUpdateForm() {
+    this.updateForm = new FormGroup({
+      title: new FormControl('', Validators.required),
+      about: new FormControl(''),
+      image: new FormControl(null)
+    })
+  }
+
 
   eventImage: any;
   communityId: any;
@@ -94,7 +104,7 @@ export class CommunityComponent {
       this.service.getApi(this.isCoach ? `coach/communtiy/${cId}` : `user/communtiy/${cId}`).subscribe({
         next: resp => {
           if (this.isCoach) {
-            this.newForm.patchValue({
+            this.updateForm.patchValue({
               title: resp.data.title,
               about: resp.data.description,
             });
@@ -212,15 +222,15 @@ export class CommunityComponent {
   btnLoaderEdit: boolean = false;
 
   editCommunity() {
-    this.newForm.markAllAsTouched();
-    if (this.newForm.valid) {
+    this.updateForm.markAllAsTouched();
+    if (this.updateForm.valid) {
       this.btnLoaderEdit = true;
       const formURlData = new FormData();
-      formURlData.set('title', this.newForm.value.title)
+      formURlData.set('title', this.updateForm.value.title)
       if (this.UploadedEditFile) {
         formURlData.append('file', this.UploadedEditFile);
       }
-      formURlData.set('description', this.newForm.value.about);
+      formURlData.set('description', this.updateForm.value.about);
       formURlData.set('communityId', this.communityId);
       this.service.postAPIFormDataPatch('coach/communtiy', formURlData).subscribe({
         next: (resp) => {

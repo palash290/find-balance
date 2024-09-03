@@ -1,4 +1,5 @@
-<a (click)="backClicked()" class="ct_orange_text ct_back_to_list ct_chat_back mb-4 d-block ct_fw_600" style="cursor: pointer;"><i class="fa-solid fa-arrow-left me-2"></i> Back</a>
+<a (click)="backClicked()" *ngIf="userId" class="ct_orange_text ct_back_to_list ct_chat_back mb-4 d-block ct_fw_600"
+    style="cursor: pointer;"><i class="fa-solid fa-arrow-left me-2"></i> Back</a>
 
 <div class="ct_cover_img">
     <img [src]="cover_photo_url ? cover_photo_url : '/assets/img/no_event.png'" alt="" class="ct_img_h_200">
@@ -28,7 +29,7 @@
     <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{userEmail}}</p>
     <div class="ct_grid_4">
 
-        @if(education){
+        @if(education != ''){
         <div>
             <h4 class="ct_ff_roboto ct_orange_text ct_fs_18 ct_fw_600 mt-3">Education</h4>
             <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{ education ? education : 'Not
@@ -37,18 +38,18 @@
         </div>
         }
 
-        @if(experience){
+        @if(experience  != ''){
         <div>
             <h4 class="ct_ff_roboto ct_orange_text ct_fs_18 ct_fw_600 mt-3">Experience</h4>
-            <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{ experience
-                }}</p>
+            <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{ experience}} {{experience >
+                1 ? 'Years' : 'Year'}}</p>
         </div>
         }
 
         <!-- <div *ngIf="isCoach && userRole=='COACH'"> -->
         <!-- <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600 mt-3">Accomplishments</h4>
             <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{accomplishments}}</p> -->
-        @if(accomplishments){
+        @if(accomplishments != ''){
         <div>
             <h4 class="ct_ff_roboto ct_orange_text ct_fs_18 ct_fw_600 mt-3">Accomplishments</h4>
             <ng-container *ngIf="accomplishments; else noAccomplishments">
@@ -66,9 +67,8 @@
 
 
 
-        @if(certificates){
+        @if(certificates != ''){
         <div>
-
             <h4 class="ct_ff_roboto ct_orange_text ct_fs_18 ct_fw_600 mt-3">Certificates</h4>
             <ng-container *ngIf="certificates; else nocertificate">
                 <ul
@@ -125,13 +125,13 @@
                             </p>
                             <div class="d-flex align-items-center justify-content-center gap-2">
                                 <img src="../assets/img/star.png" alt="star">
-                                <span class="ct_orange_text">{{feed.coach.category.name}}</span>
+                                <span class="ct_orange_text">{{feed.category.name}}</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 @if(isCoach){
-                <div class="dropdown">
+                <div class="dropdown ct_chat_dropdown">
                     <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
                         id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -382,13 +382,13 @@
                                 date:'d/M/yy, h:mm a'}}</p>
                             <div class="d-flex align-items-center justify-content-center gap-2">
                                 <img src="../assets/img/star.png" alt="star">
-                                <span class="ct_orange_text">{{feed.coach.category.name}}</span>
+                                <span class="ct_orange_text">{{feed.category.name}}</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 @if(isCoach){
-                <div class="dropdown">
+                <div class="dropdown ct_chat_dropdown">
                     <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
                         id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -628,13 +628,13 @@
                                 date:'d/M/yy, h:mm a'}}</p>
                             <div class="d-flex align-items-center justify-content-center gap-2">
                                 <img src="../assets/img/star.png" alt="star">
-                                <span class="ct_orange_text">{{feed.coach.category.name}}</span>
+                                <span class="ct_orange_text">{{feed.category.name}}</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 @if(isCoach){
-                <div class="dropdown">
+                <div class="dropdown ct_chat_dropdown">
                     <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
                         id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">

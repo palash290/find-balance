@@ -45,6 +45,7 @@ export class TeamsComponent {
     }
     this.getTeamData();
     this.initForm();
+    this.initUpdateForm();
     this.userId = localStorage.getItem('fbId');
     this.service.refreshSidebar$.subscribe(() => {
       this.getTeamPosts();
@@ -53,6 +54,14 @@ export class TeamsComponent {
 
   initForm() {
     this.newForm = new FormGroup({
+      title: new FormControl('', Validators.required),
+      about: new FormControl(''),
+      image: new FormControl(null)
+    })
+  }
+
+  initUpdateForm() {
+    this.updateForm = new FormGroup({
       title: new FormControl('', Validators.required),
       about: new FormControl(''),
       image: new FormControl(null)
@@ -144,15 +153,15 @@ export class TeamsComponent {
   btnLoader1: boolean = false;
 
   editTeam() {
-    this.newForm.markAllAsTouched();
-    if (this.newForm.valid) {
+    this.updateForm.markAllAsTouched();
+    if (this.updateForm.valid) {
       //this.loading = true;
       const formURlData = new FormData();
-      formURlData.set('title', this.newForm.value.title)
+      formURlData.set('title', this.updateForm.value.title)
       if (this.UploadedEditFile) {
         formURlData.append('file', this.UploadedEditFile);
       }
-      formURlData.set('description', this.newForm.value.about);
+      formURlData.set('description', this.updateForm.value.about);
       formURlData.set('teamId', this.teamId);
       this.btnLoader1 = true;
       this.service.postAPIFormDataPatch('coach/team', formURlData).subscribe({
@@ -206,7 +215,7 @@ export class TeamsComponent {
       next: resp => {
         
         if (this.isCoach) {
-          this.newForm.patchValue({
+          this.updateForm.patchValue({
             title: resp.data.title,
             about: resp.data.description,
           });

@@ -57,14 +57,14 @@
                                         *ngIf="btnLoader && data.id == followId1">
                                         <span class="visually-hidden">Loading...</span>
                                     </div>
-                                    <span *ngIf="btnLoader && data.id != followId1 || !btnLoader">Join</span>
+                                    <span *ngIf="btnLoader && data.id != followId1 || !btnLoader"> Join</span>
                                 </div>
                             </button>
                             }
                             }
 
 
-                            <p class="mb-0 ct_fs_12 ms-auto text-white mt-2">{{data.numberOfParticipant - 1}}
+                            <p class="mb-0 ct_fs_12 ms-auto text-white mt-2">{{data.numberOfParticipant}}
                                 {{data.numberOfParticipant > 1 ? 'Members' : 'Member'}}
                             </p>
 
@@ -163,7 +163,7 @@
                                 </div>
                             </div>
                             @if(feed.coachId == userId){
-                            <div class="dropdown">
+                            <div class="dropdown ct_chat_dropdown">
                                 <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
                                     id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -431,7 +431,7 @@
                                 </div>
                             </div>
                             @if(feed.coachId == userId){
-                            <div class="dropdown">
+                            <div class="dropdown ct_chat_dropdown">
                                 <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
                                     id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -687,7 +687,7 @@
                                 </div>
                             </div>
                             @if(feed.coachId == userId){
-                            <div class="dropdown">
+                            <div class="dropdown ct_chat_dropdown">
                                 <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
                                     id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -1096,13 +1096,13 @@
                         class="fa-solid fa-x"></i></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="newForm">
+                <form [formGroup]="updateForm">
                     <div>
                         <input type="text" class="form-control ct_login_input" placeholder="My Community Name"
                             formControlName="title">
-                        <div *ngIf="newForm.controls['title'].invalid && newForm.controls['title'].touched"
+                        <div *ngIf="updateForm.controls['title'].invalid && updateForm.controls['title'].touched"
                             class="error-message">
-                            <div *ngIf="newForm.controls['title'].errors?.['required']">Community name is
+                            <div *ngIf="updateForm.controls['title'].errors?.['required']">Community name is
                                 required.</div>
                         </div>
                     </div>

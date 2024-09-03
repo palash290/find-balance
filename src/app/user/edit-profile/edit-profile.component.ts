@@ -57,6 +57,7 @@ export class EditProfileComponent {
       certificates: new FormControl(''),
       compliments: new FormControl(''),
       exp: new FormControl(''),
+      email: new FormControl({ value: '', disabled: true }),
       education: new FormControl(''),
       other_categ: new FormControl('',  this.getOtherCategValidators())
     })
@@ -77,7 +78,8 @@ export class EditProfileComponent {
             about_me: this.data.about_me,
             categoryId: this.data.category.id,
             exp: this.data.experience,
-            education: this.data.education
+            education: this.data.education,
+            email: this.data.email
           });
 
           this.primaryCategoryId = this.data.category.id;
@@ -97,7 +99,8 @@ export class EditProfileComponent {
           this.newForm.patchValue({
             full_name: this.data.full_name,
             about_me: this.data.about_me,
-            education: this.data.education
+            education: this.data.education,
+            email: this.data.email
           })
         }
         this.croppedImage = this.data.cover_photo_url
@@ -173,6 +176,8 @@ export class EditProfileComponent {
 
       if (this.newForm.value.education) {
         formURlData.set('education', this.newForm.value.education);
+      } else {
+        formURlData.set('education', '');
       }
 
      
@@ -185,6 +190,8 @@ export class EditProfileComponent {
         const compString = this.getComplimentsString();
         if (compString) {
           formURlData.set('accomplishments', compString);
+        } else {
+          formURlData.set('accomplishments', '');
         }
         if (this.selectedCategoryIdsString) {
           formURlData.set('secondCategories', this.selectedCategoryIdsString);
@@ -192,9 +199,13 @@ export class EditProfileComponent {
 
         if (certificatesString) {
           formURlData.append('certificates', certificatesString);
+        } else{
+          formURlData.append('certificates', '');
         }
         if (this.newForm.value.exp) {
           formURlData.set('experience', this.newForm.value.exp);
+        } else{
+          formURlData.set('experience', '');
         }
       
         if (this.newForm.value.categoryId) {
