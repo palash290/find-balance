@@ -7,7 +7,7 @@
         <app-add-post></app-add-post>
         }
 
-        <div class=" mb-4 d-flex align-items-center gap-4 mt-3 ct_flex_wrap_575 flex-wrap">
+        <div class=" mb-4 d-flex align-items-center gap-4 mt-3 ct_flex_wrap_575" [class.flex-wrap]="!isCoach">
             <p class="mb-0 text-white" style="white-space: nowrap;">Filter post by :</p>
 
             <div class="ct_filter_search_input_140">
@@ -28,7 +28,7 @@
                 </select>
             </div>
             <div class="w-100">
-                <hr class="ct_hr_line_op_5" style="opacity: 1;">
+                <hr class="ct_hr_line_op_5" [class.d-none]="!isCoach" style="opacity: 1;">
             </div>
 
         </div>
@@ -173,7 +173,7 @@
                         <!-- show this div when user click on comment -->
                         <div class="ct_comment_area_main mt-4" [class.d-none]="!showCmt[feed.id]">
                             <div class="position-relative">
-                                <input type="text" class="form-control ct_custom_input w-100"
+                                <input type="text" class="form-control ct_custom_input w-100 ct_pe_34"
                                     placeholder="Write comment..." [(ngModel)]="commentText"
                                     [ngModelOptions]="{standalone: true}" maxlength="250"
                                     (keyup.enter)="addComment(feed.id)">
@@ -427,7 +427,7 @@
                         <div class="ct_comment_area_main mt-4" [class.d-none]="!showCmt[feed.id]">
 
                             <div class="position-relative">
-                                <input type="text" class="form-control ct_custom_input w-100"
+                                <input type="text" class="form-control ct_custom_input w-100 ct_pe_34"
                                     placeholder="Write comment..." [(ngModel)]="commentText"
                                     [ngModelOptions]="{standalone: true}" maxlength="250"
                                     (keyup.enter)="addComment(feed.id)">
@@ -715,7 +715,7 @@
                                 <button type="button"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                             </div> -->
                             <div class="position-relative">
-                                <input type="text" class="form-control ct_custom_input w-100"
+                                <input type="text" class="form-control ct_custom_input w-100 ct_pe_34"
                                     placeholder="Write comment..." [(ngModel)]="commentText"
                                     [ngModelOptions]="{standalone: true}" maxlength="250"
                                     (keyup.enter)="addComment(feed.id)">
@@ -877,12 +877,23 @@
     <div class="ct_notification_main_div">
         <div class="mt-4">
             @if(isCoach){
+            <!-- <app-notification *ngIf="currentComponent === 'notification'"></app-notification>
+            <app-notification *ngIf="currentComponent === 'suggestedCategories'"></app-notification> -->
+            } @else {
+            <app-suggested-categories *ngIf="currentComponent === 'suggestedCategories'"></app-suggested-categories>
             <!-- <app-notification *ngIf="currentComponent === 'notification'"></app-notification> -->
-            <!-- <app-notification *ngIf="currentComponent === 'suggestedCategories'"></app-notification> -->
+            }
+        </div>
+    </div>
+    <!-- <div class="ct_notification_main_div">
+        <div class="mt-4">
+            @if(isCoach){
+            <app-notification *ngIf="currentComponent === 'notification'"></app-notification>
+            <app-notification *ngIf="currentComponent === 'suggestedCategories'"></app-notification>
             } @else {
             <app-suggested-categories *ngIf="currentComponent === 'suggestedCategories'"></app-suggested-categories>
             <app-notification *ngIf="currentComponent === 'notification'"></app-notification>
             }
         </div>
-    </div>
+    </div> -->
 </div>

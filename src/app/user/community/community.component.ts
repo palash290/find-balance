@@ -40,13 +40,14 @@ export class CommunityComponent {
     if (this.role == 'USER') {
       this.isCoach = false;
     }
-    this.getCommunityData();
     this.initForm();
     this.initUpdateForm();
     this.userId = localStorage.getItem('fbId');
     this.service.refreshSidebar$.subscribe(() => {
       this.getCommunityPosts();
+      this.getCommunityData();
     });
+    this.service.triggerRefresh();
   }
 
   initForm() {
@@ -95,8 +96,9 @@ export class CommunityComponent {
 
   getCommunityProfileData(cId: any, participantCheck: boolean, isAdmin: boolean) {
 
-    this.isAdmin = isAdmin
     if (participantCheck || isAdmin) {
+      this.isAdmin = isAdmin
+
       this.communityId = cId;
       this.selectedCommunityId = cId;
 
@@ -205,6 +207,7 @@ export class CommunityComponent {
           if (resp.success === true) {
             this.closeModal.nativeElement.click();
             this.getCommunityData();
+            this.getCommunityProfileData(this.communityId, true, true);
           }
           this.btnLoaderCreate = false;
           this.newForm.reset();
@@ -230,7 +233,11 @@ export class CommunityComponent {
       if (this.UploadedEditFile) {
         formURlData.append('file', this.UploadedEditFile);
       }
-      formURlData.set('description', this.updateForm.value.about);
+      if (this.updateForm.value.about) {
+        formURlData.set('description', this.updateForm.value.about);
+      } else {
+        formURlData.set('description', '');
+      }
       formURlData.set('communityId', this.communityId);
       this.service.postAPIFormDataPatch('coach/communtiy', formURlData).subscribe({
         next: (resp) => {
@@ -239,6 +246,7 @@ export class CommunityComponent {
             this.toastr.success(resp.message);
             this.btnLoaderEdit = false;
             this.getCommunityData();
+            this.getCommunityProfileData(this.communityId, false, true)
           } else {
             this.toastr.warning(resp.message);
             this.btnLoaderEdit = false;
@@ -375,6 +383,7 @@ export class CommunityComponent {
                 'success'
               );
               this.getCommunityPosts();
+              this.getCommunityData();
               //this.route.navigateByUrl('/home')
               //this.toastr.success(resp.message);
             } else {
@@ -477,6 +486,7 @@ export class CommunityComponent {
   toggleCommentBox(id: number): void {
     if (this.currentOpenCommentBoxId === id) {
       // Toggle off if the same box is clicked again
+      this.commentText = '';
       this.showCmt[id] = !this.showCmt[id];
       if (!this.showCmt[id]) {
         this.currentOpenCommentBoxId = null;
@@ -487,6 +497,7 @@ export class CommunityComponent {
       this.currentOpenCommentBoxId = id;
       this.showCmt[id] = true;
       this.getPostComments(id);
+      this.commentText = '';
     }
   }
 

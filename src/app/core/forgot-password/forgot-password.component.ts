@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { SharedService } from '../../services/shared.service';
 import { ToastrService } from 'ngx-toastr';
 import * as countryCodes from 'country-codes-list';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-forgot-password',
@@ -12,18 +13,30 @@ import * as countryCodes from 'country-codes-list';
 })
 export class ForgotPasswordComponent {
 
-  isCoach: boolean = false;
+  isCoach: boolean = true;
   isPasswordVisible: boolean = false;
   loginForm!: FormGroup;
   countries: { name: string, dialCode: string }[] = [];
   selectedCountryCode: string = '91';
   loading: boolean = false;
 
-  constructor(private route: Router, private srevice: SharedService, private toastr: ToastrService) { }
+  role: string | undefined;
+
+  constructor(private router: ActivatedRoute, private route: Router, private srevice: SharedService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    const countryList: any = countryCodes.all();
 
+    this.router.paramMap.subscribe(params => {
+      this.role = params.get('role') || '';
+      console.log(this.role);
+      
+    });
+
+    if (this.role == 'user') {
+      this.isCoach = false;
+    }
+
+    const countryList: any = countryCodes.all();
     // Map the list to the format required for the dropdown
     this.countries = Object.keys(countryList).map(key => {
       const country = countryList[key];
@@ -73,7 +86,7 @@ export class ForgotPasswordComponent {
         },
         error: (error) => {
           this.loading = false;
-          this.toastr.error('Something went wrong.');
+          this.toastr.error(error.error.message);
           console.error('Login error:', error.message);
         }
       });
@@ -85,7 +98,7 @@ export class ForgotPasswordComponent {
     this.isPasswordVisible = !this.isPasswordVisible;
   }
 
-  toggleUser(){
+  toggleUser() {
     this.isCoach = !this.isCoach
   }
 

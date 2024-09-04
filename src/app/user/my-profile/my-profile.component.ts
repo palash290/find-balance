@@ -56,6 +56,7 @@ export class MyProfileComponent {
 
     this.getProfileData();
     this.loginuserId = localStorage.getItem('fbId');
+    this.service.triggerRefresh();
   }
 
   //if coach see coach profile
@@ -170,7 +171,7 @@ export class MyProfileComponent {
   getSingleCoachPosts(coachId: any) {
     this.service.getApi(`user/allPosts/coach/${coachId}`).subscribe({
       next: resp => {
-        this.postData = resp.data?.map((item: any) => ({ ...item, isExpanded: false, isPlaying: false })).reverse();
+        this.postData = resp.data?.map((item: any) => ({ ...item, isExpanded: false, isPlaying: false }));
       },
       error: error => {
         console.log(error.message)
@@ -182,7 +183,7 @@ export class MyProfileComponent {
     this.service.getApi(this.isCoach ? 'coach/post' : 'user/allPosts').subscribe({
       next: resp => {
         if (this.isCoach) {
-          this.postData = resp.data?.map((item: any) => ({ ...item, isExpanded: false, isPlaying: false })).reverse();
+          this.postData = resp.data?.map((item: any) => ({ ...item, isExpanded: false, isPlaying: false }));
         }
       },
       error: error => {
@@ -228,6 +229,7 @@ export class MyProfileComponent {
   toggleCommentBox(id: number): void {
     if (this.currentOpenCommentBoxId === id) {
       // Toggle off if the same box is clicked again
+      this.commentText = '';
       this.showCmt[id] = !this.showCmt[id];
       if (!this.showCmt[id]) {
         this.currentOpenCommentBoxId = null;
@@ -238,6 +240,7 @@ export class MyProfileComponent {
       this.currentOpenCommentBoxId = id;
       this.showCmt[id] = true;
       this.getPostComments(id);
+      this.commentText = '';
     }
   }
 

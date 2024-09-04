@@ -15,14 +15,14 @@
     <ul class="ct_mt_30 ct_all_notification px-2">
         <li *ngFor="let categories of displayedCategories | filter:searchQuery;">
             <div class="d-flex align-items-center justify-content-between gap-2">
-                <div class="d-flex gap-2">
+                <div class="d-flex gap-2 align-items-center">
                     <div class="ct_star_circle">
                         <img src="../assets/img/star.png" alt="">
                     </div>
                     <div  style="flex: 1;">
                         <h5 class="ct_fs_15 ct_orange_text ct_fw_600 mb-1">{{categories.name}}</h5>
-                        <p class="mb-0 ct_fs_12 text-white">{{categories.totalPosts}} {{categories.totalPosts > 1 ?
-                            'Posts' : 'Post'}}</p>
+                        <!-- <p class="mb-0 ct_fs_12 text-white">{{categories.totalPosts}} {{categories.totalPosts > 1 ?
+                            'Posts' : 'Post'}}</p> -->
                             
                     </div>
                 </div>

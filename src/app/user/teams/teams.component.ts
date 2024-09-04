@@ -43,13 +43,14 @@ export class TeamsComponent {
     if (this.role == 'USER') {
       this.isCoach = false;
     }
-    this.getTeamData();
     this.initForm();
     this.initUpdateForm();
     this.userId = localStorage.getItem('fbId');
     this.service.refreshSidebar$.subscribe(() => {
       this.getTeamPosts();
+      this.getTeamData();
     });
+    this.service.triggerRefresh();
   }
 
   initForm() {
@@ -135,7 +136,6 @@ export class TeamsComponent {
           if (resp.success === true) {
             this.closeModal.nativeElement.click();
             this.getTeamData();
-
           }
           this.newForm.reset();
           this.btnLoader = false;
@@ -161,7 +161,12 @@ export class TeamsComponent {
       if (this.UploadedEditFile) {
         formURlData.append('file', this.UploadedEditFile);
       }
-      formURlData.set('description', this.updateForm.value.about);
+      // formURlData.set('description', this.updateForm.value.about);
+      if (this.updateForm.value.about) {
+        formURlData.set('description', this.updateForm.value.about);
+      } else {
+        formURlData.set('description', '');
+      }
       formURlData.set('teamId', this.teamId);
       this.btnLoader1 = true;
       this.service.postAPIFormDataPatch('coach/team', formURlData).subscribe({
@@ -172,6 +177,7 @@ export class TeamsComponent {
             //this.loading = false;
             this.getTeamData();
             this.btnLoader1 = false;
+            this.getCommunityProfileData(this.selectedCommunityId, true)
           } else {
             this.btnLoader1 = false;
             this.toastr.warning(resp.message);
@@ -213,7 +219,7 @@ export class TeamsComponent {
     localStorage.setItem('teamId', this.teamId)
     this.service.getApi(this.isCoach ? `coach/team/${cId}` : `user/team/${cId}`).subscribe({
       next: resp => {
-        
+
         if (this.isCoach) {
           this.updateForm.patchValue({
             title: resp.data.title,
@@ -295,6 +301,7 @@ export class TeamsComponent {
                 'success'
               );
               this.getTeamPosts();
+              this.getTeamData();
             } else {
               this.getTeamPosts();
             }
@@ -334,6 +341,7 @@ export class TeamsComponent {
   toggleCommentBox(id: number): void {
     if (this.currentOpenCommentBoxId === id) {
       // Toggle off if the same box is clicked again
+      this.commentText = '';
       this.showCmt[id] = !this.showCmt[id];
       if (!this.showCmt[id]) {
         this.currentOpenCommentBoxId = null;
@@ -344,6 +352,7 @@ export class TeamsComponent {
       this.currentOpenCommentBoxId = id;
       this.showCmt[id] = true;
       this.getPostComments(id);
+      this.commentText = '';
     }
   }
 

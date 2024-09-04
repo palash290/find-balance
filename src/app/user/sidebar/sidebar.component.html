@@ -11,9 +11,10 @@
                     <img src="../assets/img/setting_icon.svg" alt="">
                 </a>
                 <div>
-                    <img [src]="avatar_url ? avatar_url : '/assets/img/np_pro.png'" alt="" class="ct_img_84 ct_border_radius_100">
+                    <img [src]="avatar_url ? avatar_url : '/assets/img/np_pro.png'" alt=""
+                        class="ct_img_84 ct_border_radius_100">
                 </div>
-                @if (isCoach) {
+                <!-- @if (isCoach) { -->
                 <div class="ct_notification_icon" routerLink="/user/main/notifications" style="cursor: pointer;"
                     (click)="onToggleMenu()">
                     <a>
@@ -21,16 +22,15 @@
                         <span *ngIf="unreadNotifications > 0">{{unreadNotifications}}</span>
                     </a>
                 </div>
-                } @else {
-                <div class="ct_notification_icon" (click)="toggleComponent()" style="cursor: pointer;"
-                    (click)="onToggleMenu()">
+                <!-- } @else {
+                <div class="ct_notification_icon" style="cursor: pointer;" (click)="onToggleMenu()">
                     <a>
                         <img src="../assets/img/notification_icon.svg" alt="">
                         <span *ngIf="unreadNotifications > 0">{{unreadNotifications}}</span>
                     </a>
                 </div>
-                }
-
+                } -->
+                <!-- (click)="toggleComponent()" -->
                 <!-- <div class="ct_notification_icon" style="cursor: pointer;">
                     <a routerLink="/user/main/notifications">
                         <img src="../assets/img/notification_icon.svg" alt="">

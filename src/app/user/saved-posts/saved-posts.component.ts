@@ -16,6 +16,7 @@ export class SavedPostsComponent {
   ngOnInit() {
     this.userId = localStorage.getItem('fbId');
     this.getProfileData();
+    this.visibilityService.triggerRefresh();
   }
 
 
@@ -114,6 +115,7 @@ export class SavedPostsComponent {
   toggleCommentBox(id: number): void {
     if (this.currentOpenCommentBoxId === id) {
       // Toggle off if the same box is clicked again
+      this.commentText = '';
       this.showCmt[id] = !this.showCmt[id];
       if (!this.showCmt[id]) {
         this.currentOpenCommentBoxId = null;
@@ -124,6 +126,7 @@ export class SavedPostsComponent {
       this.currentOpenCommentBoxId = id;
       this.showCmt[id] = true;
       this.getPostComments(id);
+      this.commentText = '';
     }
   }
 

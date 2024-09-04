@@ -125,4 +125,6 @@
 .form-control {
     width: 90%;
 }
-  
+.ct_chat_footer textarea.form-control {
+    width: calc(100% - 50px) !important;
+}

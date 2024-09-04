@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'app-follow-users',
@@ -12,11 +14,16 @@ export class FollowUsersComponent {
   searchQuery: string = '';
   avatar_url_fb: any;
 
-  constructor(private router: Router, private service: SharedService) { }
+  constructor(private router: Router, private service: SharedService, private location: Location) { }
+
+  backClicked() {
+    this.location.back();
+  }
 
   ngOnInit() {
     this.avatar_url_fb = localStorage.getItem('avatar_url_fb');
     this.searchFollowUsersList();
+    this.service.triggerRefresh();
   }
 
   data: any;

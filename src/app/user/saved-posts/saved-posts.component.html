@@ -75,7 +75,8 @@
                                     d="M10 1.75C5.44366 1.75 1.75001 5.44365 1.75001 10C1.75001 11.365 2.08093 12.6505 2.66626 13.7828C2.74503 13.9352 2.76918 14.1099 2.7347 14.278L1.96334 18.0367L5.72204 17.2653C5.89007 17.2308 6.06484 17.255 6.21722 17.3338C7.3495 17.9191 8.63502 18.25 10 18.25C14.5564 18.25 18.25 14.5563 18.25 10C18.25 5.44365 14.5564 1.75 10 1.75ZM0.250013 10C0.250013 4.61522 4.61524 0.25 10 0.25C15.3848 0.25 19.75 4.61522 19.75 10C19.75 15.3848 15.3848 19.75 10 19.75C8.48564 19.75 7.05008 19.4042 5.76973 18.7868L1.15079 19.7347C0.903835 19.7854 0.647943 19.7086 0.469683 19.5303C0.291422 19.3521 0.214644 19.0962 0.265324 18.8492L1.21323 14.2303C0.595784 12.9499 0.250013 11.5144 0.250013 10Z"
                                     fill="#E58934" />
                             </svg>
-                            <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">{{feed.post.numberOfComments}}  {{feed.post.numberOfComments > 1 ? 'Comments' : 'Comment'}}
+                            <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">{{feed.post.numberOfComments}}
+                                {{feed.post.numberOfComments > 1 ? 'Comments' : 'Comment'}}
                             </p>
                         </div>
                     </li>
@@ -92,8 +93,9 @@
                 <!-- show this div when user click on comment -->
                 <div class="ct_comment_area_main mt-4 " [class.d-none]="!showCmt[feed.post.id]">
                     <div class="position-relative">
-                        <input type="text" class="form-control ct_custom_input w-100" placeholder="Write comment..."
-                            [(ngModel)]="commentText" [ngModelOptions]="{standalone: true}" maxlength="250" (keyup.enter)="addComment(feed.id)">
+                        <input type="text" class="form-control ct_custom_input w-100 ct_pe_34" placeholder="Write comment..."
+                            [(ngModel)]="commentText" [ngModelOptions]="{standalone: true}" maxlength="250"
+                            (keyup.enter)="addComment(feed.post.id)">
 
                         <i (click)="addComment(feed.post.id)" *ngIf="!btnLoader"
                             class="fa fa-paper-plane ct_send_msg_plane text-white" aria-hidden="true">
@@ -293,7 +295,8 @@
                                     d="M10 1.75C5.44366 1.75 1.75001 5.44365 1.75001 10C1.75001 11.365 2.08093 12.6505 2.66626 13.7828C2.74503 13.9352 2.76918 14.1099 2.7347 14.278L1.96334 18.0367L5.72204 17.2653C5.89007 17.2308 6.06484 17.255 6.21722 17.3338C7.3495 17.9191 8.63502 18.25 10 18.25C14.5564 18.25 18.25 14.5563 18.25 10C18.25 5.44365 14.5564 1.75 10 1.75ZM0.250013 10C0.250013 4.61522 4.61524 0.25 10 0.25C15.3848 0.25 19.75 4.61522 19.75 10C19.75 15.3848 15.3848 19.75 10 19.75C8.48564 19.75 7.05008 19.4042 5.76973 18.7868L1.15079 19.7347C0.903835 19.7854 0.647943 19.7086 0.469683 19.5303C0.291422 19.3521 0.214644 19.0962 0.265324 18.8492L1.21323 14.2303C0.595784 12.9499 0.250013 11.5144 0.250013 10Z"
                                     fill="#E58934" />
                             </svg>
-                            <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">{{feed.post.numberOfComments }} {{feed.post.numberOfComments > 1 ? 'Comments' : 'Comment'}}
+                            <p class="mb-0 ct_fw_500 ct_ff_roboto text-white">{{feed.post.numberOfComments }}
+                                {{feed.post.numberOfComments > 1 ? 'Comments' : 'Comment'}}
                             </p>
                         </div>
                     </li>
@@ -312,8 +315,9 @@
                 <div class="ct_comment_area_main mt-4" [class.d-none]="!showCmt[feed.post.id]">
 
                     <div class="position-relative">
-                        <input type="text" class="form-control ct_custom_input w-100" placeholder="Write comment..."
-                            [(ngModel)]="commentText" [ngModelOptions]="{standalone: true}" maxlength="250" (keyup.enter)="addComment(feed.id)">
+                        <input type="text" class="form-control ct_custom_input w-100 ct_pe_34" placeholder="Write comment..."
+                            [(ngModel)]="commentText" [ngModelOptions]="{standalone: true}" maxlength="250"
+                            (keyup.enter)="addComment(feed.post.id)">
 
                         <i (click)="addComment(feed.post.id)" *ngIf="!btnLoader"
                             class="fa fa-paper-plane ct_send_msg_plane text-white" aria-hidden="true">
@@ -499,23 +503,22 @@
 
             <div class="ct_show_uploaded_video mt-2" style="position: relative;">
 
-                <div class="play-button" *ngIf="!isVideoPlaying(videoPlayer)"  (click)="toggleVideo(videoPlayer)">
-                 <img src="../assets/img/play.png" 
-                 alt="Play Button" />
+                <div class="play-button" *ngIf="!isVideoPlaying(videoPlayer)" (click)="toggleVideo(videoPlayer)">
+                    <img src="../assets/img/play.png" alt="Play Button" />
                 </div>
 
-                 <video [src]="feed.post.mediaUrl" #videoPlayer (timeupdate)="onTimeUpdate(videoPlayer)"
-                     (loadedmetadata)="setVideoDuration(videoPlayer)" width="100%" height="390"
-                     (click)="toggleVideo(videoPlayer)">
-                 </video>
+                <video [src]="feed.post.mediaUrl" #videoPlayer (timeupdate)="onTimeUpdate(videoPlayer)"
+                    (loadedmetadata)="setVideoDuration(videoPlayer)" width="100%" height="390"
+                    (click)="toggleVideo(videoPlayer)">
+                </video>
 
-                 <input type="range" *ngIf="currentVideoId === videoPlayer" class="custom-seekbar"
-                     (input)="onSeek($event, videoPlayer)" />
+                <input type="range" *ngIf="currentVideoId === videoPlayer" class="custom-seekbar"
+                    (input)="onSeek($event, videoPlayer)" />
 
-                 <div *ngIf="currentVideoId === videoPlayer" class="video-timing text-white pb-4">
-                     {{ formatTime(currentTime) }} / {{ formatTime(videoDuration) }}
-                 </div>
-             </div>
+                <div *ngIf="currentVideoId === videoPlayer" class="video-timing text-white pb-4">
+                    {{ formatTime(currentTime) }} / {{ formatTime(videoDuration) }}
+                </div>
+            </div>
 
 
             <div class="ct_like_comment_div">
@@ -544,7 +547,8 @@
                                     fill="#E58934" />
                             </svg>
                             <p style="cursor: pointer;" class="mb-0 ct_fw_500 ct_ff_roboto text-white">
-                                {{feed.post.numberOfComments}} {{feed.post.numberOfComments > 1 ? 'Comments' : 'Comment'}}
+                                {{feed.post.numberOfComments}} {{feed.post.numberOfComments > 1 ? 'Comments' :
+                                'Comment'}}
                             </p>
                         </div>
                     </li>
@@ -569,8 +573,9 @@
                     </div> -->
 
                     <div class="position-relative">
-                        <input type="text" class="form-control ct_custom_input w-100" placeholder="Write comment..."
-                            [(ngModel)]="commentText" [ngModelOptions]="{standalone: true}" maxlength="250" (keyup.enter)="addComment(feed.id)">
+                        <input type="text" class="form-control ct_custom_input w-100 ct_pe_34" placeholder="Write comment..."
+                            [(ngModel)]="commentText" [ngModelOptions]="{standalone: true}" maxlength="250"
+                            (keyup.enter)="addComment(feed.post.id)">
 
                         <i (click)="addComment(feed.post.id)" *ngIf="!btnLoader"
                             class="fa fa-paper-plane ct_send_msg_plane text-white" aria-hidden="true">

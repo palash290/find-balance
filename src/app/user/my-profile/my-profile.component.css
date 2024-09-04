@@ -10,7 +10,7 @@
   /* Space for the custom dot */
   margin-bottom: 10px;
   /* Space between list items */
-  word-break: break-all;
+  word-break: break-word;
 }
 
 .custom-list li::before {
@@ -160,7 +160,7 @@
 }
 .ct_grid_4 {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 15px;
 }
 .ct_grid_4 p{

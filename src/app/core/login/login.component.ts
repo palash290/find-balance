@@ -114,5 +114,8 @@ export class LoginComponent {
 
   imageSrc: string = 'assets/img/close_eye.svg';
 
+  forgotPassword(role: any){
+    this.route.navigateByUrl(`forgot-password/${role}`)
+  }
 
 }

@@ -144,9 +144,8 @@
 
 
 
-    <label *ngIf="isCoach" for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Certificates</label>
+    <!-- <label *ngIf="isCoach" for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Certificates</label>
     <mat-form-field class="example-chip-list form-group mb-4 w-100 ct_multi_select" *ngIf="isCoach">
-        <!-- <mat-label>Certificates</mat-label> -->
         <mat-chip-grid #chipGridCertificates aria-label="Enter certificates">
             <mat-chip-row *ngFor="let certificate of certificates(); trackBy: certificates"
                 (removed)="removeCertificate(certificate)" [editable]="true"
@@ -161,14 +160,39 @@
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
                 (matChipInputTokenEnd)="addCertificate($event)" />
         </mat-chip-grid>
+    </mat-form-field> -->
+
+    <label *ngIf="isCoach" for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Certificates</label>
+    <mat-form-field class="example-chip-list form-group mb-4 w-100 ct_multi_select" *ngIf="isCoach">
+        <!-- <mat-label>Certificates</mat-label> -->
+        <mat-chip-grid #chipGridCertificates aria-label="Enter certificates">
+            <mat-chip-row *ngFor="let certificate of certificates(); trackBy: certificates"
+                (removed)="removeCertificate(certificate)" [editable]="true"
+                (edited)="editCertificate(certificate, $event)"
+                [aria-description]="'press enter to edit ' + certificate.name">
+                {{ certificate.name }}
+                <button matChipRemove aria-label="'remove ' + certificate.name">
+                    <mat-icon>cancel</mat-icon>
+                </button>
+            </mat-chip-row>
+        </mat-chip-grid>
+        <input placeholder="Add certificate..." [matChipInputFor]="chipGridCertificates"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="addCertificate($event)" />
     </mat-form-field>
 
 
 
     <div class="form-group mb-3" *ngIf="isCoach">
         <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Experience(Years)</label>
+        <!-- <input type="text" class="ct_login_input form-control ct_border_radius_10" placeholder="Enter experience"
+            formControlName="exp" maxlength="5"> -->
         <input type="text" class="ct_login_input form-control ct_border_radius_10" placeholder="Enter experience"
-            formControlName="exp" maxlength="2">
+            formControlName="exp" maxlength="4" (input)="checkForInvalidValue()">
+        <div *ngIf="newForm.get('exp')?.hasError('pattern')" class="text-danger">
+            Experience cannot be a negative value or contain invalid characters.
+        </div>
+
 
         <!-- <div *ngIf="newForm.controls['full_name'].invalid && newForm.controls['full_name'].touched"
             class="error-message">
@@ -181,9 +205,8 @@
 
 
     <!-- Compliments Field -->
-    <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white" *ngIf="isCoach">Accomplishments</label>
+    <!-- <label *ngIf="isCoach" for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Accomplishments</label>
     <mat-form-field class="example-chip-list form-group mb-4 w-100 ct_multi_select" *ngIf="isCoach">
-        <!-- <mat-label>Accomplishments</mat-label> -->
         <mat-chip-grid #chipGridCompliments aria-label="Enter compliments">
             <mat-chip-row *ngFor="let compliment of compliments(); trackBy: compliments"
                 (removed)="removeCompliment(compliment)" [editable]="true" (edited)="editCompliment(compliment, $event)"
@@ -197,7 +220,29 @@
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
                 (matChipInputTokenEnd)="addCompliment($event)" />
         </mat-chip-grid>
+    </mat-form-field> -->
+
+
+    <label *ngIf="isCoach" for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white ">Accomplishments</label>
+    <mat-form-field class="example-chip-list form-group mb-4 w-100 ct_multi_select" *ngIf="isCoach">
+
+        <mat-chip-grid #chipGridCompliments aria-label="Enter accomplishments">
+            <mat-chip-row *ngFor="let compliment of compliments(); trackBy: compliments"
+                (removed)="removeCompliment(compliment)" [editable]="true" (edited)="editCompliment(compliment, $event)"
+                [aria-description]="'press enter to edit ' + compliment.name">
+                {{compliment.name}}
+                <button matChipRemove [attr.aria-label]="'remove ' + compliment.name">
+                    <mat-icon>cancel</mat-icon>
+                </button>
+            </mat-chip-row>
+        </mat-chip-grid>
+        <input placeholder="Add accomplishments..." [matChipInputFor]="chipGridCompliments"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="addCompliment($event)" />
     </mat-form-field>
+
+
+
 
 
 

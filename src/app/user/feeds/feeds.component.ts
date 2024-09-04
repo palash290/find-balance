@@ -50,8 +50,9 @@ export class FeedsComponent {
     this.visibilityService.showComponent$.subscribe(component => {
       this.currentComponent = component;
     });
-    this.getProfileData();
-    this.visibilityService.triggerRefresh();
+    if (this.isCoach) {
+      this.visibilityService.triggerRefresh();
+    }
   }
 
   categoryId: any = '';
@@ -107,7 +108,7 @@ export class FeedsComponent {
   currentAudioTime: number = 0;
   audioDuration: number = 0;
 
-///////
+  ///////
   fileName = '';
   formattedTime: any = 0;
   duration: any = 0;
@@ -136,7 +137,7 @@ export class FeedsComponent {
     this.isPlaying = !this.isPlaying;
   }
   //////// 
-  
+
   // toggleAudio(audioElement: HTMLAudioElement) {
   //   if (this.currentVideoId) {
   //     this.currentVideoId.pause();
@@ -146,7 +147,7 @@ export class FeedsComponent {
   //     this.currentAudio.pause(); // Pause the currently playing audio
   //     this.isPlaying = false;
   //   }
-  
+
   //   if (audioElement.paused) {
   //     audioElement.play();
   //     this.currentAudio = audioElement;
@@ -157,7 +158,7 @@ export class FeedsComponent {
   //     this.isPlaying = false;
   //   }
   // }
-  
+
   isAudioPlaying(audioElement: HTMLAudioElement): boolean {
     return audioElement === this.currentAudio && !audioElement.paused;
   }
@@ -170,7 +171,7 @@ export class FeedsComponent {
       this.setAudioDuration(audioElement);
     }
   }
-  
+
   setAudioDuration(audioElement: HTMLAudioElement) {
     if (this.currentAudio === audioElement) {
       const seekBar: HTMLInputElement = document.querySelector('.custom-seekbar')!;
@@ -178,20 +179,20 @@ export class FeedsComponent {
       this.audioDuration = audioElement.duration;
     }
   }
-  
+
   onAudioSeek(event: Event, audioElement: HTMLAudioElement) {
     const input = event.target as HTMLInputElement;
     const value = input.value;
     const time = (parseFloat(value) / 100) * audioElement.duration;
     audioElement.currentTime = time;
   }
-  
+
   // formatTime(time: number): string {
   //   const minutes = Math.floor(time / 60);
   //   const seconds = Math.floor(time % 60);
   //   return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   // }
-  
+
 
 
 
@@ -324,9 +325,9 @@ export class FeedsComponent {
     });
   }
 
-
+  isLikedCmt: boolean = true;
   likeComment(cmtId: any, postId: any) {
-    //this.isLike = !this.isLike;
+   // this.isLikedCmt = true;
     this.visibilityService.postAPI(this.isCoach ? `coach/comment/react/${cmtId}` : `user/post/comment/react/${cmtId}`, null).subscribe({
       next: resp => {
         console.log(resp);
@@ -403,7 +404,7 @@ export class FeedsComponent {
   videoDuration: number = 0;
 
   toggleVideo(videoElement: HTMLVideoElement) {
-    
+
     if (this.currentAudio) {
       this.currentAudio.pause();
     }
@@ -455,7 +456,7 @@ export class FeedsComponent {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
 
-  
+
   // onTimeUpdate(videoElement: HTMLVideoElement) {
   //   if (this.currentVideoId === videoElement) {
   //     const seekBar: HTMLInputElement = document.querySelector('.custom-seekbar')!;
@@ -464,7 +465,7 @@ export class FeedsComponent {
   //     this.setVideoDuration(videoElement);
   //   }
   // }
-  
+
   // setVideoDuration(videoElement: HTMLVideoElement) {
   //   //debugger
   //   if (this.currentVideoId === videoElement) {
@@ -473,7 +474,7 @@ export class FeedsComponent {
   //     this.videoDuration = videoElement.duration;
   //   }
   // }
-  
+
   // onSeek(event: Event, videoElement: HTMLVideoElement) {
   //   const input = event.target as HTMLInputElement;
   //   const value = input.value;
@@ -482,7 +483,7 @@ export class FeedsComponent {
   // }
 
 
-  
+
   //poster="../assets/img/play.png"
 
 }

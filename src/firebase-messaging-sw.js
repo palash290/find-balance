@@ -25,6 +25,6 @@ messaging.onBackgroundMessage(function (payload) {
   };
   console.log('Received background message ', notificationTitle);
   console.log('Received background message1 ', notificationOptions);
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  //self.registration.showNotification(notificationTitle, notificationOptions);
  
 });

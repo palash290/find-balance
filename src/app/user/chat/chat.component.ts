@@ -39,6 +39,9 @@ export class ChatComponent {
 
 
     this.messageSubscription = this.chatService.getMessage().subscribe((message: any) => {
+
+      this.service.triggerRefresh();
+
       // Check if the incoming message is for the current active chat
       if (message && message.chatId !== this.currentChatId) {
         // Find the chat in chatsList and update unread count
@@ -48,7 +51,6 @@ export class ChatComponent {
         }
         // console.log('notify working!');
         
-        // this.service.triggerRefresh();
         // Update the view by triggering change detection if needed
         // this.changeDetectorRef.detectChanges(); // Uncomment if change detection is not automatic
         this.getAllChats();
@@ -60,7 +62,6 @@ export class ChatComponent {
         this.messageList = this.messageList;
 
         this.getChatMessages(this.currentChatId);
-
 
         //this.getAllChats();
       }
@@ -75,6 +76,7 @@ export class ChatComponent {
 
 
     this.getAllChats();
+    this.service.triggerRefresh();
   }
 
   ngOnDestroy() {
@@ -254,6 +256,7 @@ export class ChatComponent {
 
     const trimmedMessage = this.newMessage.trim();
     if (trimmedMessage === '') {
+      this.isDisabled = false;
       return;
     }
 
@@ -264,8 +267,11 @@ export class ChatComponent {
       next: (resp) => {
         this.getChatMessages(this.currentChatId);
         this.newMessage = '';
-        this.isDisabled = false;
         this.resetTextarea();
+        setTimeout(() => {
+          this.isSending = false; // Reset the flag after message is sent
+        }, 500);
+        this.isDisabled = false; 
       },
       error: error => {
         console.log(error.message)
@@ -316,6 +322,8 @@ handleInput(): void {
   }
 }
 
+isSending: boolean = false; 
+
 handleKeyDown(event: KeyboardEvent) {
   // If Shift + Enter is pressed, insert a new line
   if (event.key === 'Enter' && event.shiftKey) {
@@ -324,7 +332,11 @@ handleKeyDown(event: KeyboardEvent) {
   } else if (event.key === 'Enter') {
     // Prevent default Enter key behavior and send the message
     event.preventDefault();
-    this.sendMessage();
+    if (!this.isSending) {
+      this.isSending = true; // Set flag to prevent multiple sends
+      this.sendMessage();
+    }
+
   }
 }
 

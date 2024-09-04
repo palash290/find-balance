@@ -30,8 +30,8 @@ export class SearchCoachesComponent {
         this.categories = response.data;
       }
     });
-
-    this.getAllCoaches()
+    this.service.triggerRefresh();
+    this.getAllCoaches();
   }
 
   // getAllCoaches() {

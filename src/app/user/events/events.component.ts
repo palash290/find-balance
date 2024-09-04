@@ -28,7 +28,7 @@ export class EventsComponent {
       console.log('Event ID:', this.eventId);
       this.getEventData(this.eventId);
     });
-   
+    this.service.triggerRefresh();
   }
 
   eventData: any;

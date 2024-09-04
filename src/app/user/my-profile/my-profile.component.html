@@ -38,7 +38,8 @@
         </div>
         }
 
-        @if(experience  != ''){
+        @if(isCoach){
+        @if(experience != ''){
         <div>
             <h4 class="ct_ff_roboto ct_orange_text ct_fs_18 ct_fw_600 mt-3">Experience</h4>
             <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{ experience}} {{experience >
@@ -96,6 +97,8 @@
             </ng-template>
         </div>
         }
+        }
+
     </div>
 
 
@@ -207,9 +210,9 @@
                 <!-- show this div when user click on comment -->
                 <div class="ct_comment_area_main mt-4" [class.d-none]="!showCmt[feed.id]">
                     <div class="position-relative">
-                        <input type="text" class="form-control ct_custom_input w-100" placeholder="Write comment..."
-                            [(ngModel)]="commentText" [ngModelOptions]="{standalone: true}" maxlength="250"
-                            (keyup.enter)="addComment(feed.id)">
+                        <input type="text" class="form-control ct_custom_input w-100 ct_pe_34"
+                            placeholder="Write comment..." [(ngModel)]="commentText"
+                            [ngModelOptions]="{standalone: true}" maxlength="250" (keyup.enter)="addComment(feed.id)">
 
                         <i (click)="addComment(feed.id)" *ngIf="!btnLoader"
                             class="fa fa-paper-plane ct_send_msg_plane text-white" aria-hidden="true">
@@ -457,9 +460,9 @@
                 <div class="ct_comment_area_main mt-4" [class.d-none]="!showCmt[feed.id]">
 
                     <div class="position-relative">
-                        <input type="text" class="form-control ct_custom_input w-100" placeholder="Write comment..."
-                            [(ngModel)]="commentText" [ngModelOptions]="{standalone: true}" maxlength="250"
-                            (keyup.enter)="addComment(feed.id)">
+                        <input type="text" class="form-control ct_custom_input w-100 ct_pe_34"
+                            placeholder="Write comment..." [(ngModel)]="commentText"
+                            [ngModelOptions]="{standalone: true}" maxlength="250" (keyup.enter)="addComment(feed.id)">
                         <!-- <i (click)="addComment(feed.id)" class="fa fa-paper-plane ct_send_msg_plane text-white"
                             aria-hidden="true"></i> -->
                         <i (click)="addComment(feed.id)" *ngIf="!btnLoader"
@@ -723,7 +726,7 @@
                 </ul>
                 <!-- show this div when user click on comment -->
                 <div class="ct_comment_area_main mt-4" [class.d-none]="!showCmt[feed.id]">
-                    <!-- <input type="text" class="form-control ct_custom_input w-100" placeholder="Write comment..."
+                    <!-- <input type="text" class="form-control ct_custom_input w-100 ct_pe_34" placeholder="Write comment..."
                         [(ngModel)]="commentText" [ngModelOptions]="{standalone: true}">
 
                     <div class="d-flex align-items-center" (click)="addComment(feed.id)">

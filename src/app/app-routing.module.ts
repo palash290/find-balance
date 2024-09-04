@@ -23,7 +23,7 @@ const routes: Routes = [
     component: LoginComponent, canActivate: [HomeGuard]
   },
   {
-    path: "forgot-password",
+    path: "forgot-password/:role",
     component: ForgotPasswordComponent, canActivate: [HomeGuard]
   },
   {

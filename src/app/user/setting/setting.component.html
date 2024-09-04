@@ -1,45 +1,46 @@
-<a (click)="backClicked()" class="ct_orange_text ct_back_to_list ct_chat_back" style="cursor: pointer;">Back</a>
+<!-- <a (click)="backClicked()" class="ct_orange_text ct_back_to_list ct_chat_back" style="cursor: pointer;">Back</a> -->
+<a (click)="backClicked()" class="ct_orange_text ct_back_to_list ct_chat_back mb-4 d-block ct_fw_600"
+  style="cursor: pointer;"><i class="fa-solid fa-arrow-left me-2"></i> Back</a>
 
 <h4 class="ct_fs_28 ct_ff_roboto ct_fw_500 ct_orange_text">Settings</h4>
 <ul class="mt-4 ct_setting_list">
-    <li>
-        <a style="cursor: pointer;" class="mb-0 text-white ct_fs_18 ct_fw_500 ct_ff_roboto"
-            routerLink="/user/main/change-password">Change Password </a>
-    </li>
-    <li>
-        <div class="d-flex align-items-center gap-3 justify-content-between">
-            <p class="mb-0 text-white ct_fs_18 ct_fw_500 ct_ff_roboto">Phone No. </p>
-            <p class="mb-0 ct_orange_text ct_fs_18 ct_fw_500 ct_ff_roboto">{{userDetails.phone_no}}</p>
-        </div>
-    </li>
+  <li>
+    <a style="cursor: pointer;" class="mb-0 text-white ct_fs_18 ct_fw_500 ct_ff_roboto"
+      routerLink="/user/main/change-password">Change Password </a>
+  </li>
+  <li>
+    <div class="d-flex align-items-center gap-3 justify-content-between">
+      <p class="mb-0 text-white ct_fs_18 ct_fw_500 ct_ff_roboto">Phone No. </p>
+      <p class="mb-0 ct_orange_text ct_fs_18 ct_fw_500 ct_ff_roboto">{{userDetails.phone_no}}</p>
+    </div>
+  </li>
 
 
-    <li>
-        <div class="d-flex align-items-center gap-3 justify-content-between">
-          <p class="mb-0 text-white ct_fs_18 ct_fw_500 ct_ff_roboto">Messages Notification</p>
-          <label class="switch">
-            <input type="checkbox" [(ngModel)]="chatNotification" (change)="updateChatNotification()">
-            <span class="slider"></span>
-          </label>
-        </div>
-      </li>
-      
-      <li *ngIf="isCoach">
-        <div class="d-flex align-items-center gap-3 justify-content-between">
-          <p class="mb-0 text-white ct_fs_18 ct_fw_500 ct_ff_roboto">Post Notification</p>
-          <label class="switch">
-            <input type="checkbox" [(ngModel)]="feedNotification" (change)="updateChatNotification()">
-            <span class="slider"></span>
-          </label>
-        </div>
-      </li>
-      
+  <li>
+    <div class="d-flex align-items-center gap-3 justify-content-between">
+      <p class="mb-0 text-white ct_fs_18 ct_fw_500 ct_ff_roboto">Messages Notification</p>
+      <label class="switch">
+        <input type="checkbox" [(ngModel)]="chatNotification" (change)="updateChatNotification()">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </li>
 
-    
-    <li>
-        <a style="cursor: pointer;" (click)="logout()"
-            class="mb-0 text-white ct_fs_18 ct_fw_500 ct_ff_roboto">Logout</a>
-    </li>
+  <li *ngIf="isCoach">
+    <div class="d-flex align-items-center gap-3 justify-content-between">
+      <p class="mb-0 text-white ct_fs_18 ct_fw_500 ct_ff_roboto">Post Notification</p>
+      <label class="switch">
+        <input type="checkbox" [(ngModel)]="feedNotification" (change)="updateChatNotification()">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </li>
+
+
+
+  <li>
+    <a style="cursor: pointer;" (click)="logout()" class="mb-0 text-white ct_fs_18 ct_fw_500 ct_ff_roboto">Logout</a>
+  </li>
 </ul>
 <a (click)="deleteAccount()" style="cursor: pointer;" class="ct_ff_roboto text-danger ct_fs_18 mt-4 d-block">Delete
-    Account</a>
+  Account</a>

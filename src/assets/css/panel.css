@@ -819,10 +819,12 @@
 
 .ct_chat_dropdown ul.dropdown-menu.show {
     background-color: #323232;
+    padding: 0;
 }
 
 .ct_chat_dropdown ul.dropdown-menu.show li {
     padding: 3px 10px;
+    border-radius: 5px;
 }
 
 .ct_chat_dropdown ul.dropdown-menu.show li a {

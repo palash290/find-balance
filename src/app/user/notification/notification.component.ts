@@ -21,7 +21,6 @@ export class NotificationComponent {
   constructor(private service: SharedService, private route: ActivatedRoute, private socketService: SocketService, private router: Router, private location: Location) { }
 
   ngOnInit() {
-
     this.role = this.service.getRole();
     if (this.role == 'USER') {
       this.isCoach = false;
@@ -131,7 +130,7 @@ export class NotificationComponent {
   acceptLoader: boolean = false;
   notificationId: any;
 
-  acceptTeam(teamId: any, notifId: any){
+  acceptTeam(teamId: any, notifId: any) {
     this.notificationId = notifId;
     this.acceptLoader = true
     const formURlData = new URLSearchParams();
@@ -150,8 +149,8 @@ export class NotificationComponent {
   }
 
   rejectLoader: boolean = false;
-  
-  rejectTeam(teamId: any, notifId: any){
+
+  rejectTeam(teamId: any, notifId: any) {
     this.notificationId = notifId;
     this.rejectLoader = true
     const formURlData = new URLSearchParams();

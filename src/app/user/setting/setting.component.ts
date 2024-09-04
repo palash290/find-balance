@@ -19,7 +19,6 @@ export class SettingComponent implements OnInit {
 
   constructor(private srevice: SharedService, private toastr: ToastrService, private route: Router, private location: Location) { }
   ngOnInit(): void {
-    this.getSettings();
     this.role = this.srevice.getRole();
     if (this.role == 'USER') {
       this.isCoach = false;
@@ -27,6 +26,7 @@ export class SettingComponent implements OnInit {
     const jaonData: any = localStorage.getItem('userDetailFb');
     const data = JSON.parse(jaonData)
     this.userDetails = data;
+    this.getSettings();
   }
 
   backClicked() {

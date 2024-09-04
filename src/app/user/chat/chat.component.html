@@ -76,9 +76,13 @@
                                 {{participant?.User?.full_name || 'Unknown Coach'}}
                             </p>
                             <span class="text-white ct_fs_14">{{getLimitedText(chat.lastMessage?.content, 15)}}</span>
+
                         </div>
-                        <span *ngIf="chat.unreadCount > 0"
-                            class="text-white ct_msg_count_12">{{chat.unreadCount}}</span>
+                        <div class="ms-auto">
+                            <span *ngIf="chat.unreadCount > 0"
+                                class="text-white ct_msg_count_12">{{chat.unreadCount}}</span>
+                            <!-- <span class="text-white ct_fs_12">{{chat.createdAt | date:'shortTime'}}</span> -->
+                        </div>
                     </ng-container>
                 </div>
             </li>
@@ -190,6 +194,9 @@
                                         <p class="text-white mb-0 ct_ff_roboto ct_fs_18">{{msgs.content}}</p>
                                         <span
                                             class="ct_fs_12 text-white ct_ff_roboto text-start d-block mt-2">{{formatTimestamp1(msgs.createdAt)}}</span>
+                                        <!-- <span
+                                            class="ct_fs_12 text-white ct_ff_roboto text-start d-block mt-2">{{msgs.createdAt|
+                                            date:'d/M/yy, h:mm a'}}</span> -->
 
                                     </div>
                                 </div>
@@ -250,16 +257,9 @@
                         <!-- <input [(ngModel)]="newMessage" type="text" class="form-control ct_login_input"
                             placeholder="Type here..." maxlength="250" (keyup.enter)="sendMessage()"
                             [ngModelOptions]="{standalone: true}" (input)="handleInput()"> -->
-                            <textarea #messageTextarea
-                            [(ngModel)]="newMessage"
-                            class="form-control w-90 ct_login_input"
-                            placeholder="Type here..."
-                            maxlength="250"
-                            rows="1"
-                            [ngModelOptions]="{standalone: true}"
-                            
-                            (keydown)="handleKeyDown($event)"
-                            (input)="handleInput()"></textarea>
+                        <textarea #messageTextarea [(ngModel)]="newMessage" class="form-control w-100 ct_login_input"
+                            placeholder="Type here..." maxlength="250" rows="1" [ngModelOptions]="{standalone: true}"
+                            (keydown)="handleKeyDown($event)" (input)="handleInput()"></textarea>
 
                         <div class="d-flex align-items-center" style="cursor: pointer;">
                             <button type="button" [disabled]="isDisabled" (click)="sendMessage()">
@@ -406,8 +406,8 @@
                         <p class="ct_fs_15 text-white">No users found</p>
                     </div>
                     <div *ngFor="let follower of followersList;">
-                        <div *ngIf="follower.follower.role == 'USER'" class="d-flex align-items-center gap-2 mt-4" style="cursor: pointer;"
-                            (click)="createChat(follower.follower.id)">
+                        <div *ngIf="follower.follower.role == 'USER'" class="d-flex align-items-center gap-2 mt-4"
+                            style="cursor: pointer;" (click)="createChat(follower.follower.id)">
                             <img [src]="follower.follower.avatar_url ? follower.follower.avatar_url : '/assets/img/np_pro.png'"
                                 alt="" class="ct_img_62 ct_border_radius_100">
                             <div>

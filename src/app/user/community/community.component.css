@@ -29,6 +29,12 @@ div#ct_edit_community .modal-content {
 .ct_community_sidebar li:hover h5,.ct_community_sidebar li.active h5{
   color: #fff;
 } 
+.ct_admin_badge{
+  background-color: var(--orange);
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+}
 @media screen and (max-width:1199px) {
     .ct_chat_back {
         display: block;

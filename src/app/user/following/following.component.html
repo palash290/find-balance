@@ -1,3 +1,6 @@
+<a (click)="backClicked()" class="ct_orange_text ct_back_to_list ct_chat_back mb-4 d-block ct_fw_600"
+    style="cursor: pointer;"><i class="fa-solid fa-arrow-left me-2"></i> Back</a>
+    
 <div [ngClass]="{'ct_box_2_column ct_box_2_full_active': isCoach, 'ct_box_2_column': !isCoach, }">
     <div>
         <div class="ct_upload_text">
@@ -9,11 +12,11 @@
         </div>
 
         <div *ngIf="data?.length === 0" class="text-center">
-            <p class="ct_fs_15 text-white mt-5">No coaches found</p>
+            <p class="ct_fs_15 text-white mt-5">No following found</p>
         </div>
 
         <div class="mt-4" *ngIf="data?.length > 0">
-            <h4 class="ct_fw_600 text-white ct_fs_20">Following Coaches</h4>
+            <h4 class="ct_fw_600 text-white ct_fs_20">Following</h4>
 
             <ul class="ct_mt_30 ct_all_notification px-2">
                 <li *ngFor="let categories of data;">
@@ -25,7 +28,9 @@
                             <div>
                                 <h5 class="ct_fs_15 ct_orange_text ct_fw_600 mb-1 ct_ff_roboto">
                                     {{categories.following.full_name}}</h5>
-                                <p class="mb-0 ct_fs_12 text-white">{{categories.following.totalPosts}} {{categories.following.totalPosts > 1 ? 'Posts' : 'Post'}}</p>
+                                <!-- <p class="mb-0 ct_fs_12 text-white">{{categories.following.totalPosts}} {{categories.following.totalPosts > 1 ? 'Posts' : 'Post'}}</p> -->
+                                <img src="../assets/img/star.png" alt="star">
+                                <span class="ct_orange_text">{{categories.following.category.name}}</span>
                             </div>
                         </div>
                         <div>

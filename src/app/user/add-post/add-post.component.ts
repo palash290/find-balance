@@ -34,17 +34,19 @@ export class AddPostComponent {
   categories: any[] = [];
   communityId: any;
   teamId: any;
-  
+
   constructor(private route: Router, private service: SharedService, private toastr: ToastrService) { }
 
-  ngOnInit(){
+  ngOnInit() {
     this.service.getApi('coach/categories').subscribe(response => {
       if (response.success) {
         this.categories = response.data;
       }
+      this.avatar_url_fb = localStorage.getItem('avatar_url_fb');
+
     });
-    
-    this.avatar_url_fb = localStorage.getItem('avatar_url_fb');
+
+
   }
 
   categoryId: any = '1';

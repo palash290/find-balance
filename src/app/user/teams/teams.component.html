@@ -60,7 +60,7 @@
                     <h5 class="mb-0 ct_fs_15 ct_ff_roboto ct_fw_500 mb-2 ct_orange_text">{{teamName}}</h5>
                     <p class="mb-0 ct_fs_12 ct_ff_roboto ct_fw_500 text-white"> {{numberOfPosts}} {{numberOfPosts >
                         1 ? 'Posts' : 'Post'}} <span> -
-                            {{numberOfParticipant}} {{numberOfParticipant > 1 ? 'Members' : 'Member'}}</span>
+                            {{numberOfParticipant + 1}} {{numberOfParticipant > 1 ? 'Members' : 'Member'}}</span>
                     </p>
                 </div>
 
@@ -918,8 +918,7 @@
                     <li>
                         <div class="ct_all_team_member_list">
                             <div class="d-flex align-items-center gap-3">
-                                <p class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500">
-                                    Admin</p>
+                                
                                 <div class="d-flex align-items-center gap-2" style="cursor: pointer;"
                                     (click)="getCoachId(teamAdminid, teamAdminRole)">
                                     <img [src]="teamAdminImg ? teamAdminImg : '/assets/img/np_pro.png'" alt=""
@@ -927,6 +926,8 @@
                                     <p class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500">
                                         {{teamAdminName}}</p>
                                 </div>
+                                <p class="mb-0 ct_fs_15 text-white ct_ff_roboto  ct_admin_badge ms-auto">
+                                    Admin</p>
                             </div>
                         </div>
                     </li>
@@ -953,12 +954,12 @@
 
                                 @if(participants.id == userId){
                                 <div class="dropdown ms-auto ct_chat_dropdown">
-                                    <button class="btn  ct_dropdown_btn" type="button" id="dropdownMenuButton1"
+                                    <button class="btn  ct_dropdown_btn pe-0" type="button" id="dropdownMenuButton1"
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fa-solid fa-ellipsis-vertical ct_orange_text"></i>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item " (click)="leaveTeam()">Leave</a></li>
+                                        <li style="border-radius: 5px;"><a class="dropdown-item " (click)="leaveTeam()">Leave</a></li>
                                     </ul>
                                 </div>
                                 }

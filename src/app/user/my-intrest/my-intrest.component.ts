@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-my-intrest',
@@ -13,7 +14,23 @@ export class MyIntrestComponent {
   isFollowing: { [key: number | string]: boolean } = {};
   avatar_url_fb: any;
 
-  constructor(private service: SharedService) { }
+  isCoach: boolean = true;
+  role: string | undefined;
+
+  constructor(private service: SharedService, private location: Location) {
+    // this.role = this.service.getRole();
+    // if (this.role == 'USER') {
+    //   this.isCoach = false;
+    // }
+    // if(!this.isCoach){
+    //   this.location.back();
+    //   return
+    // }
+   }
+
+   backClicked() {
+    this.location.back();
+  }
 
   ngOnInit() {
     this.service.refreshSidebar$.subscribe(() => {
@@ -22,6 +39,7 @@ export class MyIntrestComponent {
     this.avatar_url_fb = localStorage.getItem('avatar_url_fb');
     //this.getCategories();
     // this.searchCategories();
+    this.service.triggerRefresh();
   }
 
   getCategories() {

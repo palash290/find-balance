@@ -86,27 +86,32 @@
                                 </div>
                             </div>
                             <div class="d-flex align-items-center gap-2 mt-1 w-100">
-                                <label class="ct_container_checkout">
+                                <!-- <label class="ct_container_checkout">
                                     <input type="checkbox" />
                                     <div class="ct_checkmark"></div>
-                                </label>
-                                <p class="mb-0 text-white ct_fw_500 ct_ff_noto">Remember me</p>
+                                </label> -->
+                                <!-- <p class="mb-0 text-white ct_fw_500 ct_ff_noto">Remember me</p> -->
                             </div>
                             <div class="mt-4 w-100" (click)="login()">
                                 <button
                                     class="ct_orange_btn ct_border_radius_10 ct_py_14_px_10 ct_ff_roboto w-100 ct_fs_20">Login</button>
                             </div>
-                            <div class="mt-4 w-100 text-center">
-                                <a routerLink="/forgot-password"
-                                    class="ct_fw_600 text-white ct_ff_roboto ct_fw_500">Forgot
-                                    password ?</a>
+                            <div class="mt-4 w-100 text-center" style="cursor: pointer;">
+                                @if(isCoach){
+                                    <a (click)="forgotPassword('COACH')" class="ct_fw_600 text-white ct_ff_roboto ct_fw_500">Forgot
+                                        password ?</a>
+                                } @else{
+                                    <a (click)="forgotPassword('user')" class="ct_fw_600 text-white ct_ff_roboto ct_fw_500">Forgot
+                                        password ?</a>
+                                }
+                                
                             </div>
                             <div class="mt-3 w-100">
                                 <p class="mb-0 text-white ct_fw_500 ct_ff_roboto text-center"> Don’t have an account ?
                                     @if(isCoach){
-                                    <a routerLink="/signup" class="ct_orange_text ct_text_underline">Signup</a>
+                                    <a routerLink="/signup" class="ct_orange_text ct_text_underline">Sign Up</a>
                                     } @else {
-                                    <a routerLink="/signup-user" class="ct_orange_text ct_text_underline">Signup</a>
+                                    <a routerLink="/signup-user" class="ct_orange_text ct_text_underline">Sign Up</a>
                                     }
                                 </p>
                             </div>

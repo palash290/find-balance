@@ -56,12 +56,27 @@ export class EditProfileComponent {
       categoryId: new FormControl(''),
       certificates: new FormControl(''),
       compliments: new FormControl(''),
-      exp: new FormControl(''),
+      exp: new FormControl('', [Validators.pattern(/^\d+(\.\d+)?$/)]),
       email: new FormControl({ value: '', disabled: true }),
       education: new FormControl(''),
       other_categ: new FormControl('',  this.getOtherCategValidators())
     })
   }
+
+  checkForInvalidValue() {
+    const expControl = this.newForm.get('exp');
+    const expValue = expControl?.value;
+
+    // Check if the value is negative or contains invalid characters
+    if (expValue && (parseFloat(expValue) < 0 || !/^\d+(\.\d+)?$/.test(expValue))) {
+      expControl?.setErrors({ pattern: true });
+    } else {
+      expControl?.setErrors(null);
+    }
+    expControl?.updateValueAndValidity();
+  }
+  
+  
 
   getOtherCategValidators() {
     // Conditionally return validators based on isCoach value
