@@ -6,8 +6,8 @@ export const environment = {
   production: false,
   apiUrl: '',
   //baseUrl: 'http://18.175.98.27:4000/',
-  //baseUrl :'http://192.168.29.19:4005/',
-  baseUrl : 'https://www.fbcoach.com:4000/',
+  baseUrl :'http://192.168.29.19:4005/',
+  //baseUrl : 'https://www.fbcoach.com:4000/',
   firebaseConfig: {
     apiKey: "AIzaSyAeYMD4HLgcRUz4eIXTFNgu9ADJMkz5P_g",
     authDomain: "finding-balance-7920f.firebaseapp.com",

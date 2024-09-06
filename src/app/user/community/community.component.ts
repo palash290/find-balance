@@ -87,6 +87,7 @@ export class CommunityComponent {
     this.service.getApi(this.isCoach ? 'coach/communtiy' : 'user/communtiy').subscribe({
       next: resp => {
         this.communityData = resp.data;
+        //console.log('this.communityData==>',this.communityData);
       },
       error: error => {
         console.log(error.message)
@@ -201,6 +202,8 @@ export class CommunityComponent {
       }
       if (this.newForm.value.about) {
         formURlData.set('description', this.newForm.value.about);
+      } else {
+        formURlData.set('description', '');
       }
       this.service.postAPIFormData('coach/communtiy', formURlData).subscribe({
         next: (resp) => {

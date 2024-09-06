@@ -129,6 +129,8 @@ export class TeamsComponent {
       }
       if (this.newForm.value.about) {
         formURlData.set('description', this.newForm.value.about);
+      } else {
+        formURlData.set('description', '');
       }
       this.btnLoader = true;
       this.service.postAPIFormData('coach/team', formURlData).subscribe({

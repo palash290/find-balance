@@ -11,7 +11,7 @@
         <div class="container">
             <div class="row pt-3">
                 <div class="col-md-12">
-                    <div class="ct_logo">
+                    <div class="ct_logo" routerLink="/home" style="cursor: pointer;">
                         <a>
                             <img src="assets/img/logo.svg" alt="">
                         </a>
@@ -98,13 +98,15 @@
                             </div>
                             <div class="mt-4 w-100 text-center" style="cursor: pointer;">
                                 @if(isCoach){
-                                    <a (click)="forgotPassword('COACH')" class="ct_fw_600 text-white ct_ff_roboto ct_fw_500">Forgot
-                                        password ?</a>
+                                <a (click)="forgotPassword('COACH')"
+                                    class="ct_fw_600 text-white ct_ff_roboto ct_fw_500">Forgot
+                                    password ?</a>
                                 } @else{
-                                    <a (click)="forgotPassword('user')" class="ct_fw_600 text-white ct_ff_roboto ct_fw_500">Forgot
-                                        password ?</a>
+                                <a (click)="forgotPassword('user')"
+                                    class="ct_fw_600 text-white ct_ff_roboto ct_fw_500">Forgot
+                                    password ?</a>
                                 }
-                                
+
                             </div>
                             <div class="mt-3 w-100">
                                 <p class="mb-0 text-white ct_fw_500 ct_ff_roboto text-center"> Don’t have an account ?

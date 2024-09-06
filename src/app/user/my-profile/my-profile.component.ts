@@ -92,7 +92,7 @@ export class MyProfileComponent {
 
   url: any;
   getUserProfile(userId: any) {
-    if(this.routerole == 'COACH'){
+    if (this.routerole == 'COACH') {
       this.url = this.isCoach ? `coach/getCoachProfile/${userId}` : `user/getCoachProfile/${userId}`;
     } else {
       this.url = this.isCoach ? `coach/userProfile/${userId}` : `user/getCoachProfile/${userId}`;
@@ -116,7 +116,7 @@ export class MyProfileComponent {
 
         this.selectedCategoryNames = resp.data.CoachCategory?.map((item: { category: { name: any; }; }) => item.category.name);
 
-        if(!this.isCoach){
+        if (!this.isCoach) {
           this.getSingleCoachPosts(userId);
         }
       },
@@ -199,19 +199,42 @@ export class MyProfileComponent {
   commentsToShow: { [key: number]: number } = {}; // Track number of comments to show
   readonly defaultCommentsCount = 3;
 
+  // getPostComments(postId: any) {
+  //   this.service.getApi(this.isCoach ? `coach/comment/${postId}` : `user/post/comment/${postId}`).subscribe({
+  //     next: resp => {
+  //       this.postComments = resp.data?.map((item: any) => ({ ...item, isExpanded: false }));
+  //       //this.postComments = [...tempData, ...this.postComments]
+  //       //console.log('========>', this.postComments)
+  //       this.commentsToShow[postId] = this.defaultCommentsCount;
+  //     },
+  //     error: error => {
+  //       console.log(error.message)
+  //     }
+  //   });
+  // }
+
+  //after loadmore comment fix
   getPostComments(postId: any) {
     this.service.getApi(this.isCoach ? `coach/comment/${postId}` : `user/post/comment/${postId}`).subscribe({
       next: resp => {
-        this.postComments = resp.data?.map((item: any) => ({ ...item, isExpanded: false }));
-        //this.postComments = [...tempData, ...this.postComments]
-        //console.log('========>', this.postComments)
-        this.commentsToShow[postId] = this.defaultCommentsCount;
+        // Preserving the state of isExpanded and commentsToShow
+        const expandedComments = this.postComments.filter(comment => comment.isExpanded);
+        this.postComments = resp.data?.map((item: any) => ({
+          ...item,
+          isExpanded: expandedComments.some(exp => exp.id === item.id) // Keep the expanded state
+        }));
+
+        // Preserve the current count of comments to show
+        if (!this.commentsToShow[postId]) {
+          this.commentsToShow[postId] = this.defaultCommentsCount;
+        }
       },
       error: error => {
-        console.log(error.message)
+        console.log(error.message);
       }
     });
   }
+
 
   @ViewChild('audioPlayer') audioPlayer!: ElementRef<HTMLAudioElement>;
   isPlaying: boolean = false;
@@ -232,6 +255,10 @@ export class MyProfileComponent {
       this.commentText = '';
       this.showCmt[id] = !this.showCmt[id];
       if (!this.showCmt[id]) {
+
+        //after loadmore comment fix
+        this.commentsToShow[id] = this.defaultCommentsCount;
+
         this.currentOpenCommentBoxId = null;
       }
     } else {
@@ -244,18 +271,34 @@ export class MyProfileComponent {
     }
   }
 
+  // likeComment(cmtId: any, postId: any) {
+  //   //this.isLike = !this.isLike;
+  //   this.service.postAPI(this.isCoach ? `coach/comment/react/${cmtId}` : `user/post/comment/react/${cmtId}`, null).subscribe({
+  //     next: resp => {
+  //       console.log(resp);
+  //       this.getPostComments(postId);
+  //     },
+  //     error: error => {
+  //       console.log(error.message)
+  //     }
+  //   });
+  // }
+  //after loadmore comment fix
   likeComment(cmtId: any, postId: any) {
-    //this.isLike = !this.isLike;
     this.service.postAPI(this.isCoach ? `coach/comment/react/${cmtId}` : `user/post/comment/react/${cmtId}`, null).subscribe({
       next: resp => {
         console.log(resp);
+        // Refresh comments but preserve the state of comments to show
+        const currentCount = this.commentsToShow[postId] || this.defaultCommentsCount;
         this.getPostComments(postId);
+        this.commentsToShow[postId] = currentCount; // Ensure we keep the same number of comments loaded
       },
       error: error => {
-        console.log(error.message)
+        console.log(error.message);
       }
     });
   }
+
 
   bookmarkPost(postId: any) {
     //this.isBookmark = !this.isBookmark;
@@ -263,7 +306,7 @@ export class MyProfileComponent {
       next: resp => {
         console.log(resp);
         this.getProfileData();
-        if(!this.isCoach){
+        if (!this.isCoach) {
           this.getSingleCoachPosts(this.userId);
         }
       },
@@ -281,7 +324,7 @@ export class MyProfileComponent {
       next: resp => {
         console.log(resp);
         this.getProfileData();
-        if(!this.isCoach){
+        if (!this.isCoach) {
           this.getSingleCoachPosts(this.userId);
         }
       },
@@ -310,7 +353,7 @@ export class MyProfileComponent {
         this.getPostComments(id);
         this.btnLoader = false;
         this.getProfileData();
-        if(!this.isCoach){
+        if (!this.isCoach) {
           this.getSingleCoachPosts(this.userId);
         }
       },
@@ -362,12 +405,12 @@ export class MyProfileComponent {
                 'success'
               );
               this.getProfileData();
-              if(!this.isCoach){
+              if (!this.isCoach) {
                 this.getSingleCoachPosts(this.userId);
               }
             } else {
               this.getProfileData();
-              if(!this.isCoach){
+              if (!this.isCoach) {
                 this.getSingleCoachPosts(this.userId);
               }
             }
@@ -379,7 +422,7 @@ export class MyProfileComponent {
               'error'
             );
             this.getProfileData();
-            if(!this.isCoach){
+            if (!this.isCoach) {
               this.getSingleCoachPosts(this.userId);
             }
             //this.toastr.error('Error deleting account!');
@@ -403,7 +446,7 @@ export class MyProfileComponent {
         this.getPostComments(postId);
         this.btnLoaderCmt = false;
         this.getProfileData();
-        if(!this.isCoach){
+        if (!this.isCoach) {
           this.getSingleCoachPosts(this.userId);
         }
       },

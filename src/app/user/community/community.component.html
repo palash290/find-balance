@@ -17,7 +17,8 @@
             </div>
             <!-- add This Class active when chat open  -->
             <li class="mt-3" *ngFor="let data of communityData | filter:searchQueryFilter"
-                [class.active]="data.id === selectedCommunityId">
+                [class.active]="data.id === selectedCommunityId" data-bs-toggle="modal"
+                data-bs-target="#ct_view_community">
 
                 <div class="d-flex align-items-center gap-2">
                     <div class="d-flex align-items-center"
@@ -952,7 +953,7 @@
                     <li>
                         <div class="ct_all_team_member_list">
                             <div class="d-flex align-items-center gap-3">
-                               
+
                                 <div class="d-flex align-items-center gap-2" style="cursor: pointer;"
                                     (click)="getCoachId(communityAdminid, communityAdminRole)">
                                     <img [src]="communityAdminImg ? communityAdminImg : '/assets/img/np_pro.png'" alt=""
@@ -1056,7 +1057,7 @@
                                 for="imgInp">
                                 <input accept="image/*" type="file" id="imgInp" class="d-none" formControlName="image"
                                     (change)="handleCommittedFileInput($event)" />
-                                <div *ngIf="!croppedImage">
+                                <div *ngIf="!croppedImage" style="cursor: pointer;">
                                     <p class="mb-2 text-white ct_fs_13">Click to upload image</p>
                                     <p class="mb-0 text-white ct_text_op_5 ct_fs_13">Max upload file 5 MB</p>
                                 </div>
@@ -1146,6 +1147,58 @@
         </div>
     </div>
 </div>
+
+
+
+<!-- View -->
+
+<!-- <div class="modal fade" id="ct_view_community" tabindex="-1" aria-labelledby="ct_view_community" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pt-0 px-0 d-block text-center">
+                <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Edit
+                    Community</h5>
+                <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="fa-solid fa-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="updateForm">
+                    <div>
+                        <input type="text" class="form-control ct_login_input" placeholder="My Community Name"
+                            formControlName="title">
+                     
+                    </div>
+
+                    <div class="mt-3">
+                        <input type="text" class="form-control ct_login_input" placeholder="My Community Description"
+                            formControlName="about">
+                    </div>
+
+                    <div class="ct_uploaded_cnt">
+                        <div id="ct_video" class="ct_audio_upload_first d-block" style="max-width: 100%;"><label
+                                for="imgInp1">
+                            
+                                <div *ngIf="!eventImage">
+                                    <p class="mb-2 text-white ct_fs_13">Click to upload image</p>
+                                    <p class="mb-0 text-white ct_text_op_5 ct_fs_13">Max upload file 5 MB</p>
+                                </div>
+                                <img *ngIf="eventImage" class="ct_img_h_200"
+                                    [src]="eventImage ? eventImage : '/assets/img/np_pro.png'" alt="Uploaded Image" />
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 w-100 mt-4" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div> -->
 
 <div *ngIf="loading" class="ct_loader_main">
     <div class="loader"></div>

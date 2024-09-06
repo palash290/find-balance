@@ -11,8 +11,9 @@ export class FilterPipe implements PipeTransform {
     }
 
     return value.filter(item => {
-      return item.name && item.name.toLowerCase().includes(searchTerm) || item.full_name && item.full_name.toLowerCase().includes(searchTerm) ||
-      item.title && item.title.toLowerCase().includes(searchTerm) || item.title && item.title.includes(searchTerm)
+      return item.name && item.name.toLowerCase().includes(searchTerm) || item.name && item.name.includes(searchTerm) ||
+        item.full_name && item.full_name.toLowerCase().includes(searchTerm) || item.full_name && item.full_name.includes(searchTerm) ||
+        item.title && item.title.toLowerCase().includes(searchTerm) || item.title && item.title.includes(searchTerm)
       // item.participants[0]?.Coach?.full_name && item.participants[0]?.Coach?.full_name.toLowerCase().includes(searchTerm) || 
       // item.participants[0]?.User?.full_name && item.participants[0]?.User?.full_name.toLowerCase().includes(searchTerm)
     });
@@ -37,8 +38,10 @@ export class ChatFilterPipe implements PipeTransform {
     return value.filter(item => {
       const coachName = item.participants[0]?.Coach?.full_name?.toLowerCase() || '';
       const userName = item.participants[0]?.User?.full_name?.toLowerCase() || '';
-      
-      return coachName.includes(searchTerm) || userName.includes(searchTerm);
+      const coachName1 = item.participants[0]?.Coach?.full_name || '';
+      const userName1 = item.participants[0]?.User?.full_name || '';
+
+      return coachName.includes(searchTerm) || userName.includes(searchTerm) || coachName1.includes(searchTerm) || userName1.includes(searchTerm);
     });
   }
 }//item.participant?.Coach?.full_name

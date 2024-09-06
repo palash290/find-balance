@@ -1014,7 +1014,7 @@
                                 for="imgInp">
                                 <input accept="image/*" type="file" id="imgInp" class="d-none" formControlName="image"
                                     (change)="handleCommittedFileInput($event)" />
-                                <div *ngIf="!croppedImage">
+                                <div *ngIf="!croppedImage" style="cursor: pointer;">
                                     <p class="mb-2 text-white ct_fs_13">Click to upload image</p>
                                     <p class="mb-0 text-white ct_text_op_5 ct_fs_13">Max upload file 5 MB</p>
                                 </div>

@@ -89,6 +89,29 @@ export class SearchCoachesComponent {
   }
 
 
+  btnLoader1: boolean = false;
+
+  unfollowCoach(coachId: any) {
+    //this.isLike = !this.isLike;
+    this.followId = coachId;
+    this.btnLoader1 = true
+
+    this.service.postAPI(this.isCoach ? `coach/follow/unfollow/${coachId}` : `user/coach/unfollow/${coachId}`, null).subscribe({
+      next: resp => {
+        console.log(resp);
+        this.getAllCoaches();
+        this.btnLoader1 = false;
+        this.service.triggerRefresh();
+      },
+      error: error => {
+        this.btnLoader1 = false
+        console.log(error.message)
+      }
+    });
+    this.avatar_url_fb = localStorage.getItem('avatar_url_fb');
+  }
+
+
   categoryId: any = '';
   selectedCategoryName: string | undefined;
   categories: any[] = [];

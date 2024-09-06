@@ -605,15 +605,15 @@
                                 </div>
                             </div>
                             }
-
                         </div>
-
                     </div>
+                    
                     <div class="mt-4" *ngIf="shouldShowLoadMore(feed.id)">
                         <button (click)="loadMoreComments(feed.id)"
                             class="ct_orange_btn ct_tansparent_btn w-100 ct_white_border_1 ct_border_radius_10">Load
                             more comments</button>
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -787,8 +787,8 @@
                                 </div>
 
                                 <div class="ms-auto me-2" *ngIf="loginuserId == comments.coach.id"
-                                    style="cursor: pointer;"><i
-                                        *ngIf="btnLoaderCmt && comments.id != deleteId || !btnLoaderCmt"
+                                    style="cursor: pointer;">
+                                    <i *ngIf="btnLoaderCmt && comments.id != deleteId || !btnLoaderCmt"
                                         (click)="deleteComment(comments.id, feed.id)"
                                         class="fa-solid fa-trash text-white"></i>
                                     <div class="text-white" *ngIf="btnLoaderCmt && comments.id == deleteId">
@@ -848,8 +848,8 @@
                                 </div>
 
                                 <div class="ms-auto me-2" *ngIf="loginuserId == comments.user.id"
-                                    style="cursor: pointer;"><i
-                                        *ngIf="btnLoaderCmt && comments.id != deleteId || !btnLoaderCmt"
+                                    style="cursor: pointer;">
+                                    <i *ngIf="btnLoaderCmt && comments.id != deleteId || !btnLoaderCmt"
                                         (click)="deleteComment(comments.id, feed.id)"
                                         class="fa-solid fa-trash text-white"></i>
                                     <div class="text-white" *ngIf="btnLoaderCmt && comments.id == deleteId">
