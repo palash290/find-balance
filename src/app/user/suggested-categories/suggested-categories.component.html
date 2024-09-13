@@ -59,7 +59,7 @@
 
 
 
-<hr class="ct_hr_line_op_5">
+<!-- <hr class="ct_hr_line_op_5"> -->
 
 
 <!-- <div class="ct_notification_search_input mb-4">
@@ -67,14 +67,12 @@
     <i class="fa-solid fa-magnifying-glass"></i>
 </div> -->
 <!-- *ngIf="coaches?.length > 0" -->
-<h4 class="ct_ff_roboto ct_fw_500 text-white ct_fs_20">Suggested Coaches</h4>
+<!-- <h4 class="ct_ff_roboto ct_fw_500 text-white ct_fs_20">Suggested Coaches</h4>
 
 <div *ngIf="(displayedCoaches | filter:searchQuery)?.length === 0 && searchQuery" class="text-center mt-4">
     <p class="ct_fs_15 text-white">No coaches found</p>
 </div>
-<!-- <div *ngIf="coaches?.length === 0" class="text-center mt-4">
-    <p class="ct_fs_15 text-white">No coaches found</p>
-</div> -->
+
 
 <div class="mt-4">
     <ul class="ct_mt_30 ct_all_notification  px-2">
@@ -87,13 +85,11 @@
                     </div>
                     <div>
                         <h5 class="ct_fs_15 text-white ct_fw_600 mb-1">{{coach.full_name}}</h5>
-                        <!-- <p class="mb-0 ct_fs_12 text-white">{{coach.numberOfPosts}} {{coach.numberOfPosts > 1 ? 'Posts'
-                            : 'Post'}}</p> -->
+                        
                             <div  class="d-flex align-items-center gap-2 mt-1"><img  src="../assets/img/star.png" alt="star"><span  class="ct_orange_text">Marketing</span></div>
                     </div>
                 </div>
                 <div>
-                    <!-- remove this class ct_active_follow on click Follow and change text to following -->
                     <button
                         class="ct_orange_btn ct_grey_btn ct_border_radius_10 px-2 py-2 h-auto ct_fs_13 ct_active_follow"
                         (click)="followCoach(coach.id)">
@@ -113,4 +109,4 @@
 
 
     </ul>
-</div>
+</div> -->

@@ -97,10 +97,10 @@ const routes: Routes = [
         path: "followed-users",
         component: FollowUsersComponent,
       },
-      // {
-      //   path: "suggested-categories",
-      //   component: SuggestedCategoriesComponent,
-      // },
+      {
+        path: "suggested-categories",
+        component: SuggestedCategoriesComponent,
+      },
     ],
   },
 ];

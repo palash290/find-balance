@@ -1,6 +1,6 @@
 <!-- Add This class when clicked on notification  ct_box_2_full_active -->
-<div [ngClass]="{'ct_box_2_column ct_box_2_full_active': isCoach, 'ct_box_2_column': !isCoach, }">
-    <!-- <div [ngClass]="{'ct_box_2_column ct_box_2_full_active': isActive, 'ct_box_2_column': !isActive}"> -->
+<!-- <div [ngClass]="{'ct_box_2_column ct_box_2_full_active': isCoach, 'ct_box_2_column': !isCoach, }"> -->
+    <div class='ct_box_2_column ct_box_2_full_active'>
     <div>
 
         @if (isCoach) {
@@ -885,7 +885,9 @@
             <!-- <app-notification *ngIf="currentComponent === 'notification'"></app-notification>
             <app-notification *ngIf="currentComponent === 'suggestedCategories'"></app-notification> -->
             } @else {
-            <app-suggested-categories *ngIf="currentComponent === 'suggestedCategories'"></app-suggested-categories>
+                <!-- main -->
+            <!-- <app-suggested-categories *ngIf="currentComponent === 'suggestedCategories'"></app-suggested-categories> -->
+
             <!-- <app-notification *ngIf="currentComponent === 'notification'"></app-notification> -->
             }
         </div>
