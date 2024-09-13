@@ -93,40 +93,45 @@
 
 
                     <!-- <div class="ct_show_uploaded_audio_box mt-3 ct_light_grey_bg" style="position: relative;">
-                        <div class="d-flex align-items-center gap-3" >
-                            
+                        <div class="d-flex align-items-center gap-3">
+
                             <div class="ct_audio_play_icon" (click)="toggleAudio(audioPlayer)">
-                                <i *ngIf="!isAudioPlaying(audioPlayer)" class="bi bi-play-fill" style="cursor: pointer;"></i>
-                                <i *ngIf="isAudioPlaying(audioPlayer)" class="bi bi-pause-fill" style="cursor: pointer;"></i>
+                                <i *ngIf="!isAudioPlaying(audioPlayer)" class="bi bi-play-fill"
+                                    style="cursor: pointer;"></i>
+                                <i *ngIf="isAudioPlaying(audioPlayer)" class="bi bi-pause-fill"
+                                    style="cursor: pointer;"></i>
                             </div>
-                            
 
                             <audio #audioPlayer (timeupdate)="onAudioTimeUpdate(audioPlayer)"
-                                 class="custom-audio-player">
+                                class="custom-audio-player">
                                 <source [src]="feed.mediaUrl" type="audio/mpeg">
                                 Your browser does not support the audio element.
-                            </audio>
+                            </audio> -->
 
-                            <input type="range" *ngIf="currentAudio === audioPlayer" class="custom-seekbar"
+                            <!-- <input type="range" *ngIf="currentAudio === audioPlayer" class="custom-seekbar"
                                 (input)="onAudioSeek($event, audioPlayer)" />
 
                             <div *ngIf="currentAudio === audioPlayer" class="audio-timing text-white">
                                 {{ formatTime(currentAudioTime) }} / {{ formatTime(audioDuration) }}
+                            </div> -->
+
+                            <!-- <input type="range" class="custom-seekbar" (input)="onAudioSeek($event, audioPlayer)" />
+
+                            <div class="audio-timing text-white">
+                              {{ formatTime(currentAudioTime) }} / {{ formatTime(audioDuration) }}
                             </div>
-                           
+
                         </div>
                     </div> -->
 
 
                     <div class="ct_show_uploaded_audio_box mt-3 ct_light_grey_bg">
-
                         <div class="d-flex align-items-center gap-3">
                             <audio *ngIf="feed.mediaUrl" controls class="custom-audio-player">
                                 <source [src]="feed.mediaUrl" type="audio/mpeg">
                                 Your browser does not support the audio element.
                             </audio>
                         </div>
-
                     </div>
 
                     <div class="ct_like_comment_div">

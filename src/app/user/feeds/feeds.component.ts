@@ -138,26 +138,26 @@ export class FeedsComponent {
   }
   //////// 
 
-  // toggleAudio(audioElement: HTMLAudioElement) {
-  //   if (this.currentVideoId) {
-  //     this.currentVideoId.pause();
-  //   }
+  toggleAudio(audioElement: HTMLAudioElement) {
+    if (this.currentVideoId) {
+      this.currentVideoId.pause();
+    }
 
-  //   if (this.currentAudio && this.currentAudio !== audioElement) {
-  //     this.currentAudio.pause(); // Pause the currently playing audio
-  //     this.isPlaying = false;
-  //   }
+    if (this.currentAudio && this.currentAudio !== audioElement) {
+      this.currentAudio.pause(); // Pause the currently playing audio
+      this.isPlaying = false;
+    }
 
-  //   if (audioElement.paused) {
-  //     audioElement.play();
-  //     this.currentAudio = audioElement;
-  //     this.isPlaying = true;
-  //   } else {
-  //     audioElement.pause();
-  //     this.currentAudio = null;
-  //     this.isPlaying = false;
-  //   }
-  // }
+    if (audioElement.paused) {
+      audioElement.play();
+      this.currentAudio = audioElement;
+      this.isPlaying = true;
+    } else {
+      audioElement.pause();
+      this.currentAudio = null;
+      this.isPlaying = false;
+    }
+  }
 
   isAudioPlaying(audioElement: HTMLAudioElement): boolean {
     return audioElement === this.currentAudio && !audioElement.paused;

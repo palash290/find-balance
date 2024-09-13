@@ -104,7 +104,7 @@
                 <div *ngIf="audioFile">
                     <p class="mb-2 text-white ct_fs_13">Selected audio file: {{ audioFile.name }}</p>
                 </div>
-                <div *ngIf="!audioFile">
+                <div *ngIf="!audioFile" style="cursor: pointer;">
                     <p class="mb-2 text-white ct_fs_13">Click to upload audio file</p>
                     <p class="mb-0 text-white ct_text_op_5 ct_fs_13">Max upload file 50 MB</p>
                 </div>
