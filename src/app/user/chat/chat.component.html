@@ -57,7 +57,7 @@
             </li>
         </ul> -->
 
-        <ul class="ct_message_user_lit mt-3" (click)="openChat()">
+        <ul class="ct_message_user_lit mt-4" (click)="openChat()">
 
             <div *ngIf="(!chatsList || (chatsList | chatFilter:searchQueryFilter)?.length === 0)"
                 class="text-center mt-4">
@@ -98,7 +98,7 @@
             </li>
         </ul> -->
 
-        <ul class="ct_message_user_lit mt-3" *ngIf="!coachListVisible" (click)="openChat()">
+        <ul class="ct_message_user_lit mt-4" *ngIf="!coachListVisible" (click)="openChat()">
 
             <div *ngIf="(chatsList | chatFilter:searchQueryFilter)?.length === 0 && searchQueryFilter"
                 class="text-center mt-4">
@@ -140,7 +140,7 @@
         <h4 class="ct_fs_22 text-white"></h4>
     </div>
 
-    <div class="ct_right_message_area" [ngClass]="{ 'active': isChatActive }" *ngIf="participantFullName">
+    <div class="ct_right_message_area ct_chat_coach_main_scroll" [ngClass]="{ 'active': isChatActive }" *ngIf="participantFullName">
         <div class="ct_octen_team_box ct_mt_30 px-3 ct_message_head_bg">
             <a href="javascript:void(0)" class="ct_orange_text ct_back_to_list ct_chat_back"
                 (click)="closeChat()">Back</a>
@@ -160,7 +160,7 @@
                 <img src="../assets/img/user_img_1.png" alt="" class="ct_w_36"> -->
             </div>
             <div>
-                <h5 class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500 mb-2">{{participantFullName}}</h5>
+                <h5 class="mb-0 ct_fs_15 text-white ct_ff_roboto ct_fw_500 mb-0">{{participantFullName}}</h5>
             </div>
             <!-- } -->
 
@@ -273,7 +273,7 @@
             </div>
             } @else {
             <div class="ct_all_team_member_list">
-                <ul class="ct_message_user_lit mt-3" style="max-height: 670px;">
+                <ul class="ct_message_user_lit mt-4" style="max-height: 670px;">
                     <!-- add This Class active when chat open  -->
                     <li class="d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center gap-2">

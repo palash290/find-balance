@@ -64,7 +64,7 @@
                                         placeholder="Phone" formControlName="phone_no">
                                     <div *ngIf="loginForm.controls['phone_no'].invalid && loginForm.controls['phone_no'].touched"
                                         class="error-message">
-                                        <div *ngIf="loginForm.controls['phone_no'].errors?.['required']">Phone number is
+                                        <div *ngIf="loginForm.controls['phone_no'].errors?.['required']" class="ct_fs_14 mt-1">Phone number is
                                             required.</div>
                                         <!-- <div *ngIf="loginForm.controls['phone_no'].errors?.['pattern']">Only numbers are
                                             allowed.</div> -->
@@ -81,7 +81,7 @@
                                 </div>
                                 <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched"
                                     class="error-message">
-                                    <div *ngIf="loginForm.controls['password'].errors?.['required']">Password is
+                                    <div *ngIf="loginForm.controls['password'].errors?.['required']" class="ct_fs_14 mt-1">Password is
                                         required.</div>
                                 </div>
                             </div>

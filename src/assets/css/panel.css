@@ -475,8 +475,14 @@
     background: #555;
 }
 
-.ct_all_feed_boxex {
+/* .ct_all_feed_boxex {
     max-height: calc(100vh - 20px);
+    overflow-y: auto;
+    height: auto;
+} */
+
+.ct_all_feed_boxex {
+    max-height: calc(100vh - 243px);
     overflow-y: auto;
     height: auto;
 }

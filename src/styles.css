@@ -72,3 +72,10 @@ div:where(.swal2-icon).swal2-warning{
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
 }
+
+
+.swal2-confirm:focus{
+  box-shadow: unset !important;
+}
+
+

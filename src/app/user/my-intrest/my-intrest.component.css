@@ -6,3 +6,13 @@
 .ct_box_2_full_active {
     grid-template-columns: 100% !important;
   }
+
+  .ct_my_interent_scroll {
+    max-height: calc(100vh - 207px);
+    height: calc(100vh - 207px);
+}
+
+.ct_grid_auto_auto{
+    display: grid;
+    grid-template-columns: auto auto;
+}

@@ -1,4 +1,4 @@
-<div class="d-flex align-items-center gap-2 justify-content-between mb-4">
+<div class="d-flex align-items-center gap-2 justify-content-between mb-4 flex-wrap">
     <h4 class="ct_fs_28 ct_ff_roboto ct_fw_500 ct_orange_text">Add New Event</h4>
     <button class="ct_orange_btn ct_grey_btn ct_border_radius_10" (click)="addEvevt()"> Create Event</button>
 </div>
@@ -11,7 +11,7 @@
             <label for="imgInp" class="w-100">
                 <input accept="image/*" type="file" id="imgInp" class="d-none" (change)="fileChangeEvent($event)"
                     formControlName="cover" />
-                <img id="blah1" class="ct_img_h_200" src="#" alt="Uploaded Image"
+                <img id="blah1" class="ct_img_h_200 " [class.ct_object_fit_cover]="!croppedImage" src="#" alt="Uploaded Image"
                     [src]="croppedImage ? croppedImage : '/assets/img/no_bg.png'">
             </label>
 

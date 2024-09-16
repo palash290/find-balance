@@ -1,4 +1,7 @@
-<div class="ct_all_feed_boxex">
+<div class="d-flex align-items-center gap-2 justify-content-between mb-4 flex-wrap">
+    <h4 class="ct_fs_28 ct_ff_roboto ct_fw_500 ct_orange_text">Saved Post</h4>
+</div>
+<div class="ct_all_feed_boxex_by_saved">
 
     <div *ngIf="data?.length === 0" class="text-center mt-5">
         <p class="ct_fs_15 text-white">No saved posts found</p>
@@ -13,14 +16,14 @@
                 <div>
                     <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">{{feed.post.coach.full_name}}</h5>
 
-                    <div class="d-flex align-items-center gap-3">
+                    <div class="d-flex align-items-center gap-2 ct_flex_wrap_575 mt-2 ct_align_items_start_575">
                         <p class="mb-0  ct_fs_12 text-white ct_text_op_5">{{feed.post.createdAt |
                             date:'d/M/yy, h:mm a'}}
                         </p>
-                        <!-- <div class="d-flex align-items-center justify-content-center gap-2">
+                        <div class="d-flex align-items-center justify-content-center gap-2">
                 <img src="../assets/img/star.png" alt="star">
                 <span class="ct_orange_text">Fitness</span>
-            </div> -->
+            </div>
                     </div>
                 </div>
             </div>
@@ -248,13 +251,13 @@
                     class="ct_img_44 ct_bor ct_white_border_1">
                 <div>
                     <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">{{feed.post.coach.full_name}}</h5>
-                    <div class="d-flex align-items-center gap-3">
+                    <div class="d-flex align-items-center gap-2 ct_flex_wrap_575 mt-2 ct_align_items_start_575">
                         <p class="mb-0  ct_fs_12 text-white ct_text_op_5">{{feed.post.createdAt |
                             date:'d/M/yy, h:mm a'}}</p>
-                        <!-- <div class="d-flex align-items-center justify-content-center gap-2">
+                        <div class="d-flex align-items-center justify-content-center gap-2">
                             <img src="../assets/img/star.png" alt="star">
                             <span class="ct_orange_text">Fitness</span>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -473,13 +476,13 @@
                     class="ct_img_44 ct_bor ct_white_border_1">
                 <div>
                     <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">{{feed.post.coach.full_name}}</h5>
-                    <div class="d-flex align-items-center gap-3">
+                    <div class="d-flex align-items-center gap-2 ct_flex_wrap_575 mt-2 ct_align_items_start_575">
                         <p class="mb-0  ct_fs_12 text-white ct_text_op_5">{{feed.post.createdAt |
                             date:'d/M/yy, h:mm a'}}</p>
-                        <!-- <div class="d-flex align-items-center justify-content-center gap-2">
+                        <div class="d-flex align-items-center justify-content-center gap-2">
                             <img src="../assets/img/star.png" alt="star">
                             <span class="ct_orange_text">Fitness</span>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
 

@@ -2,3 +2,9 @@
     height: 20px;
     width: 20px;
 }
+
+.ct_suggested_category_scroll {
+    height: calc(100vh - 263px) !important;
+    max-height: calc(100vh - 263px) !important;
+    overflow-y: auto !important;
+}
