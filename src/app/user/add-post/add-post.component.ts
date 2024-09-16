@@ -178,5 +178,24 @@ export class AddPostComponent {
     return file.size <= maxSizeBytes;
   }
 
+  UploadedFile!: File;
+  croppedImage: any | ArrayBuffer | null = null;
+
+  handleCommittedFileInput(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement.files && inputElement.files.length > 0) {
+      this.UploadedFile = inputElement.files[0];
+      this.previewImage(this.UploadedFile);
+    }
+  }
+
+  previewImage(file: File): void {
+    const reader = new FileReader();
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      this.croppedImage = e.target?.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
 
 }
