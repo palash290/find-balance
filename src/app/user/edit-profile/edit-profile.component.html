@@ -11,7 +11,7 @@
             <label for="imgInp" class="w-100">
                 <input accept="image/*" type="file" id="imgInp" class="d-none" (change)="fileChangeEvent($event)"
                     formControlName="cover" />
-                <img id="blah1" class="ct_img_h_200" src="#" alt="Uploaded Image"
+                <img id="blah1" class="ct_img_h_200" [class.ct_object_fit_cover]="!croppedImage" src="#" alt="Uploaded Image"
                     [src]="croppedImage ? croppedImage : '/assets/img/no_bg.png'">
             </label>
         </div>

@@ -21,3 +21,15 @@
     color: #fff;
     background-color: #0F100F;
 }
+
+.ct_grid_2_1_audio{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 10px;
+}
+
+@media screen and (max-width:575px){
+    .ct_grid_2_1_audio{
+        grid-template-columns: auto;
+    }
+}

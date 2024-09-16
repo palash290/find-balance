@@ -88,7 +88,7 @@ export class SettingComponent implements OnInit {
       text: 'You want to logout!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
+      confirmButtonColor: '#e58934',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes!'
     }).then((result) => {
@@ -104,7 +104,7 @@ export class SettingComponent implements OnInit {
       text: 'You will not be able to recover this account!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
+      confirmButtonColor: '#e58934',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {

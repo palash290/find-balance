@@ -97,7 +97,8 @@
         </div> -->
     <div class="ct_uploaded_cnt">
         <!-- Audio Upload -->
-        <div class="ct_audio_upload_first" id="ct_audio">
+      <div class="ct_grid_2_1_audio">
+        <div class="ct_audio_upload_first w-100" style="max-width: 100%;" id="ct_audio">
             <label for="ct_upload_audio">
                 <input type="file" class="d-none" id="ct_upload_audio" accept="audio/*"
                     (change)="onAudioFileChange($event)">
@@ -112,6 +113,22 @@
                 <p class="mb-0 text-white ct_text_op_5 ct_fs_13">Max upload file 50 MB</p> -->
             </label>
         </div>
+        <div class="ct_audio_upload_first w-100" style="max-width: 100%;" id="ct_image">
+            <label for="ct_upload_img">
+                <input type="file" class="d-none" id="ct_upload_img" accept="image/*"
+                (change)="handleCommittedFileInput($event)">
+                <div *ngIf="!croppedImage" style="cursor: pointer;">
+                    <p class="mb-2 text-white ct_fs_13">Click to upload thumbnail</p>
+                    <p class="mb-0 text-white ct_text_op_5 ct_fs_13">Max upload file 5 MB</p>
+                </div>
+                <img *ngIf="croppedImage" class="ct_img_h_200"
+                    [src]="croppedImage ? croppedImage : '/assets/img/np_pro.png'"
+                    alt="Uploaded Image" />
+                <!-- <p class="mb-2 text-white ct_fs_13">Click to upload audio file</p>
+                <p class="mb-0 text-white ct_text_op_5 ct_fs_13">Max upload file 50 MB</p> -->
+            </label>
+        </div>
+      </div>
 
         <!-- Video Upload -->
         <div class="ct_audio_upload_first" id="ct_video">

@@ -17,15 +17,21 @@ export class AddPostComponent {
     let audio = document.getElementById('ct_audio')
     let video = document.getElementById('ct_video')
 
+    let thumbNailImg = document.getElementById('ct_image')
+
     if (type === 'Video') {
       videoBtn?.classList.add('ct_uploaded_btn_active')
       audioBtn?.classList.remove('ct_uploaded_btn_active')
       audio?.classList.remove('d-block')
+
+      thumbNailImg?.classList.remove('d-block')
       video?.classList.add('d-block')
     } else {
       videoBtn?.classList.remove('ct_uploaded_btn_active')
       audioBtn?.classList.add('ct_uploaded_btn_active')
       audio?.classList.add('d-block')
+
+      thumbNailImg?.classList.add('d-block')
       video?.classList.remove('d-block')
     }
   }
@@ -76,6 +82,7 @@ export class AddPostComponent {
       const file = input.files[0];
       if (this.isFileSizeValid(file)) {
         this.audioFile = file;
+        this.checkAudioDuration(file);
       } else {
         this.toastr.warning('Audio file exceeds the maximum size of 50 MB.');
         input.value = ''; // Clear the input
@@ -90,11 +97,36 @@ export class AddPostComponent {
       if (this.isFileSizeValid(file)) {
         this.videoFile = file;
         this.createVideoPreview(file);
+        this.checkVideoDuration(file);
       } else {
         this.toastr.warning('Video file exceeds the maximum size of 50 MB.');
         input.value = ''; // Clear the input
       }
     }
+  }
+
+  private MAX_DURATION_SECONDS = 120; // 2 minutes in seconds
+
+  checkAudioDuration(file: File): void {
+    const audio = new Audio(URL.createObjectURL(file));
+    audio.onloadedmetadata = () => {
+      if (audio.duration > this.MAX_DURATION_SECONDS) {
+        this.toastr.warning('Please upgrade your plan to upload a audio more than 2 minutes.');
+        this.audioFile = null; // Clear the file
+      }
+    };
+  }
+  
+  checkVideoDuration(file: File): void {
+    const video = document.createElement('video');
+    video.preload = 'metadata';
+    video.onloadedmetadata = () => {
+      if (video.duration > this.MAX_DURATION_SECONDS) {
+        this.toastr.warning('Please upgrade your plan to upload a video more than 2 minutes.');
+        this.videoFile = null; // Clear the file
+      }
+    };
+    video.src = URL.createObjectURL(file);
   }
 
   createVideoPreview(file: File) {
@@ -118,10 +150,13 @@ export class AddPostComponent {
 
     const formData = new FormData();
     if (this.audioFile) {
-      formData.append('file', this.audioFile);
+      formData.append('media', this.audioFile);
       formData.append('type', 'PODCAST');
       if (this.postText) {
         formData.append('text', trimmedMessage);
+      }
+      if (this.UploadedFile) {
+        formData.append('thumbnail', this.UploadedFile);
       }
     }
     if (this.videoFile) {
@@ -146,10 +181,11 @@ export class AddPostComponent {
       //   return;
       // }
     }
-
+    formData.append('isPaid', '0')
     formData.append('categoryId', this.categoryId);
     let audio = document.getElementById('ct_audio')
     let video = document.getElementById('ct_video')
+    let thumbNailImg = document.getElementById('ct_image')
     this.btnLoader = true;
     this.service.postAPIFormData('coach/post', formData).subscribe({
       next: (response) => {
@@ -161,6 +197,7 @@ export class AddPostComponent {
         console.log('Upload successful', response);
         audio?.classList.remove('d-block');
         video?.classList.remove('d-block');
+        thumbNailImg?.classList.remove('d-block');
         this.btnLoader = false;
         this.service.triggerRefresh();
         //window.location.reload();

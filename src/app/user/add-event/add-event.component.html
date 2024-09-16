@@ -1,6 +1,6 @@
-<div class="d-flex align-items-center gap-2 justify-content-between mb-4">
+<div class="d-flex align-items-center gap-2 justify-content-between mb-4 flex-wrap">
     <h4 class="ct_fs_28 ct_ff_roboto ct_fw_500 ct_orange_text">Add New Event</h4>
-    <button class="ct_orange_btn ct_grey_btn ct_border_radius_10" (click)="addEvevt()"> Create Event</button>
+    <button class="ct_orange_btn ct_grey_btn ct_border_radius_10" (click)="addEvent()"> Create Event</button>
 </div>
 
 <form [formGroup]="newForm">
@@ -11,8 +11,8 @@
             <label for="imgInp" class="w-100">
                 <input accept="image/*" type="file" id="imgInp" class="d-none" (change)="fileChangeEvent($event)"
                     formControlName="cover" />
-                <img id="blah1" class="ct_img_h_200" src="#" alt="Uploaded Image"
-                    [src]="croppedImage ? croppedImage : '/assets/img/no_bg.png'">
+                <img id="blah1" class="ct_img_h_200" [class.ct_object_fit_cover]="!croppedImage" src="#"
+                    alt="Uploaded Image" [src]="croppedImage ? croppedImage : '/assets/img/no_bg.png'">
             </label>
 
         </div>
@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <div class="form-group mb-3">
+    <!-- <div class="form-group mb-3">
         <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Location</label>
         <input type="text" class="ct_login_input form-control ct_border_radius_10" formControlName="address"
             placeholder="Enter Location">
@@ -66,7 +66,8 @@
             <div *ngIf="newForm.controls['address'].errors?.['required']">Location is
                 required.</div>
         </div>
-    </div>
+    </div> -->
+
     <div class="form-group mb-3">
         <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Date</label>
         <input type="date" class="ct_login_input form-control ct_border_radius_10" formControlName="date"
@@ -87,7 +88,60 @@
                 required.</div>
         </div>
     </div>
+
+    <!-- Event Type Dropdown -->
+    <div class="form-group mb-3">
+        <label for="eventType" class="mb-2 text-white">Event Type</label>
+        <select class="ct_login_input form-control ct_border_radius_10" formControlName="eventType">
+            <option value="LIVE_EVENT">Live-event</option>
+            <option value="WEBINAR">Webinar</option>
+        </select>
+    </div>
+
+    <!-- Live-event Fields -->
+    <div *ngIf="newForm.value.eventType === 'LIVE_EVENT'">
+        <div class="form-group mb-3">
+            <label for="address" class="mb-2 text-white">Address</label>
+            <input type="text" class="ct_login_input form-control ct_border_radius_10" formControlName="address"
+                placeholder="Enter Address">
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="code" class="mb-2 text-white">Code</label>
+            <input type="text" class="ct_login_input form-control ct_border_radius_10" formControlName="code"
+                placeholder="Enter Code">
+        </div>
+    </div>
+
+    <!-- Webinar Fields -->
+    <div *ngIf="newForm.value.eventType === 'WEBINAR'">
+        <div class="form-group mb-3">
+            <label for="webinarUrl" class="mb-2 text-white">Webinar URL</label>
+            <input type="text" class="ct_login_input form-control ct_border_radius_10" formControlName="webinarUrl"
+                placeholder="Enter Webinar URL">
+        </div>
+    </div>
+
+    <!-- IsPaid Dropdown -->
+    <div class="form-group mb-3">
+        <label for="isPaid" class="mb-2 text-white">Contant Type</label>
+        <select class="ct_login_input form-control ct_border_radius_10" formControlName="isPaid">
+            <option value="0">Free</option>
+            <option value="2">Paid</option>
+            <option value="1">Add Hoc Charge</option>
+        </select>
+    </div>
+
+    <!-- Price Field (Shown only if IsPaid is "yes") -->
+    <div *ngIf="newForm.value.isPaid === '1'" class="form-group mb-3">
+        <label for="price" class="mb-2 text-white">Price</label>
+        <input type="number" class="ct_login_input form-control ct_border_radius_10" formControlName="price"
+            placeholder="Enter Price">
+    </div>
+
 </form>
+
+
 <div *ngIf="loading" class="ct_loader_main">
     <div class="loader"></div>
 </div>

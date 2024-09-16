@@ -3,8 +3,8 @@
 }
 
 .ct_chat_area_scroll {
-    height: calc(100vh - 324px);
-    max-height: calc(100vh - 324px);
+    height: calc(100vh - 304px);
+    max-height: calc(100vh - 304px);
     overflow: auto;
     overflow-x: hidden;
     padding-inline: 5px;
@@ -25,7 +25,7 @@
 .ct_send_msg_plane {
     position: absolute;
     top: 50%;
-    right: 10px;
+    right: 0px;
     transform: translateY(-50%);
     background-color: #e58934;
     width: 30px;
@@ -102,6 +102,9 @@
     white-space: normal;
     word-break: break-word;
 }
+.ct_chat_coach_main_scroll{
+   height: 100%;
+}
 
 @media screen and (max-width:1199px) {
     .ct_chat_back {
@@ -126,5 +129,5 @@
     width: 90%;
 }
 .ct_chat_footer textarea.form-control {
-    width: calc(100% - 50px) !important;
+    width: calc(100% - 40px) !important;
 }

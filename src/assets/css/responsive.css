@@ -34,6 +34,9 @@
     .ct_right_message_area{
         padding-left: 0px;
     }
+    .ct_left_message_list{
+        padding-right: 0px;
+    }
     .ct_right_message_area {
         position: absolute;
         top: 0px;
@@ -153,7 +156,7 @@
         width: calc(100% - 0px);
     } */
     .ct_panel_main_bg{
-        padding: 15px;
+        padding: 40px 15px;
     }
    
 }
@@ -245,5 +248,47 @@
     }
     .ct_ms_0_575{
         margin-left: 0px !important;
+    }
+
+    ::-webkit-scrollbar {
+        width: 0px !important;
+      }
+      
+      /* Track */
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+      }
+      .ct_align_items_start_575{
+        align-items: flex-start !important;
+      }
+       
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: #888; 
+      }
+      
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555; 
+      }
+
+      .ct_all_feed_boxex {
+        max-height: calc(100vh - 310px);
+      
+    }
+    .ct_flex_575{
+        flex-direction: column;
+    }
+    .ct_filter_search_input_140{
+        width: 100%;
+    }
+    .ct_feed_box span {
+        font-size: 12px;
+    }
+    .ct_mob_hr_none{
+        display: none;
+    }
+    .ct_side_bar{
+        width: 100%;
     }
 }

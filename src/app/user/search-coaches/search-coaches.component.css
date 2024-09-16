@@ -2,3 +2,21 @@
 .ct_box_2_full_active {
     grid-template-columns: 100% !important;
   }
+
+  .ct_coaches_scroll_234 {
+    max-height: calc(100vh - 348px);
+    height: calc(100vh - 348px);
+}
+
+.ct_coaches_scroll_234.ct_caoches_search_scroll {
+  max-height: calc(100vh - 250px);
+  height: calc(100vh - 250px);
+}
+
+
+@media screen and (max-width:767px){
+  .ct_coaches_scroll_234 {
+    max-height: calc(100vh - 348px);
+    height: calc(100vh - 460px);
+}
+}

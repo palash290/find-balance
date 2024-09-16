@@ -327,7 +327,7 @@ export class FeedsComponent {
 
   isLikedCmt: boolean = true;
   likeComment(cmtId: any, postId: any) {
-   // this.isLikedCmt = true;
+    // this.isLikedCmt = true;
     this.visibilityService.postAPI(this.isCoach ? `coach/comment/react/${cmtId}` : `user/post/comment/react/${cmtId}`, null).subscribe({
       next: resp => {
         console.log(resp);

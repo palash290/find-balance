@@ -1,10 +1,16 @@
 .ct_all_notification {
     height: auto;
     max-height: 600px;
-    overflow-y: hidden;
+    /* overflow-y: hidden; */
 }
 
 .spinner-border {
     height: 20px;
     width: 20px;
+}
+
+.ct_suggested_category_scroll {
+    height: calc(100vh - 263px) !important;
+    max-height: calc(100vh - 263px) !important;
+    overflow-y: auto !important;
 }

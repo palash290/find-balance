@@ -42,7 +42,7 @@
                                     formControlName="full_name" placeholder="Name">
                                 <div *ngIf="loginForm.controls['full_name'].invalid && loginForm.controls['full_name'].touched"
                                     class="error-message">
-                                    <div *ngIf="loginForm.controls['full_name'].errors?.['required']">Name is
+                                    <div *ngIf="loginForm.controls['full_name'].errors?.['required']" class="ct_fs_14 mt-1">Name is
                                         required.</div>
                                 </div>
                             </div>
@@ -52,10 +52,10 @@
 
                                 <div *ngIf="loginForm.controls['email'].invalid && loginForm.controls['email'].touched"
                                     class="error-message">
-                                    <div *ngIf="loginForm.controls['email'].errors?.['required']">Email is required.
+                                    <div *ngIf="loginForm.controls['email'].errors?.['required']" class="ct_fs_14 mt-1">Email is required.
                                     </div>
                                     <div
-                                        *ngIf="loginForm.controls['email'].errors?.['email'] && !loginForm.controls['email'].errors?.['required']">
+                                        *ngIf="loginForm.controls['email'].errors?.['email'] && !loginForm.controls['email'].errors?.['required']" class="ct_fs_14 mt-1">
                                         Invalid email format.</div>
                                 </div>
 
@@ -87,9 +87,9 @@
                                         formControlName="phone_no" placeholder="Phone">
                                     <div *ngIf="loginForm.controls['phone_no'].invalid && loginForm.controls['phone_no'].touched"
                                         class="error-message">
-                                        <div *ngIf="loginForm.controls['phone_no'].errors?.['required']">Phone number is
+                                        <div *ngIf="loginForm.controls['phone_no'].errors?.['required']" class="ct_fs_14 mt-1">Phone number is
                                             required.</div>
-                                        <div *ngIf="loginForm.controls['phone_no'].errors?.['pattern']">Only numbers are
+                                        <div *ngIf="loginForm.controls['phone_no'].errors?.['pattern']" class="ct_fs_14 mt-1">Only numbers are
                                             allowed.</div>
                                     </div>
                                 </div>
@@ -102,7 +102,7 @@
                                 </select>
                                 <div *ngIf="loginForm.controls['categoryId'].invalid && loginForm.controls['categoryId'].touched"
                                     class="error-message">
-                                    <div *ngIf="loginForm.controls['categoryId'].errors?.['required']">Category is
+                                    <div *ngIf="loginForm.controls['categoryId'].errors?.['required']" class="ct_fs_14 mt-1">Category is
                                         required.</div>
                                 </div>
                             </div>
@@ -118,7 +118,7 @@
                                 </div>
                                 <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched"
                                     class="error-message">
-                                    <div *ngIf="loginForm.controls['password'].errors?.['required']">Password is
+                                    <div *ngIf="loginForm.controls['password'].errors?.['required']" class="ct_fs_14 mt-1">Password is
                                         required.</div>
                                 </div>
                             </div>

@@ -103,6 +103,9 @@ a,a:hover{
     line-height: 50px;
 
 }
+.ct_object_fit_cover{
+    object-fit: cover !important;
+}
 .ct_fs_24{
     font-size: 24px;
     line-height: 32px;
@@ -310,6 +313,7 @@ header.ct_sticky_menu {
     width: 100%;
     left: 0px;
     animation: slideDown 0.35s ease-out;
+    z-index: 9;
 }
 @keyframes slideDown {
     from {

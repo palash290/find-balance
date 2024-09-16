@@ -36,6 +36,13 @@ div#ct_view_community .modal-content {
   border-radius: 100px;
   font-size: 12px;
 }
+
+.ct_message_community_scroll {
+  max-height: calc(100vh - 239px);
+}
+.ct_community_scroll1234 {
+  height: calc(100vh - 127px);
+}
 @media screen and (max-width:1199px) {
     .ct_chat_back {
         display: block;
@@ -169,6 +176,13 @@ div#ct_view_community .modal-content {
     color: transparent;
   }
   
+
+  @media screen and  (max-width:767px){
+    .ct_ms_75_767{
+      margin-left: 75px;
+      margin-top: 4px;
+    }
+  }
   
   
   
