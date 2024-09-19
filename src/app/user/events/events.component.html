@@ -1,3 +1,9 @@
+@if(eventData?.isPaid == 1){
+  <a (click)="backClicked()" class="ct_orange_text ct_back_to_list ct_chat_back mb-4 d-block ct_fw_600"
+  style="cursor: pointer;"><i class="fa-solid fa-arrow-left me-2"></i> Back</a>
+}
+
+
 <div class="ct_cover_img">
   <img [src]="eventData?.mediaUrl ? eventData?.mediaUrl : '/assets/img/no_event.png'" alt="" class="ct_img_h_200">
 </div>
@@ -5,17 +11,23 @@
   <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 ct_mt_30 pt-1">
     <div>
       <h4 class="ct_ff_roboto ct_fw_600 text-white ct_fs_24 mb-0">{{eventData?.name}}</h4>
-      @if(eventData?.address){
+      <!-- @if(eventData?.address){
       <div class="d-flex align-items-center  gap-2 mt-2">
         <img src="../assets/img/location_icon.svg" alt="star">
         <span class="ct_orange_text ct_fs_18 ct_ff_roboto ct_fw_600">{{eventData?.address}}</span>
       </div>
-      }
+      } -->
 
       <div class="d-flex align-items-center  gap-2 mt-2">
         <img src="../assets/img/calender_icon.svg" alt="star">
         <span class="ct_orange_text ct_fs_18 ct_ff_roboto ct_fw_600">{{eventData?.date | date:'d MMM y'}}</span>
       </div>
+
+      <div *ngIf="isCoach" (click)="getPaidGuest()" style="cursor: pointer;" data-bs-toggle="modal"
+        data-bs-target="#ct_followed_coaches">
+        <a class="ct_orange_btn mt-2 ct_border_radius_10">See All Paid Guest</a>
+      </div>
+
     </div>
     @if(isCoach){
     <div class="d-flex align-items-center gap-2 flex-wrap">
@@ -25,12 +37,19 @@
         style="cursor: pointer;">Delete Event</a>
     </div>
     } @else {
-    <div (click)="userIntrested(eventData.id)" *ngIf="!eventData?.alreadyRegistered" style="cursor: pointer;">
-      <a class="ct_orange_btn  ct_border_radius_10">I'm Interested</a>
-    </div>
-    <div (click)="userNotIntrested(eventData.id)" *ngIf="eventData?.alreadyRegistered" style="cursor: pointer;">
-      <a class="ct_orange_btn ct_grey_btn ct_border_radius_10">Interested</a>
-    </div>
+      @if(!eventData?.isShown){
+        <div style="cursor: pointer;">
+          <a class="ct_orange_btn  ct_border_radius_10">Pay</a>
+        </div>
+      } @else {
+        <div (click)="userIntrested(eventData.id)" *ngIf="!eventData?.alreadyRegistered" style="cursor: pointer;">
+          <a class="ct_orange_btn  ct_border_radius_10">I'm Interested</a>
+        </div>
+        <div (click)="userNotIntrested(eventData.id)" *ngIf="eventData?.alreadyRegistered" style="cursor: pointer;">
+          <a class="ct_orange_btn ct_grey_btn ct_border_radius_10">Interested</a>
+        </div>
+      }
+ 
     }
   </div>
 </div>
@@ -68,6 +87,14 @@
 </div>
 }
 
+@if(eventData?.address){
+<div class="mt-4">
+  <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600">Event Address</h4>
+  <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22"
+  [ngClass]="{'blurred': !eventData?.isShown}" [ngStyle]="{ 'user-select': !eventData?.isShown ? 'none' : 'auto' }">{{eventData?.address}}</p>
+</div>
+}
+
 <div class="mt-4">
   <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600">About Event</h4>
   <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{eventData?.about}}</p>
@@ -75,35 +102,81 @@
 
 
 
-
-<div *ngIf="eventListData?.length > 0" class="mt-4">
-  <h4 class="mb-0 ct_fw_600 ct_fs_20 text-white ct_ff_roboto">Next Events</h4>
-  <div class="mt-3">
-    <div *ngFor="let event of eventListData">
-      <div class="ct_event_scroll" style="cursor: pointer;">
-        <a (click)="getEventId(event.id)" class="ct_event_list">
-          <div class="d-flex align-items-center gap-2">
-            <div class="ct_event_img_small">
-              <img [src]="event.mediaUrl ? event.mediaUrl : '/assets/img/np_pro.png'" alt="" class="ct_img_62">
+@if(eventData?.isPaid != 1){
+  <div *ngIf="eventListData?.length > 0" class="mt-4">
+    <h4 class="mb-0 ct_fw_600 ct_fs_20 text-white ct_ff_roboto">Next Events</h4>
+    <div class="mt-3">
+      <div *ngFor="let event of eventListData">
+        <div class="ct_event_scroll" style="cursor: pointer;">
+          <a (click)="getEventId(event.id)" class="ct_event_list">
+            <div class="d-flex align-items-center gap-2">
+              <div class="ct_event_img_small">
+                <img [src]="event.mediaUrl ? event.mediaUrl : '/assets/img/np_pro.png'" alt="" class="ct_img_62">
+              </div>
+              <div class="ct_event_info">
+                <h5 class="ct_fs_15 ct_fw_500 ct_ff_roboto text-white ct_mb_5">{{event.name}}</h5>
+                <div class="d-flex align-items-center gap-2">
+                  <img src="../assets/img/location_icon.svg" alt="">
+                  <p class="mb-0 ct_fs_12 ct_fw_500 ct_ff_roboto ct_orange_text">{{event.address}}</p>
+                </div>
+              </div>
             </div>
-            <div class="ct_event_info">
-              <h5 class="ct_fs_15 ct_fw_500 ct_ff_roboto text-white ct_mb_5">{{event.name}}</h5>
-              <div class="d-flex align-items-center gap-2">
-                <img src="../assets/img/location_icon.svg" alt="">
-                <p class="mb-0 ct_fs_12 ct_fw_500 ct_ff_roboto ct_orange_text">{{event.address}}</p>
+            <div>
+              <p *ngIf="event.registeredUsers > 0" class=" ct_fs_12 text-white ct_fw_400 ct_ff_roboto ct_mb_10">
+                {{event.registeredUsers}} Interested</p>
+              <p class="mb-0 ct_fs_12 ct_fw_500 ct_ff_roboto ct_orange_text">{{event.date |
+                date:'d MMM y'}}</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  
+  
+  </div>
+}
+
+
+
+
+<!-- Follow Friend Modal S -->
+
+<div class="modal fade" id="ct_followed_coaches" tabindex="-1" aria-labelledby="ct_followed_coachesLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pt-0 px-0 d-block text-center">
+        <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">All Paid Guest
+        </h5>
+        <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i
+            class="fa-solid fa-x"></i></button>
+      </div>
+      <div class="modal-body">
+
+
+        <div class="ct_add_member_scroll">
+          <div *ngIf="followersList?.length === 0" class="text-center mt-4">
+            <p class="ct_fs_15 text-white">No guest found</p>
+          </div>
+          <div *ngFor="let follower of followersList;">
+            <div class="d-flex align-items-center gap-2 mt-4">
+              <img [src]="follower.follower.avatar_url ? follower.follower.avatar_url : '/assets/img/np_pro.png'" alt=""
+                class="ct_img_62 ct_border_radius_100">
+              <div>
+                <h4 class="ct_ff_roboto ct_fw_600 text-white ct_fs_15 mb-0">
+                  {{follower.follower.full_name}}</h4>
+                <div class="d-flex align-items-center  gap-2 mt-1">
+                  <!-- <img src="../assets/img/star.png" alt="star"> -->
+                  <!-- <span class="ct_orange_text">Accountability</span> -->
+                </div>
               </div>
             </div>
           </div>
-          <div>
-            <p *ngIf="event.registeredUsers > 0" class=" ct_fs_12 text-white ct_fw_400 ct_ff_roboto ct_mb_10">
-              {{event.registeredUsers}} Interested</p>
-            <p class="mb-0 ct_fs_12 ct_fw_500 ct_ff_roboto ct_orange_text">{{event.date |
-              date:'d MMM y'}}</p>
-          </div>
-        </a>
+        </div>
+        <button hidden type="button" class="btn btn-secondary" #closeModal data-bs-dismiss="modal">Close</button>
+        <!-- <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 w-100 mt-4">Create new team</button> -->
       </div>
+
     </div>
   </div>
-
-
 </div>

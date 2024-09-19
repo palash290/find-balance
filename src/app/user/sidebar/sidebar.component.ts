@@ -14,6 +14,7 @@ export class SidebarComponent {
   role: any;
   eventData: any;
   isMenuVisible: boolean = false;
+  stripeLink: any;
 
   constructor(private router: Router, private visibilityService: SharedService) {
 
@@ -28,8 +29,12 @@ export class SidebarComponent {
   // }
 
   unreadNotifications: any;
+  userId: any;
+  planName: any;
+  planPrice: any;
 
   ngOnInit() {
+    this.userId = localStorage.getItem('fbId');
     this.role = this.visibilityService.getRole();
     if (this.role == "USER") {
       this.isCoach = false;
@@ -43,6 +48,41 @@ export class SidebarComponent {
     //this.toggleClass();
     // this.getEventData();
     // this.loadUserProfile();
+
+    this.visibilityService.getApi(`subscription/allPlans`).subscribe(response => {
+      if(this.isCoach){
+        this.planName = response.data[0].name;
+        this.planPrice= response.data[0].price;
+      } else{
+        this.planName = response.data[1].name;
+        this.planPrice= response.data[1].price;
+      }
+    });
+
+  }
+
+  getSubscriptonUser() {
+    const formURlData = new URLSearchParams();
+    formURlData.set('userId', this.userId);
+    formURlData.set('planId', '2');
+    this.visibilityService.postAPI(`create-subscription`, formURlData.toString()).subscribe(response => {
+      this.stripeLink = response.url;
+      console.log(this.stripeLink);
+    });
+  }
+
+  getSubscriptonCoach() {
+    const formURlData = new URLSearchParams();
+    formURlData.set('userId', this.userId);
+    formURlData.set('planId', '4');
+    this.visibilityService.postAPI(`create-subscription`, formURlData.toString()).subscribe(response => {
+      this.stripeLink = response.url;
+      console.log(this.stripeLink);
+    });
+  }
+
+  redirect() {
+    window.location.href = this.stripeLink;
   }
 
   about_me: any;

@@ -4,6 +4,7 @@ import { SharedService } from '../../services/shared.service';
 import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
 
+
 @Component({
   selector: 'app-events',
   templateUrl: './events.component.html',
@@ -14,6 +15,7 @@ export class EventsComponent {
   eventId: any;
   isCoach: boolean = true;
   role: any;
+  followersList: any[] = [];
 
   constructor(private route: ActivatedRoute, private service: SharedService, private router: Router, private location: Location) { }
 
@@ -28,7 +30,18 @@ export class EventsComponent {
       console.log('Event ID:', this.eventId);
       this.getEventData(this.eventId);
     });
+
+    
+
     this.service.triggerRefresh();
+  }
+
+  getPaidGuest(){
+    this.service.getApi(`coach/event/paidUsers/${this.eventId}`).subscribe(response => {
+      if (response.success) {
+        this.followersList = response.data;
+      }
+    });
   }
 
   eventData: any;
@@ -130,6 +143,10 @@ export class EventsComponent {
         });
       }
     });
+  }
+
+  backClicked() {
+    this.location.back();
   }
 
 

@@ -16,9 +16,11 @@ export class SettingComponent implements OnInit {
   userDetails: any;
   role: any;
   isCoach: boolean = true;
+  userId: any;
 
   constructor(private srevice: SharedService, private toastr: ToastrService, private route: Router, private location: Location) { }
   ngOnInit(): void {
+    this.userId = localStorage.getItem('fbId');
     this.role = this.srevice.getRole();
     if (this.role == 'USER') {
       this.isCoach = false;
@@ -61,6 +63,18 @@ export class SettingComponent implements OnInit {
         this.toastr.warning(resp.message);
         console.error('Failed to update chat notification settings');
       }
+    });
+  }
+
+  cancelSubscription() {
+    const formURlData = new URLSearchParams();
+    if (this.isCoach) {
+      formURlData.set('coachId', this.userId);
+    } else {
+      formURlData.set('userId', this.userId);
+    }
+    this.srevice.postAPI(`subscription/cancel-subscription`, formURlData.toString()).subscribe(response => {
+      
     });
   }
 
