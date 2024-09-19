@@ -1,3 +1,9 @@
 .ct_box_2_full_active {
     grid-template-columns: 100% !important;
 }
+
+.ct_suggested_category_scroll {
+    height: calc(100vh - 263px) !important;
+    max-height: calc(100vh - 263px) !important;
+    overflow-y: auto !important;
+}

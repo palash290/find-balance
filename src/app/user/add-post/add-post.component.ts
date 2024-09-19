@@ -49,10 +49,7 @@ export class AddPostComponent {
         this.categories = response.data;
       }
       this.avatar_url_fb = localStorage.getItem('avatar_url_fb');
-
     });
-
-
   }
 
   categoryId: any = '1';

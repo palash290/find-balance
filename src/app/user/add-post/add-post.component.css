@@ -33,3 +33,10 @@
         grid-template-columns: auto;
     }
 }
+
+.ct_img_h_130{
+    height: 130px;
+    width: 100%;
+    object-fit: fill;
+    border-radius: 20px;
+  }

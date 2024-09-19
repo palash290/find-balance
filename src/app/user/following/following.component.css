@@ -8,3 +8,8 @@
     max-height: calc(100vh - 263px) !important;
     overflow-y: auto !important;
 }
+
+ /* Add more custom styles for controls as needed */
+ .ct_box_2_full_active {
+    grid-template-columns: 100% !important;
+  }

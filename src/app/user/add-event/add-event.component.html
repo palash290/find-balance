@@ -93,9 +93,17 @@
     <div class="form-group mb-3">
         <label for="eventType" class="mb-2 text-white">Event Type</label>
         <select class="ct_login_input form-control ct_border_radius_10" formControlName="eventType">
+            <option value="" disabled>Select-Event</option>
             <option value="LIVE_EVENT">Live-event</option>
             <option value="WEBINAR">Webinar</option>
         </select>
+
+        <!-- Error Message -->
+        <div *ngIf="newForm.controls['eventType'].invalid && newForm.controls['eventType'].touched"
+            class="error-message text-danger">
+            Please select a valid event type.
+        </div>
+
     </div>
 
     <!-- Live-event Fields -->
@@ -104,13 +112,21 @@
             <label for="address" class="mb-2 text-white">Address</label>
             <input type="text" class="ct_login_input form-control ct_border_radius_10" formControlName="address"
                 placeholder="Enter Address">
+            <div *ngIf="newForm.controls['address'].invalid && newForm.controls['address'].touched"
+                class="error-message">
+                <div *ngIf="newForm.controls['address'].errors?.['required']">Address is required.</div>
+            </div>
         </div>
 
-        <div class="form-group mb-3">
+        <!-- <div class="form-group mb-3">
             <label for="code" class="mb-2 text-white">Code</label>
             <input type="text" class="ct_login_input form-control ct_border_radius_10" formControlName="code"
                 placeholder="Enter Code">
-        </div>
+
+            <div *ngIf="newForm.controls['code'].invalid && newForm.controls['code'].touched" class="error-message">
+                <div *ngIf="newForm.controls['code'].errors?.['required']">Code is required.</div>
+            </div>
+        </div> -->
     </div>
 
     <!-- Webinar Fields -->
@@ -119,6 +135,12 @@
             <label for="webinarUrl" class="mb-2 text-white">Webinar URL</label>
             <input type="text" class="ct_login_input form-control ct_border_radius_10" formControlName="webinarUrl"
                 placeholder="Enter Webinar URL">
+
+            <div *ngIf="newForm.controls['webinarUrl'].invalid && newForm.controls['webinarUrl'].touched"
+                class="error-message">
+                <div *ngIf="newForm.controls['webinarUrl'].errors?.['required']">Webinar Url is required.</div>
+            </div>
+
         </div>
     </div>
 
@@ -137,6 +159,24 @@
         <label for="price" class="mb-2 text-white">Price</label>
         <input type="number" class="ct_login_input form-control ct_border_radius_10" formControlName="price"
             placeholder="Enter Price">
+
+        <div *ngIf="newForm.controls['price'].invalid && newForm.controls['price'].touched" class="error-message">
+            Price is required.
+        </div>
+
+    </div>
+
+
+    <div class="form-group mb-3">
+        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Add Members</label>
+        <input type="text" class="ct_login_input form-control ct_border_radius_10" placeholder="Select members"
+            formControlName="other_categ" data-bs-toggle="modal" data-bs-target="#ct_edit_community" readonly>
+
+        <div *ngIf="newForm.controls['other_categ'].invalid && newForm.controls['other_categ'].touched"
+            class="error-message">
+            <div *ngIf="newForm.controls['other_categ'].errors?.['required']">Category is
+                required.</div>
+        </div>
     </div>
 
 </form>
@@ -144,4 +184,56 @@
 
 <div *ngIf="loading" class="ct_loader_main">
     <div class="loader"></div>
+</div>
+
+
+
+
+
+
+<div class="modal fade" id="ct_edit_community" tabindex="-1" aria-labelledby="ct_add_communityLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pt-0 px-0 d-block text-center">
+                <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Add Categories
+                </h5>
+                <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="fa-solid fa-x"></i></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="ct_add_member_scroll" *ngFor="let follower of filteredUsers;">
+                    <div *ngIf="follower.follower.role == 'USER'" class="d-flex align-items-center gap-2 mt-4">
+                        <!-- <div class="ct_star_circle">
+                            <img src="../assets/img/star.png" alt="">
+                        </div> -->
+                        <img [src]="follower.follower.avatar_url ? follower.follower.avatar_url : '/assets/img/np_pro.png'"
+                        alt="" class="ct_img_62 ct_border_radius_100">
+
+                        <div>
+                            <h4 class="ct_ff_roboto ct_fw_600 text-white ct_fs_15 mb-0">
+                                {{follower.follower.full_name}}</h4>
+                            <div class="d-flex align-items-center  gap-2 mt-1">
+                                <!-- <img src="../assets/img/star.png" alt="star"> -->
+                                <!-- <span class="ct_orange_text">Accountability</span> -->
+                            </div>
+                        </div>
+
+                        <div class="form-check ms-auto ct_custom_radio">
+                            <input class="form-check-input" type="checkbox"
+                                [checked]="selectedUsersIds.includes(follower.follower.id)"
+                                (change)="onCategoryChange($event, follower)" id="flexRadioDefault1">
+                        </div>
+                    </div>
+                </div>
+                <!-- ct_orange_btn ct_grey_btn ct_border_radius_10 -->
+                <button type="button" class=" ct_orange_btn ct_grey_btn ct_custom_btn mt-5 px-4 w-auto mx-auto d-block"
+                    data-bs-dismiss="modal">Save
+                    Categories</button>
+
+
+            </div>
+
+        </div>
+    </div>
 </div>

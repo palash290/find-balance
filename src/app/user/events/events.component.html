@@ -5,10 +5,13 @@
   <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 ct_mt_30 pt-1">
     <div>
       <h4 class="ct_ff_roboto ct_fw_600 text-white ct_fs_24 mb-0">{{eventData?.name}}</h4>
+      @if(eventData?.address){
       <div class="d-flex align-items-center  gap-2 mt-2">
         <img src="../assets/img/location_icon.svg" alt="star">
         <span class="ct_orange_text ct_fs_18 ct_ff_roboto ct_fw_600">{{eventData?.address}}</span>
       </div>
+      }
+
       <div class="d-flex align-items-center  gap-2 mt-2">
         <img src="../assets/img/calender_icon.svg" alt="star">
         <span class="ct_orange_text ct_fs_18 ct_ff_roboto ct_fw_600">{{eventData?.date | date:'d MMM y'}}</span>
@@ -38,7 +41,7 @@
     <div class="d-flex gap-2" style="cursor: pointer;">
       <div class="ct_star_circle">
         <img alt="" class="ct_img_44 ct_bor ct_orange_border_1"
-        [src]="eventData?.coach.avatar_url ? eventData?.coach.avatar_url : '/assets/img/no_event.png'" >
+          [src]="eventData?.coach.avatar_url ? eventData?.coach.avatar_url : '/assets/img/no_event.png'">
       </div>
       <div>
         <h5 class="ct_fs_15 ct_orange_text ct_fw_600 mb-1 ct_ff_roboto">{{eventData?.coach.full_name}}</h5>
@@ -57,6 +60,13 @@
     </div>
   </div>
 </div>
+
+@if(eventData?.webinar_url){
+<div class="mt-4">
+  <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600">Webinar Url</h4>
+  <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{eventData?.webinar_url}}</p>
+</div>
+}
 
 <div class="mt-4">
   <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600">About Event</h4>

@@ -16,11 +16,51 @@ export class AddEventComponent {
   newForm!: FormGroup;
   loading: boolean = false;
   minDate: any;
+  followedUsers: any[] = [];
+  filteredUsers: any[] = [];
+  selectedUsersIds: number[] = [];
+  selectedCategoryNames: string[] = [];
+  selectedCategoryIdsString: string = '';
+  primaryCategoryId: any;
 
   constructor(private route: Router, private service: SharedService, private toastr: ToastrService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.initForm();
+
+    this.service.getApi(`coach/myFollowers`).subscribe(response => {
+      if (response.success) {
+        this.followedUsers = response.data;
+        //debugger
+        setTimeout(() => {
+          this.filteredUsers = response.data.filter((category: { id: any; }) => category.id !== this.primaryCategoryId);
+        }, 1000);
+      }
+    });
+
+
+  }
+
+  onCategoryChange(event: any, category: any): void {
+    debugger
+    if (event.target.checked) {
+      this.selectedUsersIds.push(category.follower.id);
+      this.selectedCategoryNames.push(category.follower.full_name);
+    } else {
+      const indexId = this.selectedUsersIds.indexOf(category.follower.id);
+      if (indexId > -1) {
+        this.selectedUsersIds.splice(indexId, 1);
+      }
+
+      const indexName = this.selectedCategoryNames.indexOf(category.follower.full_name);
+      if (indexName > -1) {
+        this.selectedCategoryNames.splice(indexName, 1);
+      }
+    }
+
+    this.selectedCategoryIdsString = this.selectedUsersIds.join(', ');
+    // Update the form control value with the concatenated category names
+    this.newForm.get('other_categ')?.setValue(this.selectedCategoryNames.join(', '));
   }
 
   // initForm() {
@@ -40,12 +80,14 @@ export class AddEventComponent {
       about: new FormControl('', Validators.required),
       date: new FormControl('', Validators.required),
       cover: new FormControl(null),
-      eventType: new FormControl('LIVE_EVENT', Validators.required), // Default to LIVE_EVENT
+      eventType: new FormControl('', Validators.required), // Default to LIVE_EVENT
+      //eventType: new FormControl('0', [Validators.required, this.eventTypeValidator]), 
       address: new FormControl(''), // For Live-event
-      code: new FormControl(''), // For Live-event
+      //code: new FormControl(''), // For Live-event
       webinarUrl: new FormControl(''), // For Webinar
       isPaid: new FormControl(0, Validators.required), // Default to '0' (No)
-      price: new FormControl('') // Conditionally required if isPaid is '1'
+      price: new FormControl(''), // Conditionally required if isPaid is '1'
+      other_categ: new FormControl('')
     });
 
     // Set minDate for date field
@@ -56,32 +98,40 @@ export class AddEventComponent {
     this.newForm.get('eventType')?.valueChanges.subscribe((eventType) => {
       if (eventType === 'LIVE_EVENT') {
         this.newForm.get('address')?.setValidators(Validators.required);
-        this.newForm.get('code')?.setValidators(Validators.required);
+        //this.newForm.get('code')?.setValidators(Validators.required);
         this.newForm.get('webinarUrl')?.clearValidators();
       } else if (eventType === 'WEBINAR') {
         this.newForm.get('webinarUrl')?.setValidators(Validators.required);
         this.newForm.get('address')?.clearValidators();
-        this.newForm.get('code')?.clearValidators();
+        //this.newForm.get('code')?.clearValidators();
       }
       // Update the validators for the fields
       this.newForm.get('address')?.updateValueAndValidity();
-      this.newForm.get('code')?.updateValueAndValidity();
+      //this.newForm.get('code')?.updateValueAndValidity();
       this.newForm.get('webinarUrl')?.updateValueAndValidity();
     });
 
-    // Listen to changes in the isPaid field
-    this.newForm.get('isPaid')?.valueChanges.subscribe((isPaid) => {
-      if (isPaid === 1) {
+    // Listen to changes in isPaid and update price validators accordingly
+    this.newForm.get('isPaid')?.valueChanges.subscribe(value => {
+      if (value === '1') {
         this.newForm.get('price')?.setValidators(Validators.required);
-      } else if (isPaid === 0) {
+      } else {
         this.newForm.get('price')?.clearValidators();
       }
-      // Update the validators for the price field
       this.newForm.get('price')?.updateValueAndValidity();
     });
+
+    // const today = new Date();
+    // this.minDate = today.toISOString().split('T')[0];
+
   }
 
+  readonly MAX_FILE_SIZE_MB = 50;
 
+  private isFileSizeValid(file: File): boolean {
+    const maxSizeBytes = this.MAX_FILE_SIZE_MB * 1024 * 1024; // Convert MB to bytes
+    return file.size <= maxSizeBytes;
+  }
 
   UploadedBg!: File;
 
@@ -156,14 +206,14 @@ export class AddEventComponent {
       formData.set('type', this.newForm.value.eventType);
       formData.set('isPaid', this.newForm.value.isPaid);
 
-      if (this.newForm.value.eventType === 'live') {
+      if (this.newForm.value.eventType === 'LIVE_EVENT') {
         formData.set('address', this.newForm.value.address);
-        formData.set('code', this.newForm.value.code);
-      } else if (this.newForm.value.eventType === 'webinar') {
-        formData.set('webinarUrl', this.newForm.value.webinarUrl);
+        //formData.set('code', this.newForm.value.code);
+      } else if (this.newForm.value.eventType === 'WEBINAR') {
+        formData.set('webinar_url', this.newForm.value.webinarUrl);
       }
 
-      if (this.newForm.value.isPaid === 'yes') {
+      if (this.newForm.value.isPaid === '1') {
         formData.set('adhocPrice', this.newForm.value.price);
       }
       const file = new File([this.cropImgBlob], 'profile_image.png', {
@@ -172,6 +222,10 @@ export class AddEventComponent {
 
       if (this.croppedImage) {
         formData.set('file', file);
+      }
+
+      if (this.selectedCategoryIdsString) {
+        formData.set('receiverIds', this.selectedCategoryIdsString);
       }
 
       // Handle the file upload and API request as you are doing currently
@@ -222,9 +276,11 @@ export class AddEventComponent {
   fileChangeEvent(event: Event): void {
     this.imageChangedEvent = event;
   }
+
   imageCropped(event: any) {
     this.croppedImage = this.sanitizer.bypassSecurityTrustUrl(event.objectUrl);
     this.cropImgBlob = event.blob;
+
     // event.blob can be used to upload the cropped image
   }
 
