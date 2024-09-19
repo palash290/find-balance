@@ -66,15 +66,60 @@ export class SettingComponent implements OnInit {
     });
   }
 
+  // cancelSubscription() {
+  //   const formURlData = new URLSearchParams();
+  //   if (this.isCoach) {
+  //     formURlData.set('coachId', this.userId);
+  //   } else {
+  //     formURlData.set('userId', this.userId);
+  //   }
+  //   this.srevice.postAPI(`subscription/cancel-subscription`, formURlData.toString()).subscribe(response => {
+
+  //   });
+  // }
+
   cancelSubscription() {
-    const formURlData = new URLSearchParams();
-    if (this.isCoach) {
-      formURlData.set('coachId', this.userId);
-    } else {
-      formURlData.set('userId', this.userId);
-    }
-    this.srevice.postAPI(`subscription/cancel-subscription`, formURlData.toString()).subscribe(response => {
-      
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to cancel subscription!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#e58934',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      const formURlData = new URLSearchParams();
+      if (this.isCoach) {
+        formURlData.set('coachId', this.userId);
+      } else {
+        formURlData.set('userId', this.userId);
+      }
+      if (result.isConfirmed) {
+        this.srevice.postAPI(`subscription/cancel-subscription`, formURlData.toString()).subscribe({
+          next: (resp) => {
+            if (resp.success) {
+              Swal.fire(
+                'Cancelled!',
+                'Your subscription has been cancelled successfully.',
+                'success'
+              );
+              this.route.navigateByUrl('/home')
+              this.toastr.success(resp.message);
+            } else {
+              this.toastr.warning(resp.message);
+            }
+          },
+          error: (error) => {
+            Swal.fire(
+              'Error!',
+              'There was an error cancelling your subscription.',
+              'error'
+            );
+            this.toastr.error('Error deleting subscription!');
+            console.error('Error deleting account', error);
+          }
+        });
+      }
     });
   }
 

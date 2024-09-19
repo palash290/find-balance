@@ -6,6 +6,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as countryCodes from 'country-codes-list';
 import { ToastrService } from 'ngx-toastr';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -14,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 export class LoginComponent {
 
   isCoach: boolean = false;
-  
+
   isPasswordVisible: boolean = false;
   loginForm!: FormGroup
   loading: boolean = false;
@@ -66,15 +67,15 @@ export class LoginComponent {
 
       formURlData.set('phone_no', fullMobileNumber);
       formURlData.set('password', this.loginForm.value.password);
-      if(fcmToken){
+      if (fcmToken) {
         formURlData.set('fcm_token', fcmToken);
       }
-      
+
       this.srevice.loginUser(this.isCoach ? 'coach/login' : 'user/login', formURlData.toString()).subscribe({
         next: (resp) => {
           if (resp.success == true) {
             //this.route.navigateByUrl("/user/main/dashboard");
-            if(resp.data?.coach){
+            if (resp.data?.coach) {
               localStorage.setItem('userDetailFb', JSON.stringify(resp.data?.coach));
               localStorage.setItem('fbRole', JSON.stringify(resp.data?.coach?.role));
               localStorage.setItem('fbId', JSON.stringify(resp.data?.coach?.id));
@@ -83,10 +84,11 @@ export class LoginComponent {
               localStorage.setItem('fbRole', JSON.stringify(resp.data?.user?.role));
               localStorage.setItem('fbId', JSON.stringify(resp.data?.user?.id));
             }
-           
+
             this.srevice.setToken(resp.data.token);
             this.loading = false;
-            this.route.navigateByUrl('/user/main/feeds')
+            this.route.navigateByUrl('/user/main/feeds');
+            this.getPackage();
           } else {
             this.loading = false;
             this.toster.warning(resp.message)
@@ -100,7 +102,24 @@ export class LoginComponent {
           console.error('Login error:', error.error.message);
         }
       });
-   }
+    }
+  }
+
+  userPlan: any;
+  plan_expired_at: any;
+
+  getPackage() {
+    this.srevice.getApi(this.isCoach ? 'coach/myActivePlan' : 'user/myActivePlan').subscribe({
+      next: (resp) => {
+        this.userPlan = resp.data.plan.name;
+        this.plan_expired_at = resp.data.expired_at;
+        localStorage.setItem('findPlan', this.userPlan);
+        localStorage.setItem('plan_expired_at', this.plan_expired_at);
+      },
+      error: (error) => {
+        console.error('Error fetching project list:', error);
+      }
+    });
   }
 
   togglePasswordVisibility() {
@@ -108,13 +127,13 @@ export class LoginComponent {
     this.imageSrc = this.isPasswordVisible ? 'assets/img/open_eye.svg' : 'assets/img/close_eye.svg';
   }
 
-  toggleUser(){
+  toggleUser() {
     this.isCoach = !this.isCoach
   }
 
   imageSrc: string = 'assets/img/close_eye.svg';
 
-  forgotPassword(role: any){
+  forgotPassword(role: any) {
     this.route.navigateByUrl(`forgot-password/${role}`)
   }
 

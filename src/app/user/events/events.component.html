@@ -1,5 +1,5 @@
 @if(eventData?.isPaid == 1){
-  <a (click)="backClicked()" class="ct_orange_text ct_back_to_list ct_chat_back mb-4 d-block ct_fw_600"
+<a (click)="backClicked()" class="ct_orange_text ct_back_to_list ct_chat_back mb-4 d-block ct_fw_600"
   style="cursor: pointer;"><i class="fa-solid fa-arrow-left me-2"></i> Back</a>
 }
 
@@ -37,19 +37,19 @@
         style="cursor: pointer;">Delete Event</a>
     </div>
     } @else {
-      @if(!eventData?.isShown){
-        <div style="cursor: pointer;">
-          <a class="ct_orange_btn  ct_border_radius_10">Pay</a>
-        </div>
-      } @else {
-        <div (click)="userIntrested(eventData.id)" *ngIf="!eventData?.alreadyRegistered" style="cursor: pointer;">
-          <a class="ct_orange_btn  ct_border_radius_10">I'm Interested</a>
-        </div>
-        <div (click)="userNotIntrested(eventData.id)" *ngIf="eventData?.alreadyRegistered" style="cursor: pointer;">
-          <a class="ct_orange_btn ct_grey_btn ct_border_radius_10">Interested</a>
-        </div>
-      }
- 
+    @if(!eventData?.isShown){
+    <div style="cursor: pointer;">
+      <a class="ct_orange_btn  ct_border_radius_10">Pay</a>
+    </div>
+    } @else {
+    <div (click)="userIntrested(eventData.id)" *ngIf="!eventData?.alreadyRegistered" style="cursor: pointer;">
+      <a class="ct_orange_btn  ct_border_radius_10">I'm Interested</a>
+    </div>
+    <div (click)="userNotIntrested(eventData.id)" *ngIf="eventData?.alreadyRegistered" style="cursor: pointer;">
+      <a class="ct_orange_btn ct_grey_btn ct_border_radius_10">Interested</a>
+    </div>
+    }
+
     }
   </div>
 </div>
@@ -87,13 +87,24 @@
 </div>
 }
 
+@if(isCoach){
+@if(eventData?.address){
+<div class="mt-4">
+  <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600">Event Address</h4>
+  <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">{{eventData?.address}}</p>
+</div>
+}
+} @else {
 @if(eventData?.address){
 <div class="mt-4">
   <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600">Event Address</h4>
   <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22"
-  [ngClass]="{'blurred': !eventData?.isShown}" [ngStyle]="{ 'user-select': !eventData?.isShown ? 'none' : 'auto' }">{{eventData?.address}}</p>
+    [ngClass]="{'blurred': !eventData?.isShown}" [ngStyle]="{ 'user-select': !eventData?.isShown ? 'none' : 'auto' }">
+    {{eventData?.address}}</p>
 </div>
 }
+}
+
 
 <div class="mt-4">
   <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600">About Event</h4>
@@ -103,37 +114,37 @@
 
 
 @if(eventData?.isPaid != 1){
-  <div *ngIf="eventListData?.length > 0" class="mt-4">
-    <h4 class="mb-0 ct_fw_600 ct_fs_20 text-white ct_ff_roboto">Next Events</h4>
-    <div class="mt-3">
-      <div *ngFor="let event of eventListData">
-        <div class="ct_event_scroll" style="cursor: pointer;">
-          <a (click)="getEventId(event.id)" class="ct_event_list">
-            <div class="d-flex align-items-center gap-2">
-              <div class="ct_event_img_small">
-                <img [src]="event.mediaUrl ? event.mediaUrl : '/assets/img/np_pro.png'" alt="" class="ct_img_62">
-              </div>
-              <div class="ct_event_info">
-                <h5 class="ct_fs_15 ct_fw_500 ct_ff_roboto text-white ct_mb_5">{{event.name}}</h5>
-                <div class="d-flex align-items-center gap-2">
-                  <img src="../assets/img/location_icon.svg" alt="">
-                  <p class="mb-0 ct_fs_12 ct_fw_500 ct_ff_roboto ct_orange_text">{{event.address}}</p>
-                </div>
+<div *ngIf="eventListData?.length > 0" class="mt-4">
+  <h4 class="mb-0 ct_fw_600 ct_fs_20 text-white ct_ff_roboto">Next Events</h4>
+  <div class="mt-3">
+    <div *ngFor="let event of eventListData">
+      <div class="ct_event_scroll" style="cursor: pointer;">
+        <a (click)="getEventId(event.id)" class="ct_event_list">
+          <div class="d-flex align-items-center gap-2">
+            <div class="ct_event_img_small">
+              <img [src]="event.mediaUrl ? event.mediaUrl : '/assets/img/np_pro.png'" alt="" class="ct_img_62">
+            </div>
+            <div class="ct_event_info">
+              <h5 class="ct_fs_15 ct_fw_500 ct_ff_roboto text-white ct_mb_5">{{event.name}}</h5>
+              <div class="d-flex align-items-center gap-2">
+                <img src="../assets/img/location_icon.svg" alt="">
+                <p class="mb-0 ct_fs_12 ct_fw_500 ct_ff_roboto ct_orange_text">{{event.address}}</p>
               </div>
             </div>
-            <div>
-              <p *ngIf="event.registeredUsers > 0" class=" ct_fs_12 text-white ct_fw_400 ct_ff_roboto ct_mb_10">
-                {{event.registeredUsers}} Interested</p>
-              <p class="mb-0 ct_fs_12 ct_fw_500 ct_ff_roboto ct_orange_text">{{event.date |
-                date:'d MMM y'}}</p>
-            </div>
-          </a>
-        </div>
+          </div>
+          <div>
+            <p *ngIf="event.registeredUsers > 0" class=" ct_fs_12 text-white ct_fw_400 ct_ff_roboto ct_mb_10">
+              {{event.registeredUsers}} Interested</p>
+            <p class="mb-0 ct_fs_12 ct_fw_500 ct_ff_roboto ct_orange_text">{{event.date |
+              date:'d MMM y'}}</p>
+          </div>
+        </a>
       </div>
     </div>
-  
-  
   </div>
+
+
+</div>
 }
 
 

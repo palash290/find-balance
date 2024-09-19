@@ -10,9 +10,12 @@
                 <a routerLink="/user/main/settings" (click)="onToggleMenu()">
                     <img src="../assets/img/setting_icon.svg" alt="">
                 </a>
-                <div>
+                <div class="position-relative">
                     <img [src]="avatar_url ? avatar_url : '/assets/img/np_pro.png'" alt=""
                         class="ct_img_84 ct_border_radius_100">
+                    <div *ngIf="userPlan == 'Premium'">
+                        <img src="../assets/img/crown_white.png" class="fa-solid fa-crown ct_user_crown_btm" />
+                    </div>
                 </div>
                 <!-- @if (isCoach) { -->
                 <div class="ct_notification_icon" routerLink="/user/main/notifications" style="cursor: pointer;"
@@ -58,6 +61,28 @@
                     </a>
                 </p>
 
+                @if(userPlan == 'Premium'){
+                <div class="text-white">
+                    Your plan will expire at:
+                    {{plan_expired_at | date: 'dd MMM yyyy' }}
+                </div>
+                }@else {
+                @if(isCoach){
+                <div (click)="getSubscriptonCoach()" style="cursor: pointer;" data-bs-toggle="modal"
+                    data-bs-target="#ct_followed_coaches">
+                    <a class="ct_orange_btn mt-2 ct_border_radius_10 ct_blue_btn123"><i
+                            class="fa-solid fa-crown me-2"></i>Buy Pro Plan</a>
+                </div>
+                }@else {
+                <div (click)="getSubscriptonUser()" style="cursor: pointer;" data-bs-toggle="modal"
+                    data-bs-target="#ct_followed_coaches">
+                    <a class="ct_orange_btn mt-2 ct_border_radius_10 ct_blue_btn123"><i
+                            class="fa-solid fa-crown me-2"></i>Buy Pro Plan</a>
+                </div>
+                }
+                }
+
+
                 @if(isCoach){
                 <div class="d-flex align-items-center justify-content-around mt-3">
                     <div class="ct_total_post">
@@ -78,17 +103,7 @@
 
 
             </div>
-            @if(isCoach){
-            <div (click)="getSubscriptonCoach()" style="cursor: pointer;" data-bs-toggle="modal"
-                data-bs-target="#ct_followed_coaches">
-                <a class="ct_orange_btn mt-2 ct_border_radius_10">Buy Pro Plan</a>
-            </div>
-            }@else {
-            <div (click)="getSubscriptonUser()" style="cursor: pointer;" data-bs-toggle="modal"
-                data-bs-target="#ct_followed_coaches">
-                <a class="ct_orange_btn mt-2 ct_border_radius_10">Buy Pro Plan</a>
-            </div>
-            }
+
 
         </div>
 
@@ -209,7 +224,7 @@
                 </li>
 
                 <li (click)="onToggleMenu()">
-                    <a routerLink="/user/main/community"
+                    <a href="javascript:void(0)" (click)="checkPlanCommunity()"
                         [ngClass]="{ 'ct_menu_active1': isActive('user/main/community')}">
                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -220,16 +235,14 @@
                         Community</a>
                 </li>
 
-                <li *ngIf="isCoach">
-                    <a routerLink="/user/main/teams" (click)="onToggleMenu()"
+                <li *ngIf="isCoach" (click)="onToggleMenu()">
+                    <a href="javascript:void(0)" (click)="checkPlanTeam()"
                         [ngClass]="{ 'ct_menu_active1': isActive('user/main/teams')}">
                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M10 5.5C10 5.89397 9.9224 6.28407 9.77164 6.64805C9.62087 7.01203 9.3999 7.34274 9.12132 7.62132C8.84274 7.8999 8.51203 8.12087 8.14805 8.27164C7.78407 8.4224 7.39397 8.5 7 8.5C6.60603 8.5 6.21593 8.4224 5.85195 8.27164C5.48797 8.12087 5.15726 7.8999 4.87868 7.62132C4.6001 7.34274 4.37913 7.01203 4.22836 6.64805C4.0776 6.28407 4 5.89397 4 5.5C4 4.70435 4.31607 3.94129 4.87868 3.37868C5.44129 2.81607 6.20435 2.5 7 2.5C7.79565 2.5 8.55871 2.81607 9.12132 3.37868C9.68393 3.94129 10 4.70435 10 5.5ZM12 14.5C12.394 14.5 12.7841 14.4224 13.1481 14.2716C13.512 14.1209 13.8427 13.8999 14.1213 13.6213C14.3999 13.3427 14.6209 13.012 14.7716 12.6481C14.9224 12.2841 15 11.894 15 11.5C15 11.106 14.9224 10.7159 14.7716 10.3519C14.6209 9.98797 14.3999 9.65726 14.1213 9.37868C13.8427 9.1001 13.512 8.87913 13.1481 8.72836C12.7841 8.5776 12.394 8.5 12 8.5C11.2044 8.5 10.4413 8.81607 9.87868 9.37868C9.31607 9.94129 9 10.7044 9 11.5C9 12.2956 9.31607 13.0587 9.87868 13.6213C10.4413 14.1839 11.2044 14.5 12 14.5ZM7.1 10.5H4C3.46957 10.5 2.96086 10.7107 2.58579 11.0858C2.21071 11.4609 2 11.9696 2 12.5V12.914C2 14.106 2.686 15.086 3.594 15.728C4.138 16.114 4.788 16.4 5.498 16.568C6.036 15.592 6.97 14.868 8.082 14.606C7.62756 14.0353 7.30406 13.3717 7.13437 12.6622C6.96468 11.9527 6.95294 11.2146 7.1 10.5ZM15.92 14.606C16.4633 14.7344 16.9738 14.9752 17.4184 15.3127C17.8631 15.6503 18.2322 16.0772 18.502 16.566C19.212 16.4 19.862 16.114 20.406 15.728C21.314 15.088 22 14.106 22 12.914V12.5C22 11.9696 21.7893 11.4609 21.4142 11.0858C21.0391 10.7107 20.5304 10.5 20 10.5H16.9C17.0446 11.2145 17.0318 11.9519 16.8626 12.661C16.6933 13.3701 16.3717 14.0338 15.92 14.606ZM9 16.5C8.46957 16.5 7.96086 16.7107 7.58579 17.0858C7.21071 17.4609 7 17.9696 7 18.5V18.834C7 20.008 7.714 20.95 8.616 21.55C9.526 22.16 10.726 22.5 12 22.5C13.274 22.5 14.474 22.158 15.384 21.55C16.284 20.95 17 20.008 17 18.834V18.5C17 17.9696 16.7893 17.4609 16.4142 17.0858C16.0391 16.7107 15.5304 16.5 15 16.5H9ZM18 8.5C18.7956 8.5 19.5587 8.18393 20.1213 7.62132C20.6839 7.05871 21 6.29565 21 5.5C21 4.70435 20.6839 3.94129 20.1213 3.37868C19.5587 2.81607 18.7956 2.5 18 2.5C17.2044 2.5 16.4413 2.81607 15.8787 3.37868C15.3161 3.94129 15 4.70435 15 5.5C15 6.29565 15.3161 7.05871 15.8787 7.62132C16.4413 8.18393 17.2044 8.5 18 8.5Z"
                                 fill="#E58934" />
                         </svg>
-
-
                         Teams</a>
                 </li>
 
@@ -257,12 +270,12 @@
                             </div>
                             <div class="ct_event_info">
                                 <h5 class="ct_fs_15 ct_fw_500 ct_ff_roboto text-white ct_mb_5">{{event.name}} </h5>
-                                @if(event.address){
+                                <!-- @if(event.address){
                                 <div class="d-flex align-items-center gap-2">
                                     <img src="../assets/img/location_icon.svg" alt="">
                                     <p class="mb-0 ct_fs_12 ct_fw_500 ct_ff_roboto ct_orange_text">{{event.address}}</p>
                                 </div>
-                                }
+                                } -->
 
                             </div>
                         </div>
@@ -303,9 +316,18 @@
             </div>
             <div class="modal-body">
                 <div class="ct_add_member_scroll text-white">
-                    {{planName}}
+                    <!-- {{planName}}
                     <br>
-                    {{planPrice}}
+                    {{planPrice}} -->
+                    <ul>
+                        <li>Lorem Ipsum</li>
+                        <li>Lorem Ipsum</li>
+                        <li>Lorem Ipsum</li>
+                        <li>Lorem Ipsum</li>
+                        <li>Lorem Ipsum</li>
+                        <li>Lorem Ipsum</li>
+                        <li>Lorem Ipsum</li>
+                    </ul>
                     <div style="cursor: pointer;" (click)="redirect()">
                         <a class="ct_orange_btn mt-2 ct_border_radius_10">Buy Plan</a>
                     </div>

@@ -3,6 +3,15 @@
 }
 
 
-.ct_orange_btn {
+.ct_blue_btn123 {
     background-color: #3490E5;
+}
+
+.ct_user_crown_btm{
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #3490E5;
+    font-size: 20px;
 }

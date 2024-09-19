@@ -31,6 +31,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { SearchCoachesComponent } from './search-coaches/search-coaches.component';
 import { TeamsComponent } from './teams/teams.component';
 import { FollowUsersComponent } from './follow-users/follow-users.component';
+import { PaymentSuccessComponent } from './payment-success/payment-success.component';
 
 
 @NgModule({
@@ -59,6 +60,7 @@ import { FollowUsersComponent } from './follow-users/follow-users.component';
     SearchCoachesComponent,
     TeamsComponent,
     FollowUsersComponent,
+    PaymentSuccessComponent,
   ],
   imports: [
     CommonModule,

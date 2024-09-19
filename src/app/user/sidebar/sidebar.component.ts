@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharedService } from '../../services/shared.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sidebar',
@@ -16,7 +17,7 @@ export class SidebarComponent {
   isMenuVisible: boolean = false;
   stripeLink: any;
 
-  constructor(private router: Router, private visibilityService: SharedService) {
+  constructor(private router: Router, private visibilityService: SharedService, private toastr: ToastrService) {
 
   }
 
@@ -32,8 +33,12 @@ export class SidebarComponent {
   userId: any;
   planName: any;
   planPrice: any;
+  userPlan: any;
+  plan_expired_at: any;
 
   ngOnInit() {
+    this.plan_expired_at = localStorage.getItem('plan_expired_at')
+    this.userPlan = localStorage.getItem('findPlan');
     this.userId = localStorage.getItem('fbId');
     this.role = this.visibilityService.getRole();
     if (this.role == "USER") {
@@ -50,12 +55,12 @@ export class SidebarComponent {
     // this.loadUserProfile();
 
     this.visibilityService.getApi(`subscription/allPlans`).subscribe(response => {
-      if(this.isCoach){
+      if (this.isCoach) {
         this.planName = response.data[0].name;
-        this.planPrice= response.data[0].price;
-      } else{
+        this.planPrice = response.data[0].price;
+      } else {
         this.planName = response.data[1].name;
-        this.planPrice= response.data[1].price;
+        this.planPrice = response.data[1].price;
       }
     });
 
@@ -83,6 +88,23 @@ export class SidebarComponent {
 
   redirect() {
     window.location.href = this.stripeLink;
+  }
+
+
+  checkPlanCommunity() {
+    if (this.userPlan == 'Premium') {
+      this.router.navigate(['/user/main/community']);
+    } else {
+      this.toastr.warning('Please buy premium plan first.')
+    }
+  }
+
+  checkPlanTeam() {
+    if (this.userPlan == 'Premium') {
+      this.router.navigate(['/user/main/teams']);
+    } else {
+      this.toastr.warning('Please buy premium plan first.')
+    }
   }
 
   about_me: any;
