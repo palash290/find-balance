@@ -160,3 +160,12 @@
   max-height: calc(100vh - 485px) !important;
   min-height: calc(100vh - 390px);
 }
+
+.blurred {
+  filter: blur(5px); /* Adjust the blur value as needed */
+  pointer-events: none;
+}
+
+.ct_blue_btn123 {
+  background-color: #2B8600;
+}

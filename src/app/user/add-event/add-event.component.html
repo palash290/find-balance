@@ -193,7 +193,7 @@
     </div>
 
 
-    <div class="form-group mb-3">
+    <div class="form-group mb-3" *ngIf="newForm.value.isPaid === '1'">
         <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Add Members</label>
         <input type="text" class="ct_login_input form-control ct_border_radius_10" placeholder="Select members"
             formControlName="other_categ" data-bs-toggle="modal" data-bs-target="#ct_edit_community" readonly>

@@ -157,7 +157,7 @@ export class AddEventComponent {
 
     // Listen to changes in isPaid and update price validators accordingly
     this.newForm.get('isPaid')?.valueChanges.subscribe(value => {
-      if (value === '1') {
+      if (value == '1') {
         this.newForm.get('price')?.setValidators([ Validators.required,
           Validators.min(1),          // Ensure price is positive
           Validators.max(99999)]);
@@ -263,7 +263,7 @@ export class AddEventComponent {
         formData.set('webinar_url', this.newForm.value.webinarUrl);
       }
 
-      if (this.newForm.value.isPaid === '1') {
+      if (this.newForm.value.isPaid == '1') {
         formData.set('adhocPrice', this.newForm.value.price);
       } 
 
@@ -275,7 +275,7 @@ export class AddEventComponent {
         formData.set('file', file);
       }
 
-      if (this.selectedCategoryIdsString) {
+      if (this.selectedCategoryIdsString && this.newForm.value.isPaid == '1') {
         formData.set('receiverIds', this.selectedCategoryIdsString);
       }
 

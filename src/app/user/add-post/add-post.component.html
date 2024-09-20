@@ -48,6 +48,17 @@
                 <option value="1">Ad Hoc</option>
             </select>
         </div>
+
+        <div *ngIf="postType == 1" class="ct_category_filter123">
+            <input type="number" [(ngModel)]="adHocPrice" (ngModelChange)="validateAdHocPrice()"
+                placeholder="Enter Price">
+
+            <!-- Error message for required, negative, or max value -->
+            <div *ngIf="priceError" class="error-message">
+                {{ priceError }}
+            </div>
+        </div>
+
         }
 
 

@@ -63,14 +63,29 @@ export class SidebarComponent {
         this.planPrice = response.data[1].price;
       }
     });
+    this.getPackage();
+  }
 
+
+  getPackage() {
+    this.visibilityService.getApi(this.isCoach ? 'coach/myActivePlan' : 'user/myActivePlan').subscribe({
+      next: (resp) => {
+        this.userPlan = resp.data.plan.name;
+        this.plan_expired_at = resp.data.expired_at;
+        localStorage.setItem('findPlan', this.userPlan);
+        localStorage.setItem('plan_expired_at', this.plan_expired_at);
+      },
+      error: (error) => {
+        console.error('Error fetching project list:', error);
+      }
+    });
   }
 
   getSubscriptonUser() {
     const formURlData = new URLSearchParams();
     formURlData.set('userId', this.userId);
     formURlData.set('planId', '2');
-    this.visibilityService.postAPI(`create-subscription`, formURlData.toString()).subscribe(response => {
+    this.visibilityService.postAPI(`subscription/create-subscription`, formURlData.toString()).subscribe(response => {
       this.stripeLink = response.url;
       console.log(this.stripeLink);
     });
@@ -78,9 +93,9 @@ export class SidebarComponent {
 
   getSubscriptonCoach() {
     const formURlData = new URLSearchParams();
-    formURlData.set('userId', this.userId);
+    formURlData.set('coachId', this.userId);
     formURlData.set('planId', '4');
-    this.visibilityService.postAPI(`create-subscription`, formURlData.toString()).subscribe(response => {
+    this.visibilityService.postAPI(`subscription/create-subscription`, formURlData.toString()).subscribe(response => {
       this.stripeLink = response.url;
       console.log(this.stripeLink);
     });

@@ -41,8 +41,9 @@ export class AddPostComponent {
   communityId: any;
   teamId: any;
   userPlan: any;
+  plan_expired_at: any;
 
-  constructor(private route: Router, private service: SharedService, private toastr: ToastrService) { }
+  constructor(private service: SharedService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.userPlan = localStorage.getItem('findPlan');
@@ -52,11 +53,27 @@ export class AddPostComponent {
       }
       this.avatar_url_fb = localStorage.getItem('avatar_url_fb');
     });
+    this.getPackage();
+  }
+
+  getPackage() {
+    this.service.getApi('coach/myActivePlan').subscribe({
+      next: (resp) => {
+        this.userPlan = resp.data.plan.name;
+        this.plan_expired_at = resp.data.expired_at;
+        localStorage.setItem('findPlan', this.userPlan);
+        localStorage.setItem('plan_expired_at', this.plan_expired_at);
+      },
+      error: (error) => {
+        console.error('Error fetching project list:', error);
+      }
+    });
   }
 
   categoryId: any = '1';
   postType: any = '0';
   selectedCategoryName: string | undefined;
+  adHocPrice: any;
 
   onCategoryChange(event: any): void {
     const selectedId = event.target.value;
@@ -116,7 +133,7 @@ export class AddPostComponent {
       }
     };
   }
-  
+
   checkVideoDuration(file: File): void {
     const video = document.createElement('video');
     video.preload = 'metadata';
@@ -145,15 +162,34 @@ export class AddPostComponent {
       return null;  // No limit for Premium users
     }
   }
-  
+
 
   wordCount(text: string): number {
     return text ? text.trim().split(/\s+/).length : 0;
   }
 
+  priceError: string | null = null;
+
+  validateAdHocPrice() {
+    const maxPrice = 99999;
+    const minPrice = 1;
+
+    if (this.adHocPrice < minPrice) {
+      this.priceError = 'Price cannot be negative or zero.';
+    } else if (this.adHocPrice > maxPrice) {
+      this.priceError = 'Price cannot exceed 5 digits.';
+    } else {
+      this.priceError = null;
+    }
+  }
+
   btnLoader: boolean = false;
   uploadFiles() {
 debugger
+    if (this.postType == 1 && (this.adHocPrice === null || this.adHocPrice === undefined)) {
+      this.priceError = 'Price is required.';
+      return
+    }
     if (this.userPlan != 'Premium' && this.wordCount(this.postText) > 100) {
       this.toastr.error('You can only submit up to 100 words.');
       return; // Stop submission
@@ -179,7 +215,7 @@ debugger
       }
     }
     if (this.videoFile) {
-      formData.append('file', this.videoFile);
+      formData.append('media', this.videoFile);
       formData.append('type', 'VIDEO');
       if (this.postText) {
         formData.append('text', trimmedMessage);
@@ -201,10 +237,14 @@ debugger
       // }
     }
 
-    if(this.userPlan == 'Premium'){
+    if (this.userPlan == 'Premium') {
       formData.append('isPaid', this.postType);
-    } else{
+    } else {
       formData.append('isPaid', '0');
+    }
+
+    if (this.postType == 1) {
+      formData.append('adhocPrice', this.adHocPrice);
     }
 
     formData.append('categoryId', this.categoryId);
@@ -218,6 +258,8 @@ debugger
         this.videoFile = null;
         this.videoPreviewUrl = null;
         this.postText = '';
+        this.adHocPrice = '';
+        this.postType = 0;
         this.toastr.success(response.message);
         console.log('Upload successful', response);
         audio?.classList.remove('d-block');

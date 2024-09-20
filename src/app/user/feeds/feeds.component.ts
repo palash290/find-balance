@@ -55,6 +55,22 @@ export class FeedsComponent {
     }
   }
 
+  stripeLink: any;
+
+  getAdHocPost(postId: any) {
+    const formURlData = new URLSearchParams();
+    formURlData.set('postId', postId);
+    this.visibilityService.postAPI(`user/paymentThroughStripeForPost`, formURlData.toString()).subscribe(response => {
+      this.stripeLink = response.url;
+      window.location.href = this.stripeLink;
+      console.log(this.stripeLink);
+    });
+  }
+
+  redirect() {
+    window.location.href = this.stripeLink;
+  }
+
   categoryId: any = '';
   selectedCategoryName: string | undefined;
 
@@ -72,6 +88,8 @@ export class FeedsComponent {
   }
 
 
+
+
   shortTextLength: number = 270;
   durationOrg: any;
   selectedOption: string = '';
@@ -80,7 +98,10 @@ export class FeedsComponent {
     this.visibilityService.getApi(this.isCoach ? `coach/post/allPosts?type=${this.selectedOption}&categoryId=${this.categoryId}` : `user/allPosts?type=${this.selectedOption}&categoryId=${this.categoryId}`).subscribe({
       next: resp => {
         if (this.isCoach) {
-          this.data = resp.data?.map((item: any) => ({ ...item, isExpanded: false, isPlaying: false }));
+          //this.data = resp.data?.map((item: any) => ({ ...item, isExpanded: false, isPlaying: false }));
+          this.data = resp.data
+          ?.filter((item: any) => !(item.coachId != this.userId && item.isPaid == 1))
+          .map((item: any) => ({ ...item, isExpanded: false, isPlaying: false }));
         } else {
           this.data = resp.data?.map((item: any) => ({ ...item, isExpanded: false, isPlaying: false }));
         }
