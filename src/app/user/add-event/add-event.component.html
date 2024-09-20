@@ -23,7 +23,6 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <label for="" class="w-100">
-
                     <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false"
                         [aspectRatio]="4 / 3" format="png" (imageCropped)="imageCropped($event)"
                         [cropperMaxHeight]="1300" [cropperMinHeight]="1300"></image-cropper>
@@ -147,7 +146,8 @@
     <!-- IsPaid Dropdown -->
     <div class="form-group mb-3">
         <label for="isPaid" class="mb-2 text-white">Content Type</label>
-        <select class="ct_login_input form-control ct_border_radius_10" formControlName="isPaid">
+        <select class="ct_login_input form-control ct_border_radius_10" formControlName="isPaid"
+            [disabled]="userPlan != 'Premium'">
             <option value="0">Free</option>
             <option value="2">Paid</option>
             <option value="1">Add Hoc Charge</option>
@@ -158,11 +158,37 @@
     <div *ngIf="newForm.value.isPaid === '1'" class="form-group mb-3">
         <label for="price" class="mb-2 text-white">Price</label>
         <input type="number" class="ct_login_input form-control ct_border_radius_10" formControlName="price"
-            placeholder="Enter Price">
+            placeholder="Enter Price" min="1">
 
-        <div *ngIf="newForm.controls['price'].invalid && newForm.controls['price'].touched" class="error-message">
+        <!-- <div *ngIf="newForm.controls['price'].invalid && newForm.controls['price'].touched" class="error-message">
+            Price is required.
+        </div> -->
+        <!-- Error message if price is required -->
+        <div *ngIf="newForm.controls['price'].errors?.['required'] && newForm.controls['price'].touched"
+            class="error-message">
             Price is required.
         </div>
+
+        <!-- Error message if price is negative -->
+        <div *ngIf="newForm.controls['price'].errors?.['min'] && newForm.controls['price'].touched"
+            class="error-message">
+            Price must be greater than or equal to 0.
+        </div>
+
+        <!-- Error message if price exceeds max value (5 digits) -->
+        <div *ngIf="newForm.controls['price'].errors?.['max'] && newForm.controls['price'].touched"
+            class="error-message">
+            Price cannot exceed 5 digits.
+        </div>
+
+
+        <!-- <div *ngIf="newForm.controls['price'].invalid && newForm.controls['price'].touched" class="error-message">
+            <div *ngIf="newForm.controls['price'].errors?.['required']">This field is required.</div>
+            <div *ngIf="newForm.controls['price'].errors?.['pattern']">Only numeric values are
+                allowed.</div>
+            <div *ngIf="newForm.controls['price'].errors?.['numberRange']">Number must be between 1
+                and 100.</div>
+        </div> -->
 
     </div>
 
@@ -190,7 +216,7 @@
 
 
 
-
+<!-- User modal -->
 <div class="modal fade" id="ct_edit_community" tabindex="-1" aria-labelledby="ct_add_communityLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">

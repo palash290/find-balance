@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ImageCroppedEvent, LoadedImage } from 'ngx-image-cropper';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { numberRangeValidator } from '../../services/validators';
+
 
 @Component({
   selector: 'app-add-event',
@@ -22,10 +24,13 @@ export class AddEventComponent {
   selectedCategoryNames: string[] = [];
   selectedCategoryIdsString: string = '';
   primaryCategoryId: any;
+  userPlan: any;
 
   constructor(private route: Router, private service: SharedService, private toastr: ToastrService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
+
+    this.userPlan = localStorage.getItem('findPlan');
     this.initForm();
 
     this.service.getApi(`coach/myFollowers`).subscribe(response => {
@@ -43,39 +48,39 @@ export class AddEventComponent {
 
   showLimitError = false;
 
-onCategoryChange(event: any, category: any): void {
-  if (event.target.checked) {
-    // Check if more than 2 members are selected
-    if (this.selectedUsersIds.length >= 20) {
-      this.showLimitError = true; // Display an error message
-      event.target.checked = false; // Uncheck the checkbox
-      return;
+  onCategoryChange(event: any, category: any): void {
+    if (event.target.checked) {
+      // Check if more than 2 members are selected
+      if (this.selectedUsersIds.length >= 20) {
+        this.showLimitError = true; // Display an error message
+        event.target.checked = false; // Uncheck the checkbox
+        return;
+      } else {
+        this.showLimitError = false; // Hide the error message
+      }
+
+      // Add selected user ID and name
+      this.selectedUsersIds.push(category.follower.id);
+      this.selectedCategoryNames.push(category.follower.full_name);
     } else {
-      this.showLimitError = false; // Hide the error message
+      // Remove user ID and name
+      const indexId = this.selectedUsersIds.indexOf(category.follower.id);
+      if (indexId > -1) {
+        this.selectedUsersIds.splice(indexId, 1);
+      }
+
+      const indexName = this.selectedCategoryNames.indexOf(category.follower.full_name);
+      if (indexName > -1) {
+        this.selectedCategoryNames.splice(indexName, 1);
+      }
+
+      this.showLimitError = false; // Reset error message on deselection
     }
 
-    // Add selected user ID and name
-    this.selectedUsersIds.push(category.follower.id);
-    this.selectedCategoryNames.push(category.follower.full_name);
-  } else {
-    // Remove user ID and name
-    const indexId = this.selectedUsersIds.indexOf(category.follower.id);
-    if (indexId > -1) {
-      this.selectedUsersIds.splice(indexId, 1);
-    }
-
-    const indexName = this.selectedCategoryNames.indexOf(category.follower.full_name);
-    if (indexName > -1) {
-      this.selectedCategoryNames.splice(indexName, 1);
-    }
-
-    this.showLimitError = false; // Reset error message on deselection
+    this.selectedCategoryIdsString = this.selectedUsersIds.join(', ');
+    // Update the form control value with the concatenated category names
+    this.newForm.get('other_categ')?.setValue(this.selectedCategoryNames.join(', '));
   }
-
-  this.selectedCategoryIdsString = this.selectedUsersIds.join(', ');
-  // Update the form control value with the concatenated category names
-  this.newForm.get('other_categ')?.setValue(this.selectedCategoryNames.join(', '));
-}
 
 
   // onCategoryChange(event: any, category: any): void {
@@ -122,8 +127,10 @@ onCategoryChange(event: any, category: any): void {
       address: new FormControl(''), // For Live-event
       //code: new FormControl(''), // For Live-event
       webinarUrl: new FormControl(''), // For Webinar
-      isPaid: new FormControl(0, Validators.required), // Default to '0' (No)
-      price: new FormControl(''), // Conditionally required if isPaid is '1'
+      isPaid: new FormControl({ value: 0, disabled: this.userPlan != 'Premium' }), // Default to '0' (No)
+      price: new FormControl('', [ Validators.required,
+        Validators.min(0),        // Ensure price is not negative
+        Validators.max(99999)  ]), // Conditionally required if isPaid is '1'
       other_categ: new FormControl('')
     });
 
@@ -151,7 +158,9 @@ onCategoryChange(event: any, category: any): void {
     // Listen to changes in isPaid and update price validators accordingly
     this.newForm.get('isPaid')?.valueChanges.subscribe(value => {
       if (value === '1') {
-        this.newForm.get('price')?.setValidators(Validators.required);
+        this.newForm.get('price')?.setValidators([ Validators.required,
+          Validators.min(1),          // Ensure price is positive
+          Validators.max(99999)]);
       } else {
         this.newForm.get('price')?.clearValidators();
       }
@@ -241,7 +250,11 @@ onCategoryChange(event: any, category: any): void {
       formData.set('about', this.newForm.value.about);
       formData.set('date', this.newForm.value.date);
       formData.set('type', this.newForm.value.eventType);
-      formData.set('isPaid', this.newForm.value.isPaid);
+      if(this.userPlan == 'Premium'){
+        formData.set('isPaid', this.newForm.value.isPaid);
+      }else{
+        formData.set('isPaid', '0');
+      }
 
       if (this.newForm.value.eventType === 'LIVE_EVENT') {
         formData.set('address', this.newForm.value.address);
@@ -252,7 +265,8 @@ onCategoryChange(event: any, category: any): void {
 
       if (this.newForm.value.isPaid === '1') {
         formData.set('adhocPrice', this.newForm.value.price);
-      }
+      } 
+
       const file = new File([this.cropImgBlob], 'profile_image.png', {
         type: 'image/png'
       })

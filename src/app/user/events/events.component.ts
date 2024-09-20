@@ -16,10 +16,12 @@ export class EventsComponent {
   isCoach: boolean = true;
   role: any;
   followersList: any[] = [];
+  userPlan: any;
 
   constructor(private route: ActivatedRoute, private service: SharedService, private router: Router, private location: Location) { }
 
   ngOnInit(): void {
+    this.userPlan = localStorage.getItem('findPlan');
     this.role = this.service.getRole();
     if (this.role == 'USER') {
       this.isCoach = false;

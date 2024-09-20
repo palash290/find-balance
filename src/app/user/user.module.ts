@@ -32,6 +32,7 @@ import { SearchCoachesComponent } from './search-coaches/search-coaches.componen
 import { TeamsComponent } from './teams/teams.component';
 import { FollowUsersComponent } from './follow-users/follow-users.component';
 import { PaymentSuccessComponent } from './payment-success/payment-success.component';
+import { EventListComponent } from './event-list/event-list.component';
 
 
 @NgModule({
@@ -61,6 +62,7 @@ import { PaymentSuccessComponent } from './payment-success/payment-success.compo
     TeamsComponent,
     FollowUsersComponent,
     PaymentSuccessComponent,
+    EventListComponent,
   ],
   imports: [
     CommonModule,
