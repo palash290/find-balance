@@ -40,10 +40,12 @@ export class AddPostComponent {
   categories: any[] = [];
   communityId: any;
   teamId: any;
+  userPlan: any;
 
   constructor(private route: Router, private service: SharedService, private toastr: ToastrService) { }
 
   ngOnInit() {
+    this.userPlan = localStorage.getItem('findPlan');
     this.service.getApi('coach/categories').subscribe(response => {
       if (response.success) {
         this.categories = response.data;
@@ -53,6 +55,7 @@ export class AddPostComponent {
   }
 
   categoryId: any = '1';
+  postType: any = '0';
   selectedCategoryName: string | undefined;
 
   onCategoryChange(event: any): void {
@@ -107,7 +110,7 @@ export class AddPostComponent {
   checkAudioDuration(file: File): void {
     const audio = new Audio(URL.createObjectURL(file));
     audio.onloadedmetadata = () => {
-      if (audio.duration > this.MAX_DURATION_SECONDS) {
+      if (audio.duration > this.MAX_DURATION_SECONDS && this.userPlan != 'Premium') {
         this.toastr.warning('Please upgrade your plan to upload a audio more than 2 minutes.');
         this.audioFile = null; // Clear the file
       }
@@ -118,7 +121,7 @@ export class AddPostComponent {
     const video = document.createElement('video');
     video.preload = 'metadata';
     video.onloadedmetadata = () => {
-      if (video.duration > this.MAX_DURATION_SECONDS) {
+      if (video.duration > this.MAX_DURATION_SECONDS && this.userPlan != 'Premium') {
         this.toastr.warning('Please upgrade your plan to upload a video more than 2 minutes.');
         this.videoFile = null; // Clear the file
       }
@@ -134,9 +137,28 @@ export class AddPostComponent {
     reader.readAsDataURL(file);
   }
 
+  getMaxLength(): number | null {
+    if (this.userPlan !== 'Premium') {
+      this.toastr.warning('User is not premium, max length is set to 100.');
+      return 100;  // Limit to 100 characters for non-premium users
+    } else {
+      return null;  // No limit for Premium users
+    }
+  }
+  
+
+  wordCount(text: string): number {
+    return text ? text.trim().split(/\s+/).length : 0;
+  }
 
   btnLoader: boolean = false;
   uploadFiles() {
+debugger
+    if (this.userPlan != 'Premium' && this.wordCount(this.postText) > 100) {
+      this.toastr.error('You can only submit up to 100 words.');
+      return; // Stop submission
+    }
+
     this.communityId = localStorage.getItem('communityId');
     this.teamId = localStorage.getItem('teamId');
     const trimmedMessage = this.postText ? this.postText?.trim() : '';
@@ -178,7 +200,13 @@ export class AddPostComponent {
       //   return;
       // }
     }
-    formData.append('isPaid', '0')
+
+    if(this.userPlan == 'Premium'){
+      formData.append('isPaid', this.postType);
+    } else{
+      formData.append('isPaid', '0');
+    }
+
     formData.append('categoryId', this.categoryId);
     let audio = document.getElementById('ct_audio')
     let video = document.getElementById('ct_video')

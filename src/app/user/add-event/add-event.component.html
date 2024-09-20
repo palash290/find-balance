@@ -195,12 +195,17 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header border-0 pt-0 px-0 d-block text-center">
-                <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Add Categories
+                <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Invite Users To
+                    Join Event(Max 20)
                 </h5>
                 <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i
                         class="fa-solid fa-x"></i></button>
             </div>
             <div class="modal-body">
+
+                <div *ngIf="filteredUsers?.length == 0" class="text-center mt-4">
+                    <p class="ct_fs_15 text-white">No users found</p>
+                </div>
 
                 <div class="ct_add_member_scroll" *ngFor="let follower of filteredUsers;">
                     <div *ngIf="follower.follower.role == 'USER'" class="d-flex align-items-center gap-2 mt-4">
@@ -208,7 +213,7 @@
                             <img src="../assets/img/star.png" alt="">
                         </div> -->
                         <img [src]="follower.follower.avatar_url ? follower.follower.avatar_url : '/assets/img/np_pro.png'"
-                        alt="" class="ct_img_62 ct_border_radius_100">
+                            alt="" class="ct_img_62 ct_border_radius_100">
 
                         <div>
                             <h4 class="ct_ff_roboto ct_fw_600 text-white ct_fs_15 mb-0">
@@ -226,12 +231,13 @@
                         </div>
                     </div>
                 </div>
+                <!-- Optional: Show an error message when more than 2 are selected -->
+                <!-- <div *ngIf="selectedUsersIds.length === 2 && showLimitError" class="error-message">
+                    Only 2 members can be selected.
+                </div> -->
                 <!-- ct_orange_btn ct_grey_btn ct_border_radius_10 -->
                 <button type="button" class=" ct_orange_btn ct_grey_btn ct_custom_btn mt-5 px-4 w-auto mx-auto d-block"
-                    data-bs-dismiss="modal">Save
-                    Categories</button>
-
-
+                    data-bs-dismiss="modal">Invite</button>
             </div>
 
         </div>

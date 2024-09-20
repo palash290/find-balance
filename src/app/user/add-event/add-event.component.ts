@@ -41,27 +41,64 @@ export class AddEventComponent {
 
   }
 
-  onCategoryChange(event: any, category: any): void {
-    debugger
-    if (event.target.checked) {
-      this.selectedUsersIds.push(category.follower.id);
-      this.selectedCategoryNames.push(category.follower.full_name);
-    } else {
-      const indexId = this.selectedUsersIds.indexOf(category.follower.id);
-      if (indexId > -1) {
-        this.selectedUsersIds.splice(indexId, 1);
-      }
+  showLimitError = false;
 
-      const indexName = this.selectedCategoryNames.indexOf(category.follower.full_name);
-      if (indexName > -1) {
-        this.selectedCategoryNames.splice(indexName, 1);
-      }
+onCategoryChange(event: any, category: any): void {
+  if (event.target.checked) {
+    // Check if more than 2 members are selected
+    if (this.selectedUsersIds.length >= 20) {
+      this.showLimitError = true; // Display an error message
+      event.target.checked = false; // Uncheck the checkbox
+      return;
+    } else {
+      this.showLimitError = false; // Hide the error message
     }
 
-    this.selectedCategoryIdsString = this.selectedUsersIds.join(', ');
-    // Update the form control value with the concatenated category names
-    this.newForm.get('other_categ')?.setValue(this.selectedCategoryNames.join(', '));
+    // Add selected user ID and name
+    this.selectedUsersIds.push(category.follower.id);
+    this.selectedCategoryNames.push(category.follower.full_name);
+  } else {
+    // Remove user ID and name
+    const indexId = this.selectedUsersIds.indexOf(category.follower.id);
+    if (indexId > -1) {
+      this.selectedUsersIds.splice(indexId, 1);
+    }
+
+    const indexName = this.selectedCategoryNames.indexOf(category.follower.full_name);
+    if (indexName > -1) {
+      this.selectedCategoryNames.splice(indexName, 1);
+    }
+
+    this.showLimitError = false; // Reset error message on deselection
   }
+
+  this.selectedCategoryIdsString = this.selectedUsersIds.join(', ');
+  // Update the form control value with the concatenated category names
+  this.newForm.get('other_categ')?.setValue(this.selectedCategoryNames.join(', '));
+}
+
+
+  // onCategoryChange(event: any, category: any): void {
+  //   debugger
+  //   if (event.target.checked) {
+  //     this.selectedUsersIds.push(category.follower.id);
+  //     this.selectedCategoryNames.push(category.follower.full_name);
+  //   } else {
+  //     const indexId = this.selectedUsersIds.indexOf(category.follower.id);
+  //     if (indexId > -1) {
+  //       this.selectedUsersIds.splice(indexId, 1);
+  //     }
+
+  //     const indexName = this.selectedCategoryNames.indexOf(category.follower.full_name);
+  //     if (indexName > -1) {
+  //       this.selectedCategoryNames.splice(indexName, 1);
+  //     }
+  //   }
+
+  //   this.selectedCategoryIdsString = this.selectedUsersIds.join(', ');
+  //   // Update the form control value with the concatenated category names
+  //   this.newForm.get('other_categ')?.setValue(this.selectedCategoryNames.join(', '));
+  // }
 
   // initForm() {
   //   this.newForm = new FormGroup({
