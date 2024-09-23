@@ -38,6 +38,22 @@ export class EventsComponent {
     this.service.triggerRefresh();
   }
 
+  stripeLink: any;
+
+  getAdHocPost(postId: any) {
+    const formURlData = new URLSearchParams();
+    formURlData.set('eventId', postId);
+    this.service.postAPI(`user/event/paymentThroughStripeForEvent`, formURlData.toString()).subscribe(response => {
+      this.stripeLink = response.url;
+      window.location.href = this.stripeLink;
+      console.log(this.stripeLink);
+    });
+  }
+
+  redirect() {
+    window.location.href = this.stripeLink;
+  }
+
   getPaidGuest(){
     this.service.getApi(`coach/event/paidUsers/${this.eventId}`).subscribe(response => {
       if (response.success) {

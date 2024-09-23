@@ -41,7 +41,7 @@
     </div>
     } @else {
     @if(!eventData?.isShown){
-    <div style="cursor: pointer;">
+    <div style="cursor: pointer;" (click)="getAdHocPost(eventData.id)">
       <a class="ct_orange_btn  ct_border_radius_10">Pay</a>
     </div>
     } @else {
@@ -83,13 +83,25 @@
   </div>
 </div>
 
-@if(eventData?.webinar_url){
-<div class="mt-4">
-  <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600">Webinar Url</h4>
-  <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22"
-  [ngClass]="{'blurred': !eventData?.isShown}" [ngStyle]="{ 'user-select': !eventData?.isShown ? 'none' : 'auto' }">{{eventData?.webinar_url}}</p>
-</div>
+@if(isCoach){
+  @if(eventData?.webinar_url){
+    <div class="mt-4">
+      <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600">Webinar Url</h4>
+      <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">
+        {{eventData?.webinar_url}}</p>
+    </div>
+    }
+} @else {
+  @if(eventData?.webinar_url){
+    <div class="mt-4">
+      <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600">Webinar Url</h4>
+      <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22"
+        [ngClass]="{'blurred': !eventData?.isShown}" [ngStyle]="{ 'user-select': !eventData?.isShown ? 'none' : 'auto' }">
+        {{eventData?.webinar_url}}</p>
+    </div>
+    }
 }
+
 
 @if(isCoach){
 @if(eventData?.address){
@@ -175,11 +187,11 @@
           </div>
           <div *ngFor="let follower of followersList;">
             <div class="d-flex align-items-center gap-2 mt-4">
-              <img [src]="follower.follower.avatar_url ? follower.follower.avatar_url : '/assets/img/np_pro.png'" alt=""
-                class="ct_img_62 ct_border_radius_100">
+              <img [src]="follower.paidByUser.avatar_url ? follower.paidByUser.avatar_url : '/assets/img/np_pro.png'"
+                alt="" class="ct_img_62 ct_border_radius_100">
               <div>
                 <h4 class="ct_ff_roboto ct_fw_600 text-white ct_fs_15 mb-0">
-                  {{follower.follower.full_name}}</h4>
+                  {{follower.paidByUser.full_name}}</h4>
                 <div class="d-flex align-items-center  gap-2 mt-1">
                   <!-- <img src="../assets/img/star.png" alt="star"> -->
                   <!-- <span class="ct_orange_text">Accountability</span> -->
