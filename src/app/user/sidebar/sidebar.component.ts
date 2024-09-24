@@ -107,11 +107,16 @@ export class SidebarComponent {
 
 
   checkPlanCommunity() {
-    if (this.userPlan == 'Premium') {
+    if(this.isCoach){
+      if (this.userPlan == 'Premium') {
+        this.router.navigate(['/user/main/community']);
+      } else {
+        this.toastr.warning('Please buy premium plan first.')
+      }
+    }else{
       this.router.navigate(['/user/main/community']);
-    } else {
-      this.toastr.warning('Please buy premium plan first.')
     }
+
   }
 
   checkPlanTeam() {

@@ -36,12 +36,14 @@
     </div>
   </li>
 
+  @if (userPlan == 'Premium') {
   <li>
-    <div (click)="cancelSubscription()" class="d-flex align-items-center gap-3 justify-content-between" style="cursor: pointer;">
+    <div (click)="cancelSubscription()" class="d-flex align-items-center gap-3 justify-content-between"
+      style="cursor: pointer;">
       <p class="mb-0 text-white ct_fs_18 ct_fw_500 ct_ff_roboto">Cancel Subscription </p>
     </div>
   </li>
-
+  }
 
   <li>
     <a style="cursor: pointer;" (click)="logout()" class="mb-0 text-white ct_fs_18 ct_fw_500  ct_ff_roboto">Logout</a>

@@ -21,6 +21,7 @@ import { SearchCoachesComponent } from './search-coaches/search-coaches.componen
 import { TeamsComponent } from './teams/teams.component';
 import { FollowUsersComponent } from './follow-users/follow-users.component';
 import { EventListComponent } from './event-list/event-list.component';
+import { PaymentSuccessComponent } from './payment-success/payment-success.component';
 
 const routes: Routes = [
   {
@@ -107,6 +108,10 @@ const routes: Routes = [
         component: EventListComponent,
       },
     ],
+  },
+  {
+    path: "payment-success",
+    component: PaymentSuccessComponent,
   },
 ];
 

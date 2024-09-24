@@ -43,7 +43,9 @@ export class AddPostComponent {
   userPlan: any;
   plan_expired_at: any;
 
-  constructor(private service: SharedService, private toastr: ToastrService) { }
+  hideField: boolean = false;
+
+  constructor(private router: Router, private service: SharedService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.userPlan = localStorage.getItem('findPlan');
@@ -54,6 +56,11 @@ export class AddPostComponent {
       this.avatar_url_fb = localStorage.getItem('avatar_url_fb');
     });
     this.getPackage();
+
+    const currentRoute = this.router.url
+    if (currentRoute == '/user/main/community' || currentRoute == '/user/main/teams') {
+      this.hideField = true;
+    }
   }
 
   getPackage() {
@@ -185,7 +192,6 @@ export class AddPostComponent {
 
   btnLoader: boolean = false;
   uploadFiles() {
-debugger
     if (this.postType == 1 && (this.adHocPrice === null || this.adHocPrice === undefined)) {
       this.priceError = 'Price is required.';
       return

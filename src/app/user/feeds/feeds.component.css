@@ -169,3 +169,10 @@
 .ct_blue_btn123 {
   background-color: #2B8600;
 }
+
+.ct_img_h_200 {
+  height: 300px;
+  width: 100%;
+  object-fit: fill;
+  border-radius: 20px;
+}

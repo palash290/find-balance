@@ -105,5 +105,6 @@ export class ChangePasswordComponent {
     this.isPasswordVisible3 = !this.isPasswordVisible3;
     this.imageSrc3 = this.isPasswordVisible3 ? 'assets/img/open_eye.svg' : 'assets/img/close_eye.svg';
   }
+  
 
 }

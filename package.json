@@ -25,6 +25,7 @@
     "country-codes-list": "^1.6.11",
     "firebase": "^10.12.4",
     "flag-icon-css": "^4.1.7",
+    "intl-tel-input": "^24.5.0",
     "ngx-image-cropper": "^8.0.0",
     "ngx-socket-io": "^4.6.0",
     "ngx-toastr": "^19.0.0",

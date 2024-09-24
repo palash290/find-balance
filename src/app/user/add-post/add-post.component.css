@@ -40,3 +40,8 @@
     object-fit: fill;
     border-radius: 20px;
   }
+
+  .spinner-border {
+    height: 22px;
+    width: 22px;
+}

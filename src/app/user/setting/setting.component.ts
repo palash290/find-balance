@@ -17,6 +17,7 @@ export class SettingComponent implements OnInit {
   role: any;
   isCoach: boolean = true;
   userId: any;
+  userPlan: any;
 
   constructor(private srevice: SharedService, private toastr: ToastrService, private route: Router, private location: Location) { }
   ngOnInit(): void {
@@ -29,6 +30,7 @@ export class SettingComponent implements OnInit {
     const data = JSON.parse(jaonData)
     this.userDetails = data;
     this.getSettings();
+    this.userPlan = localStorage.getItem('findPlan');
   }
 
   backClicked() {

@@ -54,7 +54,9 @@
                                 class="ct_img_44 ct_bor ct_white_border_1">
                             <div>
                                 <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">{{feed.coach.full_name}}</h5>
-
+                                <p *ngIf="feed.isPaid == 1" class="ct_fs_12 text-white ct_fw_400 mb-0">Ad Hoc</p>
+                                <p *ngIf="feed.isPaid == 0" class="ct_fs_12 text-white ct_fw_400 mb-0">Free</p>
+                                <p *ngIf="feed.isPaid == 2" class="ct_fs_12 text-white ct_fw_400 mb-0">Paid</p>
                                 <div
                                     class="d-flex align-items-center gap-2 mt-2 ct_flex_wrap_575 ct_align_items_start_575">
                                     <p class="mb-0  ct_fs_12  text-white ct_text_op_5">{{feed.createdAt |
@@ -68,7 +70,7 @@
                             </div>
                         </div>
                         @if(feed.coachId == userId){
-                        <div class="dropdown ct_chat_dropdown ">
+                        <div class="dropdown ct_chat_dropdown" style="cursor: pointer;">
                             <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
                                 id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -97,6 +99,11 @@
                         {{(formattedTime}}%
                      </div> -->
 
+                    <!-- <div>
+                        <img [src]="feed.thumbnailUrl ? feed.thumbnailUrl : '/assets/img/np_pro.png'" alt=""
+                        class="ct_img_h_200 ct_white_border_1">
+                    </div> -->
+
 
                     <!-- <div class="ct_show_uploaded_audio_box mt-3 ct_light_grey_bg" style="position: relative;">
                         <div class="d-flex align-items-center gap-3">
@@ -115,9 +122,9 @@
                             </audio> -->
 
                     <!-- <input type="range" *ngIf="currentAudio === audioPlayer" class="custom-seekbar"
-                                (input)="onAudioSeek($event, audioPlayer)" />
+                                (input)="onAudioSeek($event, audioPlayer)" /> -->
 
-                            <div *ngIf="currentAudio === audioPlayer" class="audio-timing text-white">
+                    <!-- <div *ngIf="currentAudio === audioPlayer" class="audio-timing text-white">
                                 {{ formatTime(currentAudioTime) }} / {{ formatTime(audioDuration) }}
                             </div> -->
 
@@ -133,8 +140,16 @@
 
                     <div style="cursor: pointer;" *ngIf="feed.isPaid == 1 && !isCoach" (click)="getAdHocPost(feed.id)">
                         <a class="ct_orange_btn mt-2 ct_border_radius_10 ct_blue_btn123"><i
-                                class="fa-solid fa-lock me-2"></i>Pay To See</a>
+                                class="fa-solid fa-lock me-2"></i>
+                            <div class="d-flex align-items-center">
+                                <div class="spinner-border me-2" role="status" *ngIf="btnLoaderPay">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <span *ngIf="!btnLoaderPay">Pay To See</span>
+                            </div>
+                        </a>
                     </div>
+
 
                     <div class="ct_show_uploaded_audio_box mt-3 ct_light_grey_bg"
                         [ngClass]="{'blurred': !feed?.isShown}"
@@ -381,9 +396,9 @@
                             </div>
                         </div>
                         @if(feed.coachId == userId){
-                        <div class="dropdown ct_chat_dropdown">
-                            <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
-                                id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                        <div class="dropdown ct_chat_dropdown" style="cursor: pointer;">
+                            <i class="fa-solid fa-ellipsis-vertical text-white" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false"></i>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li><a class="dropdown-item" (click)="deletePost(feed.id)">Delete</a></li>
                             </ul>
@@ -630,6 +645,9 @@
                                 class="ct_img_44 ct_bor ct_white_border_1">
                             <div>
                                 <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">{{feed.coach.full_name}}</h5>
+                                <p *ngIf="feed.isPaid == 1" class="ct_fs_12 text-white ct_fw_400 mb-0">Ad Hoc</p>
+                                <p *ngIf="feed.isPaid == 0" class="ct_fs_12 text-white ct_fw_400 mb-0">Free</p>
+                                <p *ngIf="feed.isPaid == 2" class="ct_fs_12 text-white ct_fw_400 mb-0">Paid</p>
                                 <div
                                     class="d-flex align-items-center gap-2 ct_flex_wrap_575 mt-2 ct_align_items_start_575">
                                     <p class="mb-0  ct_fs_12 text-white ct_text_op_5 ">{{feed.createdAt |
@@ -642,9 +660,9 @@
                             </div>
                         </div>
                         @if(feed.coachId == userId){
-                        <div class="dropdown ct_chat_dropdown">
-                            <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
-                                id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                        <div class="dropdown ct_chat_dropdown" style="cursor: pointer;">
+                            <i class="fa-solid fa-ellipsis-vertical text-white" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false"></i>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li><a class="dropdown-item" (click)="deletePost(feed.id)">Delete</a></li>
                             </ul>
@@ -677,10 +695,13 @@
 
                     </div> -->
 
+                    @if(!feed.isShown){
                     <div style="cursor: pointer;" *ngIf="feed.isPaid == 1 && !isCoach" (click)="getAdHocPost(feed.id)">
                         <a class="ct_orange_btn mt-2 ct_border_radius_10 ct_blue_btn123"><i
                                 class="fa-solid fa-lock me-2"></i>Pay To See</a>
                     </div>
+                    }
+
 
                     <div class="ct_show_uploaded_video mt-2" style="position: relative;"
                         [ngClass]="{'blurred': !feed?.isShown}"
@@ -688,13 +709,13 @@
 
 
                         <div class="play-button" *ngIf="!isVideoPlaying(videoPlayer)"
-                            (click)="toggleVideo(videoPlayer)">
+                            (click)="toggleVideo(videoPlayer, feed.isShown)">
                             <img src="../assets/img/play.png" alt="Play Button" />
                         </div>
 
                         <video [src]="feed.mediaUrl" #videoPlayer (timeupdate)="onTimeUpdate(videoPlayer)"
                             (loadedmetadata)="setVideoDuration(videoPlayer)" width="100%" height="390"
-                            (click)="toggleVideo(videoPlayer)">
+                            (click)="toggleVideo(videoPlayer, feed.isShown)">
                         </video>
 
                         <input type="range" *ngIf="currentVideoId === videoPlayer" class="custom-seekbar"

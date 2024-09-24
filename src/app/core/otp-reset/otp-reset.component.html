@@ -38,11 +38,14 @@
                                 <input type="text" class="ct_login_input form-control" placeholder="0"
                                     formControlName="otp1" maxlength="1" (input)="onInput($event, 'otp2')">
                                 <input type="text" class="ct_login_input form-control" placeholder="0"
-                                    formControlName="otp2" maxlength="1" (input)="onInput($event, 'otp3', 'otp1')">
+                                    formControlName="otp2" maxlength="1" (keydown.backspace)="back($event, 'otp1')"
+                                    (input)="onInput($event, 'otp3', 'otp1')">
                                 <input type="text" class="ct_login_input form-control" placeholder="0"
-                                    formControlName="otp3" maxlength="1" (input)="onInput($event, 'otp4', 'otp2')">
+                                    formControlName="otp3" maxlength="1" (keydown.backspace)="back($event, 'otp2')"
+                                    (input)="onInput($event, 'otp4', 'otp2')">
                                 <input type="text" class="ct_login_input form-control" placeholder="0"
-                                    formControlName="otp4" maxlength="1" (input)="onInput($event, '', 'otp3')">
+                                    formControlName="otp4" maxlength="1" (keydown.backspace)="back($event, 'otp3')"
+                                    (input)="onInput($event, '', 'otp3')">
                             </div>
                             <p class="mb-0 mt-4 pt-2 text-white ct_ff_roboto text-center">Enter the OTP sent to -
                                 {{fullMobileNumber}}</p>

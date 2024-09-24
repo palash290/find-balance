@@ -5,6 +5,7 @@ import { NotificationService } from '../../services/notification.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as countryCodes from 'country-codes-list';
 import { ToastrService } from 'ngx-toastr';
+import intlTelInput from 'intl-tel-input';
 
 
 @Component({
@@ -41,6 +42,16 @@ export class LoginComponent {
     //this.notifyService.requestPermission();
   }
 
+  iti: any;
+
+  ngAfterViewInit() {
+    const input: any = document.querySelector("#phone_no");
+    this.iti = intlTelInput(input, {
+      initialCountry: "gb", // Set UK as the initial country
+      separateDialCode: true,
+    });
+  }
+
   initForm() {
     const defaultCountry = this.countries[0];
     this.loginForm = new FormGroup({
@@ -63,7 +74,11 @@ export class LoginComponent {
       const countryCode = this.loginForm.get('countryCode')?.value;
       const mobileNumber = this.loginForm.get('phone_no')?.value;
       //const fullMobileNumber = `+${countryCode}${mobileNumber}`;
-      const fullMobileNumber = `${countryCode}${mobileNumber}`;
+
+      const fullNumber = this.iti.selectedCountryData.dialCode;
+
+      const fullMobileNumber = `+${fullNumber}${mobileNumber}`;
+
 
       formURlData.set('phone_no', fullMobileNumber);
       formURlData.set('password', this.loginForm.value.password);

@@ -76,11 +76,24 @@ export class OtpResetComponent {
     this.isCoach = !this.isCoach
   }
 
+  back(event: any, prevControlName?: string) {
+    const input = event.target as HTMLInputElement;
+
+    // Check if the current input is empty and backspace was pressed
+    if (input.value.length === 0 && prevControlName) {
+      const prevInput = document.querySelector(`[formControlName="${prevControlName}"]`) as HTMLInputElement;
+      if (prevInput) {
+        prevInput.focus();
+      }
+    }
+  }
+
   onInput(event: Event, nextControlName: string, prevControlName?: string) {
     const input = event.target as HTMLInputElement;
     const inputValue = input.value;
     const maxLength = input.maxLength;
 
+    // Move to the next input field if the current field is filled
     if (inputValue.length >= maxLength) {
       if (nextControlName) {
         const nextInput = document.querySelector(`[formControlName="${nextControlName}"]`) as HTMLInputElement;
@@ -89,15 +102,6 @@ export class OtpResetComponent {
         }
       }
     }
-
-
-    if (inputValue.length === 0 && prevControlName) {
-      const prevInput = document.querySelector(`[formControlName="${prevControlName}"]`) as HTMLInputElement;
-      if (prevInput) {
-        prevInput.focus();
-      }
-    }
-
   }
 
 

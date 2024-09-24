@@ -56,15 +56,23 @@ export class FeedsComponent {
   }
 
   stripeLink: any;
+  btnLoaderPay: boolean = false;
 
   getAdHocPost(postId: any) {
+    localStorage.setItem('adHocPostId', postId)
     const formURlData = new URLSearchParams();
     formURlData.set('postId', postId);
+    this.btnLoaderPay = true;
     this.visibilityService.postAPI(`user/paymentThroughStripeForPost`, formURlData.toString()).subscribe(response => {
       this.stripeLink = response.url;
       window.location.href = this.stripeLink;
       console.log(this.stripeLink);
+      this.btnLoaderPay = false;
     });
+  }
+
+  ngOnDestroy() {
+    localStorage.removeItem('adHocPostId');
   }
 
   redirect() {
@@ -424,23 +432,26 @@ export class FeedsComponent {
   currentTime: number = 0;
   videoDuration: number = 0;
 
-  toggleVideo(videoElement: HTMLVideoElement) {
+  toggleVideo(videoElement: HTMLVideoElement, isShown: boolean) {
 
-    if (this.currentAudio) {
-      this.currentAudio.pause();
+    if (isShown) {
+      if (this.currentAudio) {
+        this.currentAudio.pause();
+      }
+  
+      if (this.currentVideoId && this.currentVideoId !== videoElement) {
+        this.currentVideoId.pause(); // Pause the currently playing video
+      }
+  
+      if (videoElement.paused) {
+        videoElement.play();
+        this.currentVideoId = videoElement;
+      } else {
+        videoElement.pause();
+        this.currentVideoId = null;
+      }
     }
-
-    if (this.currentVideoId && this.currentVideoId !== videoElement) {
-      this.currentVideoId.pause(); // Pause the currently playing video
-    }
-
-    if (videoElement.paused) {
-      videoElement.play();
-      this.currentVideoId = videoElement;
-    } else {
-      videoElement.pause();
-      this.currentVideoId = null;
-    }
+ 
   }
 
   isVideoPlaying(videoElement: HTMLVideoElement): boolean {

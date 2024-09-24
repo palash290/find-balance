@@ -33,28 +33,36 @@ export class EventsComponent {
       this.getEventData(this.eventId);
     });
 
-    
+
 
     this.service.triggerRefresh();
   }
 
   stripeLink: any;
+  btnLoaderPay: boolean = false;
 
   getAdHocPost(postId: any) {
+    localStorage.setItem('adHocEventId', postId)
     const formURlData = new URLSearchParams();
     formURlData.set('eventId', postId);
+    this.btnLoaderPay = true;
     this.service.postAPI(`user/event/paymentThroughStripeForEvent`, formURlData.toString()).subscribe(response => {
       this.stripeLink = response.url;
       window.location.href = this.stripeLink;
+      this.btnLoaderPay = false;
       console.log(this.stripeLink);
     });
+  }
+
+  ngOnDestroy() {
+    localStorage.removeItem('adHocEventId');
   }
 
   redirect() {
     window.location.href = this.stripeLink;
   }
 
-  getPaidGuest(){
+  getPaidGuest() {
     this.service.getApi(`coach/event/paidUsers/${this.eventId}`).subscribe(response => {
       if (response.success) {
         this.followersList = response.data;
@@ -82,12 +90,12 @@ export class EventsComponent {
   getEventListData() {
     this.service.getApi(this.isCoach ? 'coach/event' : 'user/event/allEvents').subscribe({
       next: resp => {
-        
+
         this.eventListData = this.isCoach ? resp.data.events : resp.data;
         if (this.eventData) {
           this.eventListData = this.eventListData.filter((event: { id: any; }) => event.id !== this.eventData.id);
         }
-        
+
         //this.data = resp.data?.map((item: any) => ({ ...item, isExpanded: false })).reverse();
       },
       error: error => {

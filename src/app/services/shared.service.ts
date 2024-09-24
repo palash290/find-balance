@@ -102,6 +102,8 @@ export class SharedService {
     localStorage.removeItem('avatar_url_fb');
     localStorage.removeItem('findPlan');
     localStorage.removeItem('plan_expired_at');
+    localStorage.removeItem('adHocPostId');
+    localStorage.removeItem('adHocEventId');
   }
 
   deleteAcc(url: any): Observable<any> {

@@ -1,7 +1,10 @@
-@if(eventData?.isPaid == 1){
+<!-- @if(eventData?.isPaid == 1){
 <a (click)="backClicked()" class="ct_orange_text ct_back_to_list ct_chat_back mb-4 d-block ct_fw_600"
   style="cursor: pointer;"><i class="fa-solid fa-arrow-left me-2"></i> Back</a>
-}
+} -->
+
+<a (click)="backClicked()" class="ct_orange_text ct_back_to_list ct_chat_back mb-4 d-block ct_fw_600"
+  style="cursor: pointer;"><i class="fa-solid fa-arrow-left me-2"></i> Back</a>
 
 
 <div class="ct_cover_img">
@@ -40,11 +43,27 @@
         style="cursor: pointer;">Delete Event</a>
     </div>
     } @else {
+    @if (eventData.isPaid == 1) {
     @if(!eventData?.isShown){
     <div style="cursor: pointer;" (click)="getAdHocPost(eventData.id)">
-      <a class="ct_orange_btn  ct_border_radius_10">Pay</a>
+      <a class="ct_orange_btn  ct_border_radius_10">
+        <div class="d-flex align-items-center">
+          <div class="spinner-border me-2" role="status" *ngIf="btnLoaderPay">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <span *ngIf="!btnLoaderPay">Pay</span>
+        </div>
+      </a>
     </div>
     } @else {
+    <div>
+      <a class="ct_orange_btn ct_border_radius_10">
+        Paid
+      </a>
+    </div>
+    }
+    }
+    @else {
     <div (click)="userIntrested(eventData.id)" *ngIf="!eventData?.alreadyRegistered" style="cursor: pointer;">
       <a class="ct_orange_btn  ct_border_radius_10">I'm Interested</a>
     </div>
@@ -84,22 +103,22 @@
 </div>
 
 @if(isCoach){
-  @if(eventData?.webinar_url){
-    <div class="mt-4">
-      <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600">Webinar Url</h4>
-      <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">
-        {{eventData?.webinar_url}}</p>
-    </div>
-    }
+@if(eventData?.webinar_url){
+<div class="mt-4">
+  <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600">Webinar Url</h4>
+  <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22">
+    {{eventData?.webinar_url}}</p>
+</div>
+}
 } @else {
-  @if(eventData?.webinar_url){
-    <div class="mt-4">
-      <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600">Webinar Url</h4>
-      <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22"
-        [ngClass]="{'blurred': !eventData?.isShown}" [ngStyle]="{ 'user-select': !eventData?.isShown ? 'none' : 'auto' }">
-        {{eventData?.webinar_url}}</p>
-    </div>
-    }
+@if(eventData?.webinar_url){
+<div class="mt-4">
+  <h4 class="ct_ff_roboto text-white ct_fs_18 ct_fw_600">Webinar Url</h4>
+  <p class="mb-0 text-white ct_fs_14 ct_ff_roboto ct_fw_400 ct_line_height_22"
+    [ngClass]="{'blurred': !eventData?.isShown}" [ngStyle]="{ 'user-select': !eventData?.isShown ? 'none' : 'auto' }">
+    {{eventData?.webinar_url}}</p>
+</div>
+}
 }
 
 

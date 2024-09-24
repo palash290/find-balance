@@ -9,22 +9,38 @@ import { SharedService } from '../../services/shared.service';
 })
 export class PaymentSuccessComponent {
 
-  package1: any = localStorage.getItem('package')
+  adHocPostId: any;
 
+  adHocEventId: any;
 
   constructor(private route: Router, private service: SharedService) { }
 
   ngOnInit() {
-    console.log(`Payment Done successful for ${localStorage.getItem('package')} package!`)
-    this.setSub();
+    this.adHocPostId = localStorage.getItem('adHocPostId');
+    this.adHocEventId = localStorage.getItem('adHocEventId');
+
+    //console.log(`Payment Done successful for ${localStorage.getItem('package')} package!`)
+    if(this.adHocPostId){
+      this.setSub();
+    }
+    if(this.adHocEventId){
+      this.payForEvent();
+    }
   }
 
   setSub() {
-    const formURlData = new URLSearchParams();
-    formURlData.set('subscription_plan', this.package1)
-    //formURlData.set('subscription_plan', 'Gold')
-    console.log('subscription_plan', formURlData)
-    this.service.postAPI('/addSubscription', formURlData.toString()).subscribe({
+    this.service.postAPI(`user/adhocPayment/${this.adHocPostId}`, null).subscribe({
+      next: (resp) => {
+        console.log(resp)
+      },
+      error: error => {
+        console.log(error.message)
+      }
+    })
+  }
+
+  payForEvent() {
+    this.service.postAPI(`user/event/adhocPayment/${this.adHocEventId}`, null).subscribe({
       next: (resp) => {
         console.log(resp)
       },
@@ -35,12 +51,20 @@ export class PaymentSuccessComponent {
   }
 
   ngOnDestroy() {
-    localStorage.removeItem('package')
+    localStorage.removeItem('adHocPostId');
+    localStorage.removeItem('adHocEventId');
   }
 
   logout() {
-    this.service.logout();
+    //this.service.logout();
+   
+    if(this.adHocPostId){
+      this.route.navigateByUrl('/user/main/feeds');
+    }
+    if(this.adHocEventId){
+      this.route.navigateByUrl(`user/main/events/${this.adHocEventId}`);
+    }
   }
-  
+
 
 }

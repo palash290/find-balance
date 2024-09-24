@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { SharedService } from '../../services/shared.service';
 import * as countryCodes from 'country-codes-list';
 import { ToastrService } from 'ngx-toastr';
+import intlTelInput from 'intl-tel-input';
 
 @Component({
   selector: 'app-signup',
@@ -43,6 +44,20 @@ export class SignupComponent {
     });
   }
 
+  iti: any;
+
+  ngAfterViewInit() {
+    const input: any = document.querySelector("#phone_no1");
+    this.iti = intlTelInput(input, {
+      initialCountry: "gb", // Set UK as the initial country
+      separateDialCode: true,
+    });
+
+    // Log the initialization process
+    console.log('intlTelInput initialized', this.iti);
+  }
+
+
   initForm() {
     const defaultCountry = this.countries[0];
     this.loginForm = new FormGroup({
@@ -65,7 +80,10 @@ export class SignupComponent {
       const formURlData = new URLSearchParams();
       const countryCode = this.loginForm.get('countryCode')?.value;
       const mobileNumber = this.loginForm.get('phone_no')?.value;
-      const fullMobileNumber = `${countryCode}${mobileNumber}`;
+
+      const fullNumber = this.iti.selectedCountryData.dialCode;
+
+      const fullMobileNumber = `+${fullNumber}${mobileNumber}`;
 
       formURlData.set('phone_no', fullMobileNumber);
       formURlData.set('email', this.loginForm.value.email);
