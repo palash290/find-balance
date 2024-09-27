@@ -1,6 +1,6 @@
 <!-- Add This class when clicked on notification  ct_box_2_full_active -->
 <!-- <div [ngClass]="{'ct_box_2_column ct_box_2_full_active': isCoach, 'ct_box_2_column': !isCoach, }"> -->
-    <div class='ct_box_2_column ct_box_2_full_active'>
+<div class='ct_box_2_column ct_box_2_full_active'>
     <div>
 
         @if (isCoach) {
@@ -10,25 +10,26 @@
         <div class=" mb-4 d-flex align-items-center gap-4 mt-3 ct_flex_wrap_575" [class.flex-wrap]="!isCoach">
             <p class="mb-0 text-white" style="white-space: nowrap;">Filter post by :</p>
 
-           <div class="d-flex align-items-center gap-3 ct_flex_575">
-            <div class="ct_filter_search_input_140">
-                <span class="text-white ct_text_op_5 ">Category:</span>
-                <select class="" [(ngModel)]="categoryId" (change)="onCategoryChange($event)" style="cursor: pointer;">
-                    <option value="">All</option>
-                    <option *ngFor="let category of categories" [value]="category.id">{{ category.name
-                        }}</option>
-                </select>
+            <div class="d-flex align-items-center gap-3 ct_flex_575">
+                <div class="ct_filter_search_input_140">
+                    <span class="text-white ct_text_op_5 ">Category:</span>
+                    <select class="" [(ngModel)]="categoryId" (change)="onCategoryChange($event)"
+                        style="cursor: pointer;">
+                        <option value="">All</option>
+                        <option *ngFor="let category of categories" [value]="category.id">{{ category.name
+                            }}</option>
+                    </select>
+                </div>
+                <div class="ct_filter_search_input_140">
+                    <span class="text-white ct_text_op_5 ">Type:</span>
+                    <select [(ngModel)]="selectedOption" (change)="getProfileData()" style="cursor: pointer; flex: 1;">
+                        <option value="">All</option>
+                        <option value="VIDEO">Video</option>
+                        <option value="PODCAST">Audio</option>
+                        <option value="ARTICLE">Article</option>
+                    </select>
+                </div>
             </div>
-            <div class="ct_filter_search_input_140">
-                <span class="text-white ct_text_op_5 ">Type:</span>
-                <select [(ngModel)]="selectedOption" (change)="getProfileData()" style="cursor: pointer; flex: 1;">
-                    <option value="">All</option>
-                    <option value="VIDEO">Video</option>
-                    <option value="PODCAST">Audio</option>
-                    <option value="ARTICLE">Article</option>
-                </select>
-            </div>
-           </div>
             <!-- <div class="w-100">
                 <hr class="ct_hr_line_op_5" [class.d-none]="!isCoach" style="opacity: 1;">
             </div> -->
@@ -42,7 +43,7 @@
         <div *ngIf="data?.length === 0" class="text-center mt-4">
             <p class="ct_fs_15 text-white">No posts found</p>
         </div>
-<!-- this ct_coach_feed_scroll class will be use when coach login -->
+        <!-- this ct_coach_feed_scroll class will be use when coach login -->
         <div class="ct_all_feed_boxex" [class.ct_coach_feed_scroll]="isCoach">
             <div *ngFor="let feed of data; let i = index">
 
@@ -52,9 +53,14 @@
                             <img [src]="feed.coach.avatar_url ? feed.coach.avatar_url : '/assets/img/np_pro.png'" alt=""
                                 class="ct_img_44 ct_bor ct_white_border_1">
                             <div>
+                               <div class="d-flex align-items-center gap-2 flex-wrap">
                                 <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">{{feed.coach.full_name}}</h5>
-
-                                <div class="d-flex align-items-center gap-2 mt-2 ct_flex_wrap_575 ct_align_items_start_575">
+                                <p *ngIf="feed.isPaid == 1" class="ct_fs_12 ct_green_text ct_fw_700 mb-0 "><span class="me-1">&#x2022;</span>Ad Hoc</p>
+                                <!-- <p *ngIf="feed.isPaid == 0" class="ct_fs_12 text-white ct_fw_600 mb-0 ">Free</p> -->
+                                <p *ngIf="feed.isPaid == 2" class="ct_fs_12 text-white ct_fw_700 mb-0 ct_blue_text_clr"><span class="me-1">&#x2022;</span>Paid</p>
+                               </div>
+                                <div
+                                    class="d-flex align-items-center gap-2 mt-2 ct_flex_wrap_575 ct_align_items_start_575">
                                     <p class="mb-0  ct_fs_12  text-white ct_text_op_5">{{feed.createdAt |
                                         date:'d/M/yy, h:mm a'}}
                                     </p>
@@ -65,8 +71,8 @@
                                 </div>
                             </div>
                         </div>
-                        @if(feed.coachId == userId){
-                        <div class="dropdown ct_chat_dropdown ">
+                        @if(feed.coachId == userId && isCoach){
+                        <div class="dropdown ct_chat_dropdown" style="cursor: pointer;">
                             <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
                                 id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -78,7 +84,9 @@
                     </div>
 
 
-                    <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 mt-3">
+                    <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 mt-3"
+                        [ngClass]="{'blurred': !feed?.isShown}"
+                        [ngStyle]="{ 'user-select': !feed?.isShown ? 'none' : 'auto' }">
                         <span>
                             {{ feed.isExpanded ? feed.text : (feed.text?.length > shortTextLength ?
                             (feed.text.substring(0, shortTextLength) + '...') : feed.text) }}
@@ -92,6 +100,8 @@
                     <!-- <div class="text-white">
                         {{(formattedTime}}%
                      </div> -->
+
+                  
 
 
                     <!-- <div class="ct_show_uploaded_audio_box mt-3 ct_light_grey_bg" style="position: relative;">
@@ -110,14 +120,14 @@
                                 Your browser does not support the audio element.
                             </audio> -->
 
-                            <!-- <input type="range" *ngIf="currentAudio === audioPlayer" class="custom-seekbar"
-                                (input)="onAudioSeek($event, audioPlayer)" />
+                    <!-- <input type="range" *ngIf="currentAudio === audioPlayer" class="custom-seekbar"
+                                (input)="onAudioSeek($event, audioPlayer)" /> -->
 
-                            <div *ngIf="currentAudio === audioPlayer" class="audio-timing text-white">
+                    <!-- <div *ngIf="currentAudio === audioPlayer" class="audio-timing text-white">
                                 {{ formatTime(currentAudioTime) }} / {{ formatTime(audioDuration) }}
                             </div> -->
 
-                            <!-- <input type="range" class="custom-seekbar" (input)="onAudioSeek($event, audioPlayer)" />
+                    <!-- <input type="range" class="custom-seekbar" (input)="onAudioSeek($event, audioPlayer)" />
 
                             <div class="audio-timing text-white">
                               {{ formatTime(currentAudioTime) }} / {{ formatTime(audioDuration) }}
@@ -127,8 +137,29 @@
                     </div> -->
 
 
-                    <div class="ct_show_uploaded_audio_box mt-3 ct_light_grey_bg">
+                    <div style="cursor: pointer;" *ngIf="feed.isPaid == 1 && !isCoach" (click)="getAdHocPost(feed.id)">
+                        <a class="ct_orange_btn mt-2 ct_border_radius_10 ct_blue_btn123 ct_pay_to_see_center"><i
+                                class="fa-solid fa-lock me-2"></i>
+                            <div class="d-flex align-items-center">
+                                <div class="spinner-border me-2" role="status" *ngIf="btnLoaderPay">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <span *ngIf="!btnLoaderPay">Pay To See</span>
+                            </div>
+                        </a>
+                    </div>
+
+
+                    <div class="ct_show_uploaded_audio_box mt-3 ct_light_grey_bg"
+                        [ngClass]="{'blurred': !feed?.isShown}"
+                        [ngStyle]="{ 'user-select': !feed?.isShown ? 'none' : 'auto' }">
+                        <div class="mb-3 ct_video_tumbnail_img">
+                            <img [src]="feed.thumbnailUrl ? feed.thumbnailUrl : '/assets/img/np_pro.png'" alt=""
+                            class="ct_img_h_200 ct_white_border_1">
+                        </div>
                         <div class="d-flex align-items-center gap-3">
+                          
+
                             <audio *ngIf="feed.mediaUrl" controls class="custom-audio-player">
                                 <source [src]="feed.mediaUrl" type="audio/mpeg">
                                 Your browser does not support the audio element.
@@ -136,11 +167,12 @@
                         </div>
                     </div>
 
-                    <div class="ct_like_comment_div">
+                    <div class="ct_like_comment_div" [ngClass]="{'blurred': !feed?.isShown}"
+                        [ngStyle]="{ 'user-select': !feed?.isShown ? 'none' : 'auto' }">
                         <ul>
                             <li>
                                 <div class="ct_like_btn d-flex align-items-center gap-3"
-                                    [class.ct_active_like]="feed.alreadyLiked" (click)="likePost(feed.id)"
+                                    [class.ct_active_like]="feed.alreadyLiked" (click)="toggleLike(feed)"
                                     style="cursor: pointer;">
 
                                     <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
@@ -167,7 +199,7 @@
                                 </div>
                             </li>
                             <li *ngIf="!isCoach" class="ct_book_mark_icon ms-auto"
-                                [class.ct_book_mark_icon_active]="feed.alreadySaved" (click)="bookmarkPost(feed.id)"
+                                [class.ct_book_mark_icon_active]="feed.alreadySaved" (click)="bookmarkPost(feed)"
                                 style="cursor: pointer;">
                                 <svg width="14" height="18" viewBox="0 0 14 18" fill="none"
                                     xmlns="http://www.w3.org/2000/svg" class="ct_transparent_bokkmark">
@@ -183,9 +215,9 @@
                                 <input type="text" class="form-control ct_custom_input w-100 ct_pe_34"
                                     placeholder="Write comment..." [(ngModel)]="commentText"
                                     [ngModelOptions]="{standalone: true}" maxlength="250"
-                                    (keyup.enter)="addComment(feed.id)">
+                                    (keyup.enter)="addComment(feed)">
 
-                                <i (click)="addComment(feed.id)" *ngIf="!btnLoader"
+                                <i (click)="addComment(feed)" *ngIf="!btnLoader"
                                     class="fa fa-paper-plane ct_send_msg_plane text-white" aria-hidden="true">
                                 </i>
                                 <div class="d-flex align-items-center ct_send_msg_plane text-white" *ngIf="btnLoader">
@@ -353,8 +385,14 @@
                             <img [src]="feed.coach.avatar_url ? feed.coach.avatar_url : '/assets/img/np_pro.png'" alt=""
                                 class="ct_img_44 ct_bor ct_white_border_1">
                             <div>
-                                <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">{{feed.coach.full_name}}</h5>
-                                <div class="d-flex align-items-center gap-2 ct_flex_wrap_575 mt-2 ct_align_items_start_575">
+                                <div class="d-flex align-items-center gap-2 flex-wrap">
+                                    <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">{{feed.coach.full_name}}</h5>
+                                    <p *ngIf="feed.isPaid == 1" class="ct_fs_12 ct_green_text ct_fw_700 mb-0 "><span class="me-1">&#x2022;</span>Ad Hoc</p>
+                                    <!-- <p *ngIf="feed.isPaid == 0" class="ct_fs_12 text-white ct_fw_600 mb-0 ">Free</p> -->
+                                    <p *ngIf="feed.isPaid == 2" class="ct_fs_12 text-white ct_fw_700 mb-0 ct_blue_text_clr"><span class="me-1">&#x2022;</span>Paid</p>
+                                   </div>
+                                <div
+                                    class="d-flex align-items-center gap-2 ct_flex_wrap_575 mt-2 ct_align_items_start_575">
                                     <p class="mb-0  ct_fs_12 text-white ct_text_op_5 ">{{feed.createdAt |
                                         date:'d/M/yy, h:mm a'}}</p>
                                     <div class="d-flex align-items-center justify-content-center gap-2">
@@ -364,10 +402,10 @@
                                 </div>
                             </div>
                         </div>
-                        @if(feed.coachId == userId){
-                        <div class="dropdown ct_chat_dropdown">
-                            <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
-                                id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                        @if(feed.coachId == userId && isCoach){
+                        <div class="dropdown ct_chat_dropdown" style="cursor: pointer;">
+                            <i class="fa-solid fa-ellipsis-vertical text-white" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false"></i>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li><a class="dropdown-item" (click)="deletePost(feed.id)">Delete</a></li>
                             </ul>
@@ -377,7 +415,22 @@
                     </div>
 
 
-                    <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 mt-3">
+                    <div style="cursor: pointer;" *ngIf="feed.isPaid == 1 && !isCoach && !feed.isShown"
+                        (click)="getAdHocPost(feed.id)">
+                        <a class="ct_orange_btn mt-2 ct_border_radius_10 ct_blue_btn123 ct_pay_to_see_center"><i
+                                class="fa-solid fa-lock me-2"></i>
+                            <div class="d-flex align-items-center">
+                                <div class="spinner-border me-2" role="status" *ngIf="btnLoaderPay">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <span *ngIf="!btnLoaderPay">Pay To See</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 mt-3"
+                        [ngClass]="{'blurred': !feed?.isShown}"
+                        [ngStyle]="{ 'user-select': !feed?.isShown ? 'none' : 'auto' }">
                         <span>
                             {{ feed.isExpanded ? feed.text : (feed.text?.length > shortTextLength ?
                             (feed.text.substring(0, shortTextLength) + '...') : feed.text) }}
@@ -388,11 +441,12 @@
                         </a>
                     </p>
 
-                    <div class="ct_like_comment_div">
+                    <div class="ct_like_comment_div" [ngClass]="{'blurred': !feed?.isShown}"
+                        [ngStyle]="{ 'user-select': !feed?.isShown ? 'none' : 'auto' }">
                         <ul>
                             <li>
                                 <div class="ct_like_btn d-flex align-items-center gap-3"
-                                    [class.ct_active_like]="feed.alreadyLiked" (click)="likePost(feed.id)"
+                                    [class.ct_active_like]="feed.alreadyLiked" (click)="toggleLike(feed)"
                                     style="cursor: pointer;">
                                     <!-- show this class ct_active_like when user will like  -->
                                     <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
@@ -419,7 +473,7 @@
                                 </div>
                             </li>
                             <li *ngIf="!isCoach" class="ct_book_mark_icon ms-auto"
-                                [class.ct_book_mark_icon_active]="feed.alreadySaved" (click)="bookmarkPost(feed.id)"
+                                [class.ct_book_mark_icon_active]="feed.alreadySaved" (click)="bookmarkPost(feed)"
                                 style="cursor: pointer;">
                                 <!-- add this class ct_book_mark_icon_active when user will book marked  -->
                                 <svg width="14" height="18" viewBox="0 0 14 18" fill="none"
@@ -437,10 +491,10 @@
                                 <input type="text" class="form-control ct_custom_input w-100 ct_pe_34"
                                     placeholder="Write comment..." [(ngModel)]="commentText"
                                     [ngModelOptions]="{standalone: true}" maxlength="250"
-                                    (keyup.enter)="addComment(feed.id)">
+                                    (keyup.enter)="addComment(feed)">
                                 <!-- <i (click)="addComment(feed.id)" class="fa fa-paper-plane ct_send_msg_plane text-white"
                                     aria-hidden="true"></i> -->
-                                <i (click)="addComment(feed.id)" *ngIf="!btnLoader"
+                                <i (click)="addComment(feed)" *ngIf="!btnLoader"
                                     class="fa fa-paper-plane ct_send_msg_plane text-white" aria-hidden="true">
                                 </i>
                                 <div class="d-flex align-items-center ct_send_msg_plane text-white" *ngIf="btnLoader">
@@ -605,8 +659,14 @@
                             <img [src]="feed.coach.avatar_url ? feed.coach.avatar_url : '/assets/img/np_pro.png'" alt=""
                                 class="ct_img_44 ct_bor ct_white_border_1">
                             <div>
-                                <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">{{feed.coach.full_name}}</h5>
-                                <div class="d-flex align-items-center gap-2 ct_flex_wrap_575 mt-2 ct_align_items_start_575">
+                                <div class="d-flex align-items-center gap-2 flex-wrap">
+                                    <h5 class="ct_fs_15 text-white ct_fw_600 mb-0">{{feed.coach.full_name}}</h5>
+                                    <p *ngIf="feed.isPaid == 1" class="ct_fs_12 ct_green_text ct_fw_700 mb-0 "><span class="me-1">&#x2022;</span>Ad Hoc</p>
+                                    <!-- <p *ngIf="feed.isPaid == 0" class="ct_fs_12 text-white ct_fw_600 mb-0 ">Free</p> -->
+                                    <p *ngIf="feed.isPaid == 2" class="ct_fs_12 text-white ct_fw_700 mb-0 ct_blue_text_clr"><span class="me-1">&#x2022;</span>Paid</p>
+                                   </div>
+                                <div
+                                    class="d-flex align-items-center gap-2 ct_flex_wrap_575 mt-2 ct_align_items_start_575">
                                     <p class="mb-0  ct_fs_12 text-white ct_text_op_5 ">{{feed.createdAt |
                                         date:'d/M/yy, h:mm a'}}</p>
                                     <div class="d-flex align-items-center justify-content-center gap-2">
@@ -616,10 +676,10 @@
                                 </div>
                             </div>
                         </div>
-                        @if(feed.coachId == userId){
-                        <div class="dropdown ct_chat_dropdown">
-                            <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
-                                id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                        @if(feed.coachId == userId && isCoach){
+                        <div class="dropdown ct_chat_dropdown" style="cursor: pointer;">
+                            <i class="fa-solid fa-ellipsis-vertical text-white" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false"></i>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li><a class="dropdown-item" (click)="deletePost(feed.id)">Delete</a></li>
                             </ul>
@@ -628,7 +688,9 @@
 
                     </div>
 
-                    <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 mt-3">
+                    <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 mt-3"
+                        [ngClass]="{'blurred': !feed?.isShown}"
+                        [ngStyle]="{ 'user-select': !feed?.isShown ? 'none' : 'auto' }">
                         <span>
                             {{ feed.isExpanded ? feed.text : (feed.text?.length > shortTextLength ?
                             (feed.text.substring(0, shortTextLength) + '...') : feed.text) }}
@@ -650,16 +712,27 @@
 
                     </div> -->
 
-                    <div class="ct_show_uploaded_video mt-2" style="position: relative;">
+                    @if(!feed.isShown){
+                    <div style="cursor: pointer;" *ngIf="feed.isPaid == 1 && !isCoach" (click)="getAdHocPost(feed.id)">
+                        <a class="ct_orange_btn mt-2 ct_border_radius_10 ct_blue_btn123 ct_pay_to_see_center"><i
+                                class="fa-solid fa-lock me-2"></i>Pay To See</a>
+                    </div>
+                    }
+
+
+                    <div class="ct_show_uploaded_video mt-2" style="position: relative;"
+                        [ngClass]="{'blurred': !feed?.isShown}"
+                        [ngStyle]="{ 'user-select': !feed?.isShown ? 'none' : 'auto' }">
+
 
                         <div class="play-button" *ngIf="!isVideoPlaying(videoPlayer)"
-                            (click)="toggleVideo(videoPlayer)">
+                            (click)="toggleVideo(videoPlayer, feed.isShown)">
                             <img src="../assets/img/play.png" alt="Play Button" />
                         </div>
 
                         <video [src]="feed.mediaUrl" #videoPlayer (timeupdate)="onTimeUpdate(videoPlayer)"
                             (loadedmetadata)="setVideoDuration(videoPlayer)" width="100%" height="390"
-                            (click)="toggleVideo(videoPlayer)">
+                            (click)="toggleVideo(videoPlayer, feed.isShown)">
                         </video>
 
                         <input type="range" *ngIf="currentVideoId === videoPlayer" class="custom-seekbar"
@@ -671,11 +744,12 @@
                     </div>
 
 
-                    <div class="ct_like_comment_div">
+                    <div class="ct_like_comment_div" [ngClass]="{'blurred': !feed?.isShown}"
+                        [ngStyle]="{ 'user-select': !feed?.isShown ? 'none' : 'auto' }">
                         <ul>
                             <li>
                                 <div class="ct_like_btn d-flex align-items-center gap-3"
-                                    [class.ct_active_like]="feed.alreadyLiked" (click)="likePost(feed.id)"
+                                    [class.ct_active_like]="feed.alreadyLiked" (click)="toggleLike(feed)"
                                     style="cursor: pointer;">
                                     <!-- show this class ct_active_like when user will like  -->
                                     <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
@@ -702,7 +776,7 @@
                                 </div>
                             </li>
                             <li *ngIf="!isCoach" class="ct_book_mark_icon ms-auto"
-                                [class.ct_book_mark_icon_active]="feed.alreadySaved" (click)="bookmarkPost(feed.id)"
+                                [class.ct_book_mark_icon_active]="feed.alreadySaved" (click)="bookmarkPost(feed)"
                                 style="cursor: pointer;">
                                 <!-- add this class ct_book_mark_icon_active when user will book marked  -->
                                 <svg width="14" height="18" viewBox="0 0 14 18" fill="none"
@@ -725,10 +799,10 @@
                                 <input type="text" class="form-control ct_custom_input w-100 ct_pe_34"
                                     placeholder="Write comment..." [(ngModel)]="commentText"
                                     [ngModelOptions]="{standalone: true}" maxlength="250"
-                                    (keyup.enter)="addComment(feed.id)">
+                                    (keyup.enter)="addComment(feed)">
                                 <!-- <i (click)="addComment(feed.id)" class="fa fa-paper-plane ct_send_msg_plane text-white"
                                     aria-hidden="true"></i> -->
-                                <i (click)="addComment(feed.id)" *ngIf="!btnLoader"
+                                <i (click)="addComment(feed)" *ngIf="!btnLoader"
                                     class="fa fa-paper-plane ct_send_msg_plane text-white" aria-hidden="true">
                                 </i>
                                 <div class="d-flex align-items-center ct_send_msg_plane text-white" *ngIf="btnLoader">
@@ -881,7 +955,6 @@
             </div>
         </div>
     </div>
-  
     <!-- <div class="ct_notification_main_div">
         <div class="mt-4">
             @if(isCoach){

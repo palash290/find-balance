@@ -1,5 +1,6 @@
 /* @import "../node_modules/bootstrap/dist/css/bootstrap.min.css"; */
 @import "ngx-toastr/toastr";
+@import  "../node_modules/intl-tel-input/build/css/intlTelInput.css";
 
 .error-message {
   color: red;
@@ -78,4 +79,30 @@ div:where(.swal2-icon).swal2-warning{
   box-shadow: unset !important;
 }
 
+.iti {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
 
+.iti .iti__selected-dial-code {
+  margin-left: 4px;
+  color: white;
+}
+
+.iti__country-list .iti__flag, .iti__country-name {
+  margin-right: var(--iti-spacer-horizontal);
+  color: white;
+}
+
+.iti__dropdown-content {
+  border-radius: 3px;
+  background-color: #0f100f;
+}
+
+.ct_pay_to_see_center{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

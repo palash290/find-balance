@@ -1,0 +1,24 @@
+div#ct_followed_coaches1 .modal-content {
+  background-color: #111010;
+  border: 1px solid var(--orange);
+  padding: 22px;
+}
+
+.blurred {
+  filter: blur(5px);
+  /* Adjust the blur value as needed */
+  pointer-events: none;
+}
+
+.ct_img_h_200 {
+  height: 250px;
+  width: 100%;
+  /* object-fit: cover; */
+  object-fit: fill;
+  border-radius: 20px;
+}
+
+.spinner-border {
+  height: 22px;
+  width: 22px;
+}

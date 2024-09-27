@@ -1,13 +1,24 @@
+div#ct_add_community .modal-content,
+div#ct_edit_community .modal-content {
+    background-color: #111010;
+    border: 1px solid var(--orange);
+    padding: 22px;
+}
+
 /* Example for the cropper */
 .image-cropper {
-    width: 100%;
-    max-width: 600px;
-  }
-  
+  width: 100%;
+  max-width: 600px;
+}
 
-  .ct_img_h_200{
-    height: 250px;
-    width: 100%;
-    object-fit: fill;
-    border-radius: 20px;
-  }
+
+.ct_img_h_200 {
+  height: 250px;
+  width: 100%;
+  object-fit: fill;
+  border-radius: 20px;
+}
+
+.ct_login_input {
+  background-color: #161617 !important;
+}

@@ -258,7 +258,8 @@
 }
 
 #ct_video,
-#ct_audio {
+#ct_audio,
+#ct_image {
     display: none;
 }
 
@@ -329,6 +330,7 @@
     background-color: #111010;
     padding: 22px;
     border-radius: 16px;
+    position: relative;
 }
 
 .ct_light_grey_bg {
@@ -883,7 +885,12 @@ div#ct_followed_coaches .modal-content {
     border-color: var(--orange);
     box-shadow: unset;
 }
-
+.ct_transparent_input {
+    background-color: transparent;
+    outline: none;
+    outline: none;
+    border: 0px;
+}
 .ct_add_member_scroll {
     height: auto;
     max-height: 350px;

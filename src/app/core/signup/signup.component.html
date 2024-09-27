@@ -9,7 +9,7 @@
             <div class="row pt-3">
                 <div class="col-md-12">
                     <div class="ct_logo">
-                        <a >
+                        <a>
                             <img src="assets/img/logo.svg" alt="">
                         </a>
                     </div>
@@ -42,7 +42,8 @@
                                     formControlName="full_name" placeholder="Name">
                                 <div *ngIf="loginForm.controls['full_name'].invalid && loginForm.controls['full_name'].touched"
                                     class="error-message">
-                                    <div *ngIf="loginForm.controls['full_name'].errors?.['required']" class="ct_fs_14 mt-1">Name is
+                                    <div *ngIf="loginForm.controls['full_name'].errors?.['required']"
+                                        class="ct_fs_14 mt-1">Name is
                                         required.</div>
                                 </div>
                             </div>
@@ -52,24 +53,17 @@
 
                                 <div *ngIf="loginForm.controls['email'].invalid && loginForm.controls['email'].touched"
                                     class="error-message">
-                                    <div *ngIf="loginForm.controls['email'].errors?.['required']" class="ct_fs_14 mt-1">Email is required.
+                                    <div *ngIf="loginForm.controls['email'].errors?.['required']" class="ct_fs_14 mt-1">
+                                        Email is required.
                                     </div>
-                                    <div
-                                        *ngIf="loginForm.controls['email'].errors?.['email'] && !loginForm.controls['email'].errors?.['required']" class="ct_fs_14 mt-1">
+                                    <div *ngIf="loginForm.controls['email'].errors?.['email'] && !loginForm.controls['email'].errors?.['required']"
+                                        class="ct_fs_14 mt-1">
                                         Invalid email format.</div>
                                 </div>
 
                             </div>
-                            <div class="ct_login_grid_2 w-100">
-                                <div class="form-group mb-4">
-                                <!-- <div class="form-group mb-4">
-                                    <select name="" id="" class="form-control ct_login_input px-0 text-center"
-                                        formControlName="countryCode" [(ngModel)]="selectedCountryCode">
-                                        <option *ngFor="let country of countries" [value]="country.dialCode">
-                                            {{ country.dialCode }}
-                                        </option>
-                                    </select>
-                                </div> -->
+                            <!-- <div class="form-group mb-4">
+                              
                                 <div class="position-relative">
 
                                     <select name="" id="" formControlName="countryCode"
@@ -81,19 +75,23 @@
                                     <img src="../../../assets/img/ukFlag.jpg" class="ct_uk_flag_top"
                                         style="width: 20px; height: 15px;">
                                 </div>
-                                </div>
-                                <div class="form-group mb-4 w-100">
-                                    <input type="text" maxlength="10" class="form-control ct_login_input"
-                                        formControlName="phone_no" placeholder="Phone">
-                                    <div *ngIf="loginForm.controls['phone_no'].invalid && loginForm.controls['phone_no'].touched"
-                                        class="error-message">
-                                        <div *ngIf="loginForm.controls['phone_no'].errors?.['required']" class="ct_fs_14 mt-1">Phone number is
-                                            required.</div>
-                                        <div *ngIf="loginForm.controls['phone_no'].errors?.['pattern']" class="ct_fs_14 mt-1">Only numbers are
-                                            allowed.</div>
-                                    </div>
+                                </div> -->
+                            <div class="form-group mb-4 w-100">
+                                <!-- <input type="text" maxlength="10" class="form-control ct_login_input"
+                                        formControlName="phone_no" placeholder="Phone"> -->
+                                <input id="phone_no1" type="text" formControlName="phone_no" maxlength="10"
+                                    class="form-control ct_login_input" placeholder="Phone" />
+                                <div *ngIf="loginForm.controls['phone_no'].invalid && loginForm.controls['phone_no'].touched"
+                                    class="error-message">
+                                    <div *ngIf="loginForm.controls['phone_no'].errors?.['required']"
+                                        class="ct_fs_14 mt-1">Phone number is
+                                        required.</div>
+                                    <div *ngIf="loginForm.controls['phone_no'].errors?.['pattern']"
+                                        class="ct_fs_14 mt-1">Only numbers are
+                                        allowed.</div>
                                 </div>
                             </div>
+
                             <div class="form-group mb-4 w-100">
                                 <select name="" id="" class="form-control ct_login_input" formControlName="categoryId">
                                     <option *ngFor="let category of categories" [value]="category.id"> {{ category.name
@@ -102,7 +100,8 @@
                                 </select>
                                 <div *ngIf="loginForm.controls['categoryId'].invalid && loginForm.controls['categoryId'].touched"
                                     class="error-message">
-                                    <div *ngIf="loginForm.controls['categoryId'].errors?.['required']" class="ct_fs_14 mt-1">Category is
+                                    <div *ngIf="loginForm.controls['categoryId'].errors?.['required']"
+                                        class="ct_fs_14 mt-1">Category is
                                         required.</div>
                                 </div>
                             </div>
@@ -118,7 +117,8 @@
                                 </div>
                                 <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched"
                                     class="error-message">
-                                    <div *ngIf="loginForm.controls['password'].errors?.['required']" class="ct_fs_14 mt-1">Password is
+                                    <div *ngIf="loginForm.controls['password'].errors?.['required']"
+                                        class="ct_fs_14 mt-1">Password is
                                         required.</div>
                                 </div>
                             </div>

@@ -32,4 +32,23 @@
     .ct_grid_2_1_audio{
         grid-template-columns: auto;
     }
+    .ct_flex_wrap_575123{
+        flex-direction: column;
+        width: 100%;
+    }
+    .ct_575_100,.ct_flex_wrap_575123 select{
+        width: 100%;
+    }
+}
+
+.ct_img_h_130{
+    height: 130px;
+    width: 100%;
+    object-fit: fill;
+    border-radius: 20px;
+  }
+
+  .spinner-border {
+    height: 22px;
+    width: 22px;
 }

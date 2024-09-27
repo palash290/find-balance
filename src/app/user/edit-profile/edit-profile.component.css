@@ -59,4 +59,9 @@ div#ct_edit_community .modal-content {
     background-color: #161617 !important;
 }
 
-
+.ct_img_h_200{
+    height: 250px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+  }

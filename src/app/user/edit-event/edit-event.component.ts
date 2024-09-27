@@ -36,12 +36,18 @@ export class EditEventComponent {
       name: new FormControl('', Validators.required),
       about: new FormControl('', Validators.required),
       date: new FormControl('', Validators.required),
-      address: new FormControl('', Validators.required),
       cover: new FormControl(null),
+      eventType: new FormControl({ value: '', disabled: true }),
+      address: new FormControl(''), // For Live-event
+      webinarUrl: new FormControl(''), // For Webinar
+      isPaid: new FormControl({ value: 0, disabled: true }), // Default to '0' (No)
+      price: new FormControl({ value: '', disabled: true }), // Conditionally required if isPaid is '1'
     })
   }
 
   data: any;
+  isPaidValue: any;
+  eventType: any;
 
   getEventData(id: any) {
     this.service.getApi(`coach/event/${id}`).subscribe({
@@ -53,7 +59,15 @@ export class EditEventComponent {
           about: this.data.about,
           date: formattedDate,
           address: this.data.address,
+          eventType: this.data.type,
+          webinarUrl: this.data.webinar_url,
+          isPaid: this.data.isPaid,
+          price: this.data.adhocPrice, 
         })
+        debugger
+        this.croppedImage = this.data.mediaUrl;
+        this.isPaidValue = this.data.isPaid;
+        this.eventType = this.data.type;
       },
       error: error => {
         console.log(error.message)
@@ -105,11 +119,19 @@ export class EditEventComponent {
       formURlData.set('name', this.newForm.value.name);
       formURlData.set('about', this.newForm.value.about);
       formURlData.set('date', isoDateString);
-      formURlData.set('address', this.newForm.value.address);
+      //formURlData.set('address', this.newForm.value.address);
       formURlData.set('id', this.eventId);
       // if (this.UploadedBg) {
       //   formURlData.append('file', this.UploadedBg);
       // }
+
+      if (this.eventType == 'LIVE_EVENT') {
+        formURlData.set('address', this.newForm.value.address);
+        //formData.set('code', this.newForm.value.code);
+      } else if (this.eventType == 'WEBINAR') {
+        formURlData.set('webinar_url', this.newForm.value.webinarUrl);
+      }
+
       const file = new File([this.cropImgBlob], 'profile_image.png', {
         type: 'image/png'
       })

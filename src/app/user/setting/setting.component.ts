@@ -16,9 +16,12 @@ export class SettingComponent implements OnInit {
   userDetails: any;
   role: any;
   isCoach: boolean = true;
+  userId: any;
+  userPlan: any;
 
   constructor(private srevice: SharedService, private toastr: ToastrService, private route: Router, private location: Location) { }
   ngOnInit(): void {
+    this.userId = localStorage.getItem('fbId');
     this.role = this.srevice.getRole();
     if (this.role == 'USER') {
       this.isCoach = false;
@@ -27,6 +30,7 @@ export class SettingComponent implements OnInit {
     const data = JSON.parse(jaonData)
     this.userDetails = data;
     this.getSettings();
+    this.userPlan = localStorage.getItem('findPlan');
   }
 
   backClicked() {
@@ -60,6 +64,63 @@ export class SettingComponent implements OnInit {
       } else {
         this.toastr.warning(resp.message);
         console.error('Failed to update chat notification settings');
+      }
+    });
+  }
+
+  // cancelSubscription() {
+  //   const formURlData = new URLSearchParams();
+  //   if (this.isCoach) {
+  //     formURlData.set('coachId', this.userId);
+  //   } else {
+  //     formURlData.set('userId', this.userId);
+  //   }
+  //   this.srevice.postAPI(`subscription/cancel-subscription`, formURlData.toString()).subscribe(response => {
+
+  //   });
+  // }
+
+  cancelSubscription() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to cancel subscription!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#e58934',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      const formURlData = new URLSearchParams();
+      if (this.isCoach) {
+        formURlData.set('coachId', this.userId);
+      } else {
+        formURlData.set('userId', this.userId);
+      }
+      if (result.isConfirmed) {
+        this.srevice.postAPI(`subscription/cancel-subscription`, formURlData.toString()).subscribe({
+          next: (resp) => {
+            if (resp.success) {
+              Swal.fire(
+                'Cancelled!',
+                'Your subscription has been cancelled successfully.',
+                'success'
+              );
+              this.route.navigateByUrl('/home')
+              this.toastr.success(resp.message);
+            } else {
+              this.toastr.warning(resp.message);
+            }
+          },
+          error: (error) => {
+            Swal.fire(
+              'Error!',
+              'There was an error cancelling your subscription.',
+              'error'
+            );
+            this.toastr.error('Error deleting subscription!');
+            console.error('Error deleting account', error);
+          }
+        });
       }
     });
   }

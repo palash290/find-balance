@@ -1,0 +1,10 @@
+.ct_login_input {
+    background-color: #161617 !important;
+}
+
+.ct_img_h_200{
+    height: 250px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+  }

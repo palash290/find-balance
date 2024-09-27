@@ -5,6 +5,7 @@ import { SharedService } from '../../services/shared.service';
 import { ToastrService } from 'ngx-toastr';
 import * as countryCodes from 'country-codes-list';
 import { ActivatedRoute } from '@angular/router';
+import intlTelInput from 'intl-tel-input';
 
 @Component({
   selector: 'app-forgot-password',
@@ -22,9 +23,18 @@ export class ForgotPasswordComponent {
 
   role: string | undefined;
 
+  iti: any;
+
+
   constructor(private router: ActivatedRoute, private route: Router, private srevice: SharedService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
+
+    const input: any = document.querySelector("#phone1");
+    this.iti = intlTelInput(input, {
+      initialCountry: "gb", // Set UK as the initial country
+      separateDialCode: true,
+    });
 
     this.router.paramMap.subscribe(params => {
       this.role = params.get('role') || '';
@@ -46,7 +56,14 @@ export class ForgotPasswordComponent {
       };
     });
     this.initForm();
+
+
+
+
   }
+
+
+
 
   initForm() {
     const defaultCountry = this.countries[0];
@@ -65,7 +82,10 @@ export class ForgotPasswordComponent {
       const formURlData = new URLSearchParams();
       const countryCode = this.loginForm.get('countryCode')?.value;
       const mobileNumber = this.loginForm.get('phone_no')?.value;
-      const fullMobileNumber = `${countryCode}${mobileNumber}`;
+
+      const fullNumber = this.iti.selectedCountryData.dialCode;
+
+      const fullMobileNumber = `+${fullNumber}${mobileNumber}`;
       formURlData.set('phone_no', fullMobileNumber);
 
       this.srevice.resetPassword(this.isCoach ? 'coach/forgetPassword' : 'user/forgetPassword', formURlData.toString()).subscribe({

@@ -1,6 +1,6 @@
 <div class="ct_side_bar">
     <div class="ct_ps_10_pe_20">
-        <div class="ct_logo text-center">
+        <div class="ct_logo text-center" routerLink="/user/main/feeds" style="cursor: pointer;">
             <a>
                 <img src="../assets/img/logo.svg" alt="">
             </a>
@@ -10,9 +10,12 @@
                 <a routerLink="/user/main/settings" (click)="onToggleMenu()">
                     <img src="../assets/img/setting_icon.svg" alt="">
                 </a>
-                <div>
+                <div class="position-relative">
                     <img [src]="avatar_url ? avatar_url : '/assets/img/np_pro.png'" alt=""
                         class="ct_img_84 ct_border_radius_100">
+                    <div *ngIf="userPlan == 'Premium'">
+                        <!-- <img src="../assets/img/crown_white.png" class="fa-solid fa-crown ct_user_crown_btm" /> -->
+                    </div>
                 </div>
                 <!-- @if (isCoach) { -->
                 <div class="ct_notification_icon" routerLink="/user/main/notifications" style="cursor: pointer;"
@@ -39,7 +42,7 @@
                 </div> -->
             </div>
             <div class="ct_mt_10">
-                <h4 class="ct_fs_22 ct_fw_600 ct_ff_roboto text-center text-white">{{name}}</h4>
+                <h4 class="ct_fs_22 ct_fw_600 ct_ff_roboto text-center text-white">{{name}} <img src="assets/img/ct_golden_crown.png" alt=""></h4>
                 @if(isCoach){
                 <div class="d-flex align-items-center justify-content-center gap-2">
                     <img src="../assets/img/star.png" alt="star">
@@ -58,17 +61,41 @@
                     </a>
                 </p>
 
+                @if(userPlan == 'Premium'){
+                <div class="text-white text-center ct_expiry_text_small">
+                    Your plan will expire on:
+                    {{plan_expired_at | date: 'dd MMM yyyy' }}
+                </div>
+                }@else {
+                @if(isCoach){
+                <div (click)="onToggleMenu()" (click)="getSubscriptonCoach()" style="cursor: pointer;" data-bs-toggle="modal"
+                    data-bs-target="#ct_followed_coaches">
+                    <a class="ct_orange_btn mt-2 ct_border_radius_10 ct_blue_btn123"><i
+                            class="fa-solid fa-crown me-2"></i>Buy Pro Plan</a>
+                </div>
+                }@else {
+                <div (click)="onToggleMenu()" (click)="getSubscriptonUser()" style="cursor: pointer;" data-bs-toggle="modal"
+                    data-bs-target="#ct_followed_coaches">
+                    <a class="ct_orange_btn mt-2 ct_border_radius_10 ct_blue_btn123"><i
+                            class="fa-solid fa-crown me-2"></i>Buy Pro Plan</a>
+                </div>
+                }
+                }
+
+
                 @if(isCoach){
                 <div class="d-flex align-items-center justify-content-around mt-3">
                     <div class="ct_total_post">
                         <h5 class="ct_fs_18 ct_fw_500 ct_ff_roboto mb-1 text-white text-center">{{totalPosts}}</h5>
                         <p class="ct_fs_14 text-white ct_text_op_5">Posts</p>
                     </div>
-                    <div class="ct_total_post" routerLink="/user/main/followed-users" style="cursor: pointer;">
+                    <div (click)="onToggleMenu()" class="ct_total_post" routerLink="/user/main/followed-users"
+                        style="cursor: pointer;">
                         <h5 class="ct_fs_18 ct_fw_500 ct_ff_roboto mb-1 text-white text-center">{{totalFollowers}}</h5>
                         <p class="ct_fs_14 text-white ct_text_op_5">Followers</p>
                     </div>
-                    <div class="ct_total_post" routerLink="/user/main/following" style="cursor: pointer;">
+                    <div (click)="onToggleMenu()" class="ct_total_post" routerLink="/user/main/following"
+                        style="cursor: pointer;">
                         <h5 class="ct_fs_18 ct_fw_500 ct_ff_roboto mb-1 text-white text-center">{{numberOfFollowings}}
                         </h5>
                         <p class="ct_fs_14 text-white ct_text_op_5">Following</p>
@@ -78,11 +105,12 @@
 
 
             </div>
+
+
         </div>
 
         <div class="ct_panel_menu">
             <ul>
-
                 <li (click)="onToggleMenu()">
                     <a routerLink="/user/main/feeds" [ngClass]="{ 'ct_menu_active1': isActive('user/main/feeds')}">
                         <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -187,6 +215,18 @@
                         </svg>
                         My Profile</a>
                 </li>
+
+                <li>
+                    <a routerLink="/user/main/event-list" (click)="onToggleMenu()"
+                        [ngClass]="{ 'ct_menu_active1': isActive('user/main/event-list')}">
+                        <svg width="17" height="19" viewBox="0 0 14 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M0 18.5V2.5C0 1.95 0.196 1.47933 0.588 1.088C0.98 0.696667 1.45067 0.500667 2 0.5H12C12.55 0.5 13.021 0.696 13.413 1.088C13.805 1.48 14.0007 1.95067 14 2.5V18.5L7 15.5L0 18.5ZM2 15.45L7 13.3L12 15.45V2.5H2V15.45Z"
+                                fill="#E58934" />
+                        </svg>
+                        All Events</a>
+                </li>
+
                 <li (click)="onToggleMenu()">
                     <a routerLink="/user/main/chat" [ngClass]="{ 'ct_menu_active1': isActive('user/main/chat')}">
                         <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -198,7 +238,7 @@
                 </li>
 
                 <li (click)="onToggleMenu()">
-                    <a routerLink="/user/main/community"
+                    <a href="javascript:void(0)" (click)="checkPlanCommunity()"
                         [ngClass]="{ 'ct_menu_active1': isActive('user/main/community')}">
                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -209,23 +249,21 @@
                         Community</a>
                 </li>
 
-                <li *ngIf="isCoach">
-                    <a routerLink="/user/main/teams" (click)="onToggleMenu()"
+                <li *ngIf="isCoach" (click)="onToggleMenu()">
+                    <a href="javascript:void(0)" (click)="checkPlanTeam()"
                         [ngClass]="{ 'ct_menu_active1': isActive('user/main/teams')}">
                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M10 5.5C10 5.89397 9.9224 6.28407 9.77164 6.64805C9.62087 7.01203 9.3999 7.34274 9.12132 7.62132C8.84274 7.8999 8.51203 8.12087 8.14805 8.27164C7.78407 8.4224 7.39397 8.5 7 8.5C6.60603 8.5 6.21593 8.4224 5.85195 8.27164C5.48797 8.12087 5.15726 7.8999 4.87868 7.62132C4.6001 7.34274 4.37913 7.01203 4.22836 6.64805C4.0776 6.28407 4 5.89397 4 5.5C4 4.70435 4.31607 3.94129 4.87868 3.37868C5.44129 2.81607 6.20435 2.5 7 2.5C7.79565 2.5 8.55871 2.81607 9.12132 3.37868C9.68393 3.94129 10 4.70435 10 5.5ZM12 14.5C12.394 14.5 12.7841 14.4224 13.1481 14.2716C13.512 14.1209 13.8427 13.8999 14.1213 13.6213C14.3999 13.3427 14.6209 13.012 14.7716 12.6481C14.9224 12.2841 15 11.894 15 11.5C15 11.106 14.9224 10.7159 14.7716 10.3519C14.6209 9.98797 14.3999 9.65726 14.1213 9.37868C13.8427 9.1001 13.512 8.87913 13.1481 8.72836C12.7841 8.5776 12.394 8.5 12 8.5C11.2044 8.5 10.4413 8.81607 9.87868 9.37868C9.31607 9.94129 9 10.7044 9 11.5C9 12.2956 9.31607 13.0587 9.87868 13.6213C10.4413 14.1839 11.2044 14.5 12 14.5ZM7.1 10.5H4C3.46957 10.5 2.96086 10.7107 2.58579 11.0858C2.21071 11.4609 2 11.9696 2 12.5V12.914C2 14.106 2.686 15.086 3.594 15.728C4.138 16.114 4.788 16.4 5.498 16.568C6.036 15.592 6.97 14.868 8.082 14.606C7.62756 14.0353 7.30406 13.3717 7.13437 12.6622C6.96468 11.9527 6.95294 11.2146 7.1 10.5ZM15.92 14.606C16.4633 14.7344 16.9738 14.9752 17.4184 15.3127C17.8631 15.6503 18.2322 16.0772 18.502 16.566C19.212 16.4 19.862 16.114 20.406 15.728C21.314 15.088 22 14.106 22 12.914V12.5C22 11.9696 21.7893 11.4609 21.4142 11.0858C21.0391 10.7107 20.5304 10.5 20 10.5H16.9C17.0446 11.2145 17.0318 11.9519 16.8626 12.661C16.6933 13.3701 16.3717 14.0338 15.92 14.606ZM9 16.5C8.46957 16.5 7.96086 16.7107 7.58579 17.0858C7.21071 17.4609 7 17.9696 7 18.5V18.834C7 20.008 7.714 20.95 8.616 21.55C9.526 22.16 10.726 22.5 12 22.5C13.274 22.5 14.474 22.158 15.384 21.55C16.284 20.95 17 20.008 17 18.834V18.5C17 17.9696 16.7893 17.4609 16.4142 17.0858C16.0391 16.7107 15.5304 16.5 15 16.5H9ZM18 8.5C18.7956 8.5 19.5587 8.18393 20.1213 7.62132C20.6839 7.05871 21 6.29565 21 5.5C21 4.70435 20.6839 3.94129 20.1213 3.37868C19.5587 2.81607 18.7956 2.5 18 2.5C17.2044 2.5 16.4413 2.81607 15.8787 3.37868C15.3161 3.94129 15 4.70435 15 5.5C15 6.29565 15.3161 7.05871 15.8787 7.62132C16.4413 8.18393 17.2044 8.5 18 8.5Z"
                                 fill="#E58934" />
                         </svg>
-
-
                         Teams</a>
                 </li>
 
             </ul>
 
         </div>
-        <div class="ct_event_all_main">
+        <!-- <div class="ct_event_all_main">
             @if(!isCoach){
             <div class="d-flex align-items-center justify-content-between">
                 <h4 class="mb-0 ct_fw_600 ct_fs_20 text-white ct_ff_roboto">Upcoming Events</h4>
@@ -246,10 +284,13 @@
                             </div>
                             <div class="ct_event_info">
                                 <h5 class="ct_fs_15 ct_fw_500 ct_ff_roboto text-white ct_mb_5">{{event.name}} </h5>
+                                @if(event.address){
                                 <div class="d-flex align-items-center gap-2">
                                     <img src="../assets/img/location_icon.svg" alt="">
                                     <p class="mb-0 ct_fs_12 ct_fw_500 ct_ff_roboto ct_orange_text">{{event.address}}</p>
                                 </div>
+                                }
+
                             </div>
                         </div>
                         <div>
@@ -263,6 +304,73 @@
                     </a>
                 </div>
             </div>
+        </div> -->
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Follow Friend Modal S -->
+
+<div class="modal fade" id="ct_followed_coaches" tabindex="-1" aria-labelledby="ct_followed_coachesLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pt-0 px-0 d-block text-center">
+                <h5 class="modal-title text-white ct_fs_18 mx-auto ct_ff_roboto" id="exampleModalLabel">Benefits of
+                    Premium Plan
+                </h5>
+                <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="fa-solid fa-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="ct_add_member_scroll text-white">
+                    <!-- {{planName}}
+                    <br>
+                    {{planPrice}} -->
+                    <ul>
+                        <li *ngIf="!isCoach">
+                            <ul>
+                                <li><i class="fa-solid fa-check me-1 text-white"></i>Have access to all content, both “free” and “paid”</li>
+                                <li class="mt-2"><i class="fa-solid fa-check me-1 text-white"></i>Can be invited and charged for additional “paid” events or content</li>
+                                <li class="mt-2"><i class="fa-solid fa-check me-1 text-white"></i>Repeatable/recurring membership charges and ad hoc charging for events and webinars
+                                </li>
+                            </ul>
+                        </li>
+                        <li *ngIf="isCoach">
+                            <ul>
+                                <li><i class="fa-solid fa-check me-1 text-white"></i>Can set up communities</li>
+                                <li><i class="fa-solid fa-check me-1 text-white mt-1"></i>Can set up teams</li>
+                                <li><i class="fa-solid fa-check me-1 text-white mt-1"></i>Can share long-form media (More than 2 minutes)</li>
+                                <li><i class="fa-solid fa-check me-1 text-white mt-1"></i>Can set up free or paid webinars/events</li>
+                                <li><i class="fa-solid fa-check me-1 text-white mt-1"></i>Can set up ad hoc charges for additional events/services</li>
+                                <li><i class="fa-solid fa-check me-1 text-white mt-1"></i>Can set up ad hoc charges for additional posts</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <div style="cursor: pointer;" class="mt-4" (click)="getSubscriptonCoach()">
+                        <a class="ct_orange_btn mt-2 ct_border_radius_10">
+                            <div class="d-flex align-items-center">
+                                <div class="spinner-border me-2" role="status" *ngIf="btnLoaderPay">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <span *ngIf="!btnLoaderPay">Buy Plan</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <button hidden type="button" class="btn btn-secondary" #closeModal
+                    data-bs-dismiss="modal">Close</button>
+                <!-- <button class="ct_orange_btn ct_grey_btn ct_border_radius_10 w-100 mt-4">Create new team</button> -->
+            </div>
+
         </div>
     </div>
 </div>

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharedService } from '../../services/shared.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,8 +15,9 @@ export class SidebarComponent {
   role: any;
   eventData: any;
   isMenuVisible: boolean = false;
+  stripeLink: any;
 
-  constructor(private router: Router, private visibilityService: SharedService) {
+  constructor(private router: Router, private visibilityService: SharedService, private toastr: ToastrService) {
 
   }
 
@@ -28,8 +30,16 @@ export class SidebarComponent {
   // }
 
   unreadNotifications: any;
+  userId: any;
+  planName: any;
+  planPrice: any;
+  userPlan: any;
+  plan_expired_at: any;
 
   ngOnInit() {
+    this.plan_expired_at = localStorage.getItem('plan_expired_at')
+    this.userPlan = localStorage.getItem('findPlan');
+    this.userId = localStorage.getItem('fbId');
     this.role = this.visibilityService.getRole();
     if (this.role == "USER") {
       this.isCoach = false;
@@ -43,6 +53,83 @@ export class SidebarComponent {
     //this.toggleClass();
     // this.getEventData();
     // this.loadUserProfile();
+
+    this.visibilityService.getApi(`subscription/allPlans`).subscribe(response => {
+      if (this.isCoach) {
+        this.planName = response.data[0].name;
+        this.planPrice = response.data[0].price;
+      } else {
+        this.planName = response.data[1].name;
+        this.planPrice = response.data[1].price;
+      }
+    });
+    this.getPackage();
+  }
+
+
+  getPackage() {
+    this.visibilityService.getApi(this.isCoach ? 'coach/myActivePlan' : 'user/myActivePlan').subscribe({
+      next: (resp) => {
+        this.userPlan = resp.data.plan.name;
+        this.plan_expired_at = resp.data.expired_at;
+        localStorage.setItem('findPlan', this.userPlan);
+        localStorage.setItem('plan_expired_at', this.plan_expired_at);
+      },
+      error: (error) => {
+        console.error('Error fetching project list:', error);
+      }
+    });
+  }
+
+  getSubscriptonUser() {
+    const formURlData = new URLSearchParams();
+    formURlData.set('userId', this.userId);
+    formURlData.set('planId', '2');
+    this.visibilityService.postAPI(`subscription/create-subscription`, formURlData.toString()).subscribe(response => {
+      this.stripeLink = response.url;
+      console.log(this.stripeLink);
+    });
+  }
+
+  btnLoaderPay: boolean = false;
+
+  getSubscriptonCoach() {
+    const formURlData = new URLSearchParams();
+    formURlData.set('coachId', this.userId);
+    formURlData.set('planId', '4');
+    this.btnLoaderPay = true;
+    this.visibilityService.postAPI(`subscription/create-subscription`, formURlData.toString()).subscribe(response => {
+      this.stripeLink = response.url;
+      window.location.href = this.stripeLink;
+      this.btnLoaderPay = false;
+      //console.log(this.stripeLink);
+    });
+  }
+
+  redirect() {
+    window.location.href = this.stripeLink;
+  }
+
+
+  checkPlanCommunity() {
+    if(this.isCoach){
+      if (this.userPlan == 'Premium') {
+        this.router.navigate(['/user/main/community']);
+      } else {
+        this.toastr.warning('Please buy premium plan first.')
+      }
+    }else{
+      this.router.navigate(['/user/main/community']);
+    }
+
+  }
+
+  checkPlanTeam() {
+    if (this.userPlan == 'Premium') {
+      this.router.navigate(['/user/main/teams']);
+    } else {
+      this.toastr.warning('Please buy premium plan first.')
+    }
   }
 
   about_me: any;

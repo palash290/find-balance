@@ -1,5 +1,6 @@
 import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-saved-posts',
@@ -11,7 +12,9 @@ export class SavedPostsComponent {
   role: any;
   data: any;
   userId: any;
-  constructor(private visibilityService: SharedService) { }
+
+
+  constructor(private visibilityService: SharedService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem('fbId');
@@ -79,25 +82,31 @@ export class SavedPostsComponent {
   commentText: any;
   btnLoader: boolean = false;
 
-  addComment(id: any) {
+  addComment(feed: any) {
     const trimmedMessage = this.commentText.trim();
     if (trimmedMessage === '') {
       return;
     }
+
+    if (feed.numberOfComments >= 0) {
+      feed.numberOfComments++;
+    } else {
+      //feed.numberOfComments--;
+    }
+
     const formData = new URLSearchParams();
-    formData.set('postId', id);
+    formData.set('postId', feed.id);
     formData.set('content', this.commentText);
     this.btnLoader = true;
     this.visibilityService.postAPI(`user/post/comment`, formData.toString()).subscribe({
       next: (response) => {
         console.log(response)
         this.commentText = '';
-        this.getPostComments(id);
+        this.getPostComments(feed.id);
         this.btnLoader = false;
-        this.getProfileData();
+        //this.getProfileData();
       },
       error: (error) => {
-        //this.toastr.error('Error uploading files!');
         console.error('Upload error', error);
         this.btnLoader = false;
       }
@@ -172,12 +181,23 @@ export class SavedPostsComponent {
     });
   }
 
-  bookmarkPost(postId: any) {
-    //this.isBookmark = !this.isBookmark;
-    this.visibilityService.postAPI(`user/post/saveOrUnsave/${postId}`, null).subscribe({
+  bookmarkPost(feed: any) {
+    feed.alreadySaved = !feed.alreadySaved;
+
+    const message = feed.alreadySaved ? 'Post Saved' : 'Post Unsaved';
+
+    // Show immediate feedback to the user using MatSnackBar
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+      panelClass: ['snackbar-success']  // Optional custom styling class
+    });
+
+    this.visibilityService.postAPI(`user/post/saveOrUnsave/${feed.id}`, null).subscribe({
       next: resp => {
         console.log(resp);
-        this.getProfileData();
+        //this.getProfileData();
       },
       error: error => {
         console.log(error.message)

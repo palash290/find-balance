@@ -2,6 +2,7 @@ import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angu
 import { SharedService } from '../../services/shared.service';
 import Swal from 'sweetalert2';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-feeds',
@@ -19,10 +20,10 @@ export class FeedsComponent {
 
   currentComponent: string = 'suggestedCategories';
 
-  constructor(private visibilityService: SharedService) { }
+  constructor(private visibilityService: SharedService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
-
+    this.getPackage();
     this.userId = localStorage.getItem('fbId');
     this.role = this.visibilityService.getRole();
     if (this.role == 'USER') {
@@ -55,6 +56,47 @@ export class FeedsComponent {
     }
   }
 
+  userPlan: any;
+  plan_expired_at: any;
+
+  getPackage() {
+    this.visibilityService.getApi(this.isCoach ? 'coach/myActivePlan' : 'user/myActivePlan').subscribe({
+      next: (resp) => {
+        this.userPlan = resp.data.plan.name;
+        this.plan_expired_at = resp.data.expired_at;
+        localStorage.setItem('findPlan', this.userPlan);
+        localStorage.setItem('plan_expired_at', this.plan_expired_at);
+      },
+      error: (error) => {
+        console.error('Error fetching project list:', error);
+      }
+    });
+  }
+
+  stripeLink: any;
+  btnLoaderPay: boolean = false;
+
+  getAdHocPost(postId: any) {
+    localStorage.setItem('adHocPostId', postId)
+    const formURlData = new URLSearchParams();
+    formURlData.set('postId', postId);
+    this.btnLoaderPay = true;
+    this.visibilityService.postAPI(`user/paymentThroughStripeForPost`, formURlData.toString()).subscribe(response => {
+      this.stripeLink = response.url;
+      window.location.href = this.stripeLink;
+      console.log(this.stripeLink);
+      this.btnLoaderPay = false;
+    });
+  }
+
+  ngOnDestroy() {
+    localStorage.removeItem('adHocPostId');
+  }
+
+  redirect() {
+    window.location.href = this.stripeLink;
+  }
+
   categoryId: any = '';
   selectedCategoryName: string | undefined;
 
@@ -72,6 +114,8 @@ export class FeedsComponent {
   }
 
 
+
+
   shortTextLength: number = 270;
   durationOrg: any;
   selectedOption: string = '';
@@ -80,7 +124,10 @@ export class FeedsComponent {
     this.visibilityService.getApi(this.isCoach ? `coach/post/allPosts?type=${this.selectedOption}&categoryId=${this.categoryId}` : `user/allPosts?type=${this.selectedOption}&categoryId=${this.categoryId}`).subscribe({
       next: resp => {
         if (this.isCoach) {
-          this.data = resp.data?.map((item: any) => ({ ...item, isExpanded: false, isPlaying: false }));
+          //this.data = resp.data?.map((item: any) => ({ ...item, isExpanded: false, isPlaying: false }));
+          this.data = resp.data
+            ?.filter((item: any) => !(item.coachId != this.userId && item.isPaid == 1))
+            .map((item: any) => ({ ...item, isExpanded: false, isPlaying: false }));
         } else {
           this.data = resp.data?.map((item: any) => ({ ...item, isExpanded: false, isPlaying: false }));
         }
@@ -208,14 +255,66 @@ export class FeedsComponent {
   isLike = false;
 
   likePost(postId: any) {
-    //this.isLike = !this.isLike;
+    this.isLike = !this.isLike;
     this.visibilityService.postAPI(this.isCoach ? `coach/post/react/${postId}` : `user/post/react/${postId}`, null).subscribe({
       next: resp => {
         console.log(resp);
-        this.getProfileData();
+        //this.getProfileData();
       },
       error: error => {
         console.log(error.message)
+      }
+    });
+  }
+
+  toggleLike(feed: any) {
+    // Immediately toggle the like state locally
+    feed.alreadyLiked = !feed.alreadyLiked;
+    // Update the like count immediately
+    if (feed.alreadyLiked) {
+      feed.numberOfLikes++;
+    } else {
+      feed.numberOfLikes--;
+    }
+
+    // Call the API to register the like or unlike, but don't wait for the response to update the UI
+    this.visibilityService.postAPI(this.isCoach ? `coach/post/react/${feed.id}` : `user/post/react/${feed.id}`, null)
+      .subscribe({
+        next: (resp) => {
+          //console.log(resp);
+        },
+        error: (error) => {
+          //console.log(error.message);
+          // If the API call fails, revert the like state and like count
+          feed.alreadyLiked = !feed.alreadyLiked;
+          feed.numberOfLikes = feed.alreadyLiked ? feed.numberOfLikes + 1 : feed.numberOfLikes - 1;
+        }
+      });
+  }
+
+  bookmarkPost(feed: any) {
+
+    feed.alreadySaved = !feed.alreadySaved;
+
+    // Show a message based on the new state
+    const message = feed.alreadySaved ? 'Post Saved' : 'Post Unsaved';
+
+    // Show immediate feedback to the user using MatSnackBar
+    this.snackBar.open(message, 'Close', {
+      duration: 9000,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+      panelClass: ['snackbar-success']  // Optional custom styling class
+    });
+
+    this.visibilityService.postAPI(`user/post/saveOrUnsave/${feed.id}`, null).subscribe({
+      next: resp => {
+        console.log(resp);
+        //this.getProfileData();
+      },
+      error: error => {
+        feed.alreadySaved = !feed.alreadySaved;
+        //feed.numberOfLikes = feed.alreadySaved ? feed.numberOfLikes + 1 : feed.numberOfLikes - 1;
       }
     });
   }
@@ -224,27 +323,54 @@ export class FeedsComponent {
   commentText: any;
   btnLoader: boolean = false;
 
-  addComment(id: any) {
+  addComment(feed: any) {
     const trimmedMessage = this.commentText?.trim();
     if (trimmedMessage === '') {
       return;
     }
+
+    if (feed.numberOfComments >= 0) {
+      feed.numberOfComments++;
+    } else {
+      //feed.numberOfComments--;
+    }
+
     const formData = new URLSearchParams();
-    formData.set('postId', id);
+    formData.set('postId', feed.id);
     formData.set('content', this.commentText);
     this.btnLoader = true;
     this.visibilityService.postAPI(this.isCoach ? `coach/comment` : `user/post/comment`, formData.toString()).subscribe({
       next: (response) => {
         console.log(response)
         this.commentText = '';
-        this.getPostComments(id);
+        this.getPostComments(feed.id);
         this.btnLoader = false;
-        this.getProfileData();
+        //this.getProfileData();
       },
       error: (error) => {
         //this.toastr.error('Error uploading files!');
         console.error('Upload error', error);
         this.btnLoader = false;
+      }
+    });
+  }
+
+  btnLoaderCmt: boolean = false;
+  deleteId: any;
+
+  deleteComment(cmtId: any, postId: any) {
+    this.deleteId = cmtId;
+    this.btnLoaderCmt = true;
+    this.visibilityService.deleteAcc(this.isCoach ? `coach/comment/${cmtId}` : `user/post/comment/${cmtId}`).subscribe({
+      next: resp => {
+        console.log(resp);
+        this.getPostComments(postId);
+        this.btnLoaderCmt = false;
+        this.getProfileData();
+      },
+      error: error => {
+        console.log(error.message);
+        this.btnLoaderCmt = false;
       }
     });
   }
@@ -304,47 +430,14 @@ export class FeedsComponent {
     return this.postComments && this.postComments?.length > this.commentsToShow[id];
   }
 
-  btnLoaderCmt: boolean = false;
-  deleteId: any;
-
-  deleteComment(cmtId: any, postId: any) {
-    this.deleteId = cmtId;
-    //this.isLike = !this.isLike;
-    this.btnLoaderCmt = true;
-    this.visibilityService.deleteAcc(this.isCoach ? `coach/comment/${cmtId}` : `user/post/comment/${cmtId}`).subscribe({
-      next: resp => {
-        console.log(resp);
-        this.getPostComments(postId);
-        this.btnLoaderCmt = false;
-        this.getProfileData();
-      },
-      error: error => {
-        console.log(error.message);
-        this.btnLoaderCmt = false;
-      }
-    });
-  }
 
   isLikedCmt: boolean = true;
   likeComment(cmtId: any, postId: any) {
-   // this.isLikedCmt = true;
+    // this.isLikedCmt = true;
     this.visibilityService.postAPI(this.isCoach ? `coach/comment/react/${cmtId}` : `user/post/comment/react/${cmtId}`, null).subscribe({
       next: resp => {
         console.log(resp);
         this.getPostComments(postId);
-      },
-      error: error => {
-        console.log(error.message)
-      }
-    });
-  }
-
-  bookmarkPost(postId: any) {
-    //this.isBookmark = !this.isBookmark;
-    this.visibilityService.postAPI(`user/post/saveOrUnsave/${postId}`, null).subscribe({
-      next: resp => {
-        console.log(resp);
-        this.getProfileData();
       },
       error: error => {
         console.log(error.message)
@@ -403,23 +496,26 @@ export class FeedsComponent {
   currentTime: number = 0;
   videoDuration: number = 0;
 
-  toggleVideo(videoElement: HTMLVideoElement) {
+  toggleVideo(videoElement: HTMLVideoElement, isShown: boolean) {
 
-    if (this.currentAudio) {
-      this.currentAudio.pause();
+    if (isShown) {
+      if (this.currentAudio) {
+        this.currentAudio.pause();
+      }
+
+      if (this.currentVideoId && this.currentVideoId !== videoElement) {
+        this.currentVideoId.pause(); // Pause the currently playing video
+      }
+
+      if (videoElement.paused) {
+        videoElement.play();
+        this.currentVideoId = videoElement;
+      } else {
+        videoElement.pause();
+        this.currentVideoId = null;
+      }
     }
 
-    if (this.currentVideoId && this.currentVideoId !== videoElement) {
-      this.currentVideoId.pause(); // Pause the currently playing video
-    }
-
-    if (videoElement.paused) {
-      videoElement.play();
-      this.currentVideoId = videoElement;
-    } else {
-      videoElement.pause();
-      this.currentVideoId = null;
-    }
   }
 
   isVideoPlaying(videoElement: HTMLVideoElement): boolean {

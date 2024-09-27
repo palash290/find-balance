@@ -20,6 +20,9 @@ import { CommunityComponent } from './community/community.component';
 import { SearchCoachesComponent } from './search-coaches/search-coaches.component';
 import { TeamsComponent } from './teams/teams.component';
 import { FollowUsersComponent } from './follow-users/follow-users.component';
+import { EventListComponent } from './event-list/event-list.component';
+import { PaymentSuccessComponent } from './payment-success/payment-success.component';
+import { PaymentCancelComponent } from './payment-cancel/payment-cancel.component';
 
 const routes: Routes = [
   {
@@ -101,7 +104,19 @@ const routes: Routes = [
         path: "suggested-categories",
         component: SuggestedCategoriesComponent,
       },
+      {
+        path: "event-list",
+        component: EventListComponent,
+      },
     ],
+  },
+  {
+    path: "payment-success",
+    component: PaymentSuccessComponent,
+  },
+  {
+    path: "payment-cancel",
+    component: PaymentCancelComponent,
   },
 ];
 

@@ -1,6 +1,6 @@
 <div class="d-flex align-items-center gap-2 justify-content-between mb-4 flex-wrap">
     <h4 class="ct_fs_28 ct_ff_roboto ct_fw_500 ct_orange_text">Add New Event</h4>
-    <button class="ct_orange_btn ct_grey_btn ct_border_radius_10" (click)="addEvevt()"> Create Event</button>
+    <button class="ct_orange_btn ct_grey_btn ct_border_radius_10" (click)="addEvent()"> Create Event</button>
 </div>
 
 <form [formGroup]="newForm">
@@ -11,8 +11,8 @@
             <label for="imgInp" class="w-100">
                 <input accept="image/*" type="file" id="imgInp" class="d-none" (change)="fileChangeEvent($event)"
                     formControlName="cover" />
-                <img id="blah1" class="ct_img_h_200 " [class.ct_object_fit_cover]="!croppedImage" src="#" alt="Uploaded Image"
-                    [src]="croppedImage ? croppedImage : '/assets/img/no_bg.png'">
+                <img id="blah1" class="ct_img_h_200" [class.ct_object_fit_cover]="!croppedImage" src="#"
+                    alt="Uploaded Image" [src]="croppedImage ? croppedImage : '/assets/img/no_bg.png'">
             </label>
 
         </div>
@@ -23,7 +23,6 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <label for="" class="w-100">
-
                     <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false"
                         [aspectRatio]="4 / 3" format="png" (imageCropped)="imageCropped($event)"
                         [cropperMaxHeight]="1300" [cropperMinHeight]="1300"></image-cropper>
@@ -58,7 +57,7 @@
         </div>
     </div>
 
-    <div class="form-group mb-3">
+    <!-- <div class="form-group mb-3">
         <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Location</label>
         <input type="text" class="ct_login_input form-control ct_border_radius_10" formControlName="address"
             placeholder="Enter Location">
@@ -66,7 +65,8 @@
             <div *ngIf="newForm.controls['address'].errors?.['required']">Location is
                 required.</div>
         </div>
-    </div>
+    </div> -->
+
     <div class="form-group mb-3">
         <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Date</label>
         <input type="date" class="ct_login_input form-control ct_border_radius_10" formControlName="date"
@@ -87,7 +87,185 @@
                 required.</div>
         </div>
     </div>
+
+    <!-- Event Type Dropdown -->
+    <div class="form-group mb-3">
+        <label for="eventType" class="mb-2 text-white">Event Type</label>
+        <select class="ct_login_input form-control ct_border_radius_10" formControlName="eventType">
+            <option value="" disabled>Select-Event</option>
+            <option value="LIVE_EVENT">Live-event</option>
+            <option value="WEBINAR">Webinar</option>
+        </select>
+
+        <!-- Error Message -->
+        <div *ngIf="newForm.controls['eventType'].invalid && newForm.controls['eventType'].touched"
+            class="error-message text-danger">
+            Please select a valid event type.
+        </div>
+
+    </div>
+
+    <!-- Live-event Fields -->
+    <div *ngIf="newForm.value.eventType === 'LIVE_EVENT'">
+        <div class="form-group mb-3">
+            <label for="address" class="mb-2 text-white">Address</label>
+            <input type="text" class="ct_login_input form-control ct_border_radius_10" formControlName="address"
+                placeholder="Enter Address">
+            <div *ngIf="newForm.controls['address'].invalid && newForm.controls['address'].touched"
+                class="error-message">
+                <div *ngIf="newForm.controls['address'].errors?.['required']">Address is required.</div>
+            </div>
+        </div>
+
+        <!-- <div class="form-group mb-3">
+            <label for="code" class="mb-2 text-white">Code</label>
+            <input type="text" class="ct_login_input form-control ct_border_radius_10" formControlName="code"
+                placeholder="Enter Code">
+
+            <div *ngIf="newForm.controls['code'].invalid && newForm.controls['code'].touched" class="error-message">
+                <div *ngIf="newForm.controls['code'].errors?.['required']">Code is required.</div>
+            </div>
+        </div> -->
+    </div>
+
+    <!-- Webinar Fields -->
+    <div *ngIf="newForm.value.eventType === 'WEBINAR'">
+        <div class="form-group mb-3">
+            <label for="webinarUrl" class="mb-2 text-white">Webinar URL</label>
+            <input type="text" class="ct_login_input form-control ct_border_radius_10" formControlName="webinarUrl"
+                placeholder="Enter Webinar URL">
+
+            <div *ngIf="newForm.controls['webinarUrl'].invalid && newForm.controls['webinarUrl'].touched"
+                class="error-message">
+                <div *ngIf="newForm.controls['webinarUrl'].errors?.['required']">Webinar Url is required.</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- IsPaid Dropdown -->
+    <div class="form-group mb-3">
+        <label for="isPaid" class="mb-2 text-white">Content Type</label>
+        <select class="ct_login_input form-control ct_border_radius_10" formControlName="isPaid"
+            [disabled]="userPlan != 'Premium'">
+            <option value="0">Free</option>
+            <option value="2">Paid</option>
+            <option value="1">Add Hoc Charge</option>
+        </select>
+    </div>
+
+    <!-- Price Field (Shown only if IsPaid is "yes") -->
+    <div *ngIf="newForm.value.isPaid === '1'" class="form-group mb-3">
+        <label for="price" class="mb-2 text-white">Price</label>
+        <input type="number" class="ct_login_input form-control ct_border_radius_10" formControlName="price"
+            placeholder="Enter Price" min="1">
+
+        <!-- <div *ngIf="newForm.controls['price'].invalid && newForm.controls['price'].touched" class="error-message">
+            Price is required.
+        </div> -->
+        <!-- Error message if price is required -->
+        <div *ngIf="newForm.controls['price'].errors?.['required'] && newForm.controls['price'].touched"
+            class="error-message">
+            Price is required.
+        </div>
+
+        <!-- Error message if price is negative -->
+        <div *ngIf="newForm.controls['price'].errors?.['min'] && newForm.controls['price'].touched"
+            class="error-message">
+            Price must be greater than or equal to 0.
+        </div>
+
+        <!-- Error message if price exceeds max value (5 digits) -->
+        <div *ngIf="newForm.controls['price'].errors?.['max'] && newForm.controls['price'].touched"
+            class="error-message">
+            Price cannot exceed 5 digits.
+        </div>
+
+
+        <!-- <div *ngIf="newForm.controls['price'].invalid && newForm.controls['price'].touched" class="error-message">
+            <div *ngIf="newForm.controls['price'].errors?.['required']">This field is required.</div>
+            <div *ngIf="newForm.controls['price'].errors?.['pattern']">Only numeric values are
+                allowed.</div>
+            <div *ngIf="newForm.controls['price'].errors?.['numberRange']">Number must be between 1
+                and 100.</div>
+        </div> -->
+
+    </div>
+
+
+    <div class="form-group mb-3" *ngIf="newForm.value.isPaid === '1'">
+        <label for="" class="mb-2 ct_ff_roboto ct_fw_600 text-white">Add Members</label>
+        <input type="text" class="ct_login_input form-control ct_border_radius_10" placeholder="Select members"
+            formControlName="other_categ" data-bs-toggle="modal" data-bs-target="#ct_edit_community" readonly>
+
+        <div *ngIf="newForm.controls['other_categ'].invalid && newForm.controls['other_categ'].touched"
+            class="error-message">
+            <div *ngIf="newForm.controls['other_categ'].errors?.['required']">Category is
+                required.</div>
+        </div>
+    </div>
+
 </form>
+
+
 <div *ngIf="loading" class="ct_loader_main">
     <div class="loader"></div>
+</div>
+
+
+
+
+
+<!-- User modal -->
+<div class="modal fade" id="ct_edit_community" tabindex="-1" aria-labelledby="ct_add_communityLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pt-0 px-0 d-block text-center">
+                <h5 class="modal-title text-white ct_fs_15 mx-auto ct_ff_roboto" id="exampleModalLabel">Invite Users To
+                    Join Event(Max 20)
+                </h5>
+                <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="fa-solid fa-x"></i></button>
+            </div>
+            <div class="modal-body">
+
+                <div *ngIf="filteredUsers?.length == 0" class="text-center mt-4">
+                    <p class="ct_fs_15 text-white">No users found</p>
+                </div>
+
+                <div class="ct_add_member_scroll" *ngFor="let follower of filteredUsers;">
+                    <div *ngIf="follower.follower.role == 'USER'" class="d-flex align-items-center gap-2 mt-4">
+                        <!-- <div class="ct_star_circle">
+                            <img src="../assets/img/star.png" alt="">
+                        </div> -->
+                        <img [src]="follower.follower.avatar_url ? follower.follower.avatar_url : '/assets/img/np_pro.png'"
+                            alt="" class="ct_img_62 ct_border_radius_100">
+
+                        <div>
+                            <h4 class="ct_ff_roboto ct_fw_600 text-white ct_fs_15 mb-0">
+                                {{follower.follower.full_name}}</h4>
+                            <div class="d-flex align-items-center  gap-2 mt-1">
+                                <!-- <img src="../assets/img/star.png" alt="star"> -->
+                                <!-- <span class="ct_orange_text">Accountability</span> -->
+                            </div>
+                        </div>
+
+                        <div class="form-check ms-auto ct_custom_radio">
+                            <input class="form-check-input" type="checkbox"
+                                [checked]="selectedUsersIds.includes(follower.follower.id)"
+                                (change)="onCategoryChange($event, follower)" id="flexRadioDefault1">
+                        </div>
+                    </div>
+                </div>
+                <!-- Optional: Show an error message when more than 2 are selected -->
+                <!-- <div *ngIf="selectedUsersIds.length === 2 && showLimitError" class="error-message">
+                    Only 2 members can be selected.
+                </div> -->
+                <!-- ct_orange_btn ct_grey_btn ct_border_radius_10 -->
+                <button type="button" class=" ct_orange_btn ct_grey_btn ct_custom_btn mt-5 px-4 w-auto mx-auto d-block"
+                    data-bs-dismiss="modal">Invite</button>
+            </div>
+
+        </div>
+    </div>
 </div>

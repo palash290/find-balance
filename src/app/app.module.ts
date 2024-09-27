@@ -35,7 +35,6 @@ initializeApp(environment.firebaseConfig)
     SignupUserComponent,
     ResetPasswordComponent,
     OtpResetComponent,
-
   ],
   imports: [
     AngularFireModule,
@@ -54,16 +53,7 @@ initializeApp(environment.firebaseConfig)
       preventDuplicates: true,
       progressBar: true
     }),
-    
-    // NgxLoadingModule.forRoot({
-    //   animationType: ngxLoadingAnimationTypes.threeBounce,
-    //   //backdropBackgroundColour: '#f5f2f0',
-    //   backdropBorderRadius: "4px",
-    //   primaryColour: "#4B3D15",
-    //   secondaryColour: "#4B3D15",
-    //   tertiaryColour: "#4B3D15",
-    // }),
-    //SocketIoModule.forRoot(config)
+
   ],
   providers: [],
   bootstrap: [AppComponent]

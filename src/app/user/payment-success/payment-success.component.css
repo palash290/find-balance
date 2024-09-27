@@ -1,0 +1,30 @@
+.ct_success_right img {
+    width: 90px;
+    object-fit: contain;
+}
+.ct_payment_success_card h1{
+    color: #fff;
+    font-size: 26px;
+}
+.ct_payment_success_card p{
+    color: #fff;
+    font-size: 16px;
+}
+
+.ct_payment_success_card{
+    border-radius: 10px !important;
+    max-width: 500px;
+    width: 100%;
+    padding: 30px 30px 50px;
+    background-color: #1e1e1e;
+    border: 2px solid #434343;
+
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.09) !important;}
+
+    .ct_payment_center_div{
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow-y: auto;
+    }

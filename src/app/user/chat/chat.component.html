@@ -9,7 +9,7 @@
             </div>
 
             <i class="fa-solid fa-user-plus text-white" (click)="searchFollowUsersList()" style="cursor: pointer;"
-                data-bs-toggle="modal" data-bs-target="#ct_followed_coaches"></i>
+                data-bs-toggle="modal" data-bs-target="#ct_followed_coaches2"></i>
         </div>
         } @else {
         <div class="d-flex align-items-center gap-3">
@@ -20,7 +20,7 @@
             </div>
 
             <i class="fa-solid fa-user-plus text-white" (click)="searchCoachesList()" style="cursor: pointer;"
-                data-bs-toggle="modal" data-bs-target="#ct_followed_coaches"></i>
+                data-bs-toggle="modal" data-bs-target="#ct_followed_coaches2"></i>
         </div>
         }
 
@@ -140,7 +140,8 @@
         <h4 class="ct_fs_22 text-white"></h4>
     </div>
 
-    <div class="ct_right_message_area ct_chat_coach_main_scroll" [ngClass]="{ 'active': isChatActive }" *ngIf="participantFullName">
+    <div class="ct_right_message_area ct_chat_coach_main_scroll" [ngClass]="{ 'active': isChatActive }"
+        *ngIf="participantFullName">
         <div class="ct_octen_team_box ct_mt_30 px-3 ct_message_head_bg">
             <a href="javascript:void(0)" class="ct_orange_text ct_back_to_list ct_chat_back"
                 (click)="closeChat()">Back</a>
@@ -379,7 +380,7 @@
 
 <!-- Follow Friend Modal S -->
 
-<div class="modal fade" id="ct_followed_coaches" tabindex="-1" aria-labelledby="ct_followed_coachesLabel"
+<div class="modal fade" id="ct_followed_coaches2" tabindex="-1" aria-labelledby="ct_followed_coachesLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -418,7 +419,6 @@
                                     <!-- <span class="ct_orange_text">Accountability</span> -->
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>

@@ -56,6 +56,13 @@ export class NotificationComponent {
     }
   }
 
+  viewEvent(eventId: any, type: any){
+    if (type == 'event') {
+      localStorage.setItem('chatIdFb', eventId)
+      this.router.navigateByUrl(`user/main/events/${eventId}`)
+    }
+  }
+
   readAllNotification() {
     this.service.putApi(this.isCoach ? 'coach/notifications' : 'user/notifications/markAllRead', null).subscribe({
       next: resp => {
