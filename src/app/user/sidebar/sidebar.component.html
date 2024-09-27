@@ -68,13 +68,13 @@
                 </div>
                 }@else {
                 @if(isCoach){
-                <div (click)="getSubscriptonCoach()" style="cursor: pointer;" data-bs-toggle="modal"
+                <div (click)="onToggleMenu()" (click)="getSubscriptonCoach()" style="cursor: pointer;" data-bs-toggle="modal"
                     data-bs-target="#ct_followed_coaches">
                     <a class="ct_orange_btn mt-2 ct_border_radius_10 ct_blue_btn123"><i
                             class="fa-solid fa-crown me-2"></i>Buy Pro Plan</a>
                 </div>
                 }@else {
-                <div (click)="getSubscriptonUser()" style="cursor: pointer;" data-bs-toggle="modal"
+                <div (click)="onToggleMenu()" (click)="getSubscriptonUser()" style="cursor: pointer;" data-bs-toggle="modal"
                     data-bs-target="#ct_followed_coaches">
                     <a class="ct_orange_btn mt-2 ct_border_radius_10 ct_blue_btn123"><i
                             class="fa-solid fa-crown me-2"></i>Buy Pro Plan</a>
