@@ -5,7 +5,7 @@
             <i class="fa-solid fa-magnifying-glass"></i>
         </div>
         <div class="d-flex align-items-center justify-content-between ct_pt_20">
-            <h4 class="mb-0 ct_fw_600 ct_fs_20 text-white ct_ff_roboto">All communities</h4>
+            <h4 class="mb-0 ct_fw_600 ct_fs_20 text-white ct_ff_roboto">All Communities</h4>
             <a *ngIf="isCoach" href="javascript:void(0)" class="ct_orange_text" data-bs-toggle="modal"
                 data-bs-target="#ct_add_community">+ Create</a>
         </div>
@@ -163,7 +163,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @if(feed.coachId == userId){
+                            @if(feed.coachId == userId && isCoach){
                             <div class="dropdown ct_chat_dropdown">
                                 <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
                                     id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
@@ -431,7 +431,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @if(feed.coachId == userId){
+                            @if(feed.coachId == userId && isCoach){
                             <div class="dropdown ct_chat_dropdown">
                                 <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
                                     id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
@@ -687,7 +687,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @if(feed.coachId == userId){
+                            @if(feed.coachId == userId && isCoach){
                             <div class="dropdown ct_chat_dropdown">
                                 <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
                                     id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>

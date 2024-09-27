@@ -69,7 +69,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if(feed.coachId == userId){
+                        @if(feed.coachId == userId && isCoach){
                         <div class="dropdown ct_chat_dropdown" style="cursor: pointer;">
                             <i class="fa-solid fa-ellipsis-vertical text-white" style="cursor: pointer;"
                                 id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
@@ -167,7 +167,7 @@
                         <ul>
                             <li>
                                 <div class="ct_like_btn d-flex align-items-center gap-3"
-                                    [class.ct_active_like]="feed.alreadyLiked" (click)="likePost(feed.id)"
+                                    [class.ct_active_like]="feed.alreadyLiked" (click)="toggleLike(feed)"
                                     style="cursor: pointer;">
 
                                     <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
@@ -194,7 +194,7 @@
                                 </div>
                             </li>
                             <li *ngIf="!isCoach" class="ct_book_mark_icon ms-auto"
-                                [class.ct_book_mark_icon_active]="feed.alreadySaved" (click)="bookmarkPost(feed.id)"
+                                [class.ct_book_mark_icon_active]="feed.alreadySaved" (click)="bookmarkPost(feed)"
                                 style="cursor: pointer;">
                                 <svg width="14" height="18" viewBox="0 0 14 18" fill="none"
                                     xmlns="http://www.w3.org/2000/svg" class="ct_transparent_bokkmark">
@@ -210,9 +210,9 @@
                                 <input type="text" class="form-control ct_custom_input w-100 ct_pe_34"
                                     placeholder="Write comment..." [(ngModel)]="commentText"
                                     [ngModelOptions]="{standalone: true}" maxlength="250"
-                                    (keyup.enter)="addComment(feed.id)">
+                                    (keyup.enter)="addComment(feed)">
 
-                                <i (click)="addComment(feed.id)" *ngIf="!btnLoader"
+                                <i (click)="addComment(feed)" *ngIf="!btnLoader"
                                     class="fa fa-paper-plane ct_send_msg_plane text-white" aria-hidden="true">
                                 </i>
                                 <div class="d-flex align-items-center ct_send_msg_plane text-white" *ngIf="btnLoader">
@@ -395,7 +395,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if(feed.coachId == userId){
+                        @if(feed.coachId == userId && isCoach){
                         <div class="dropdown ct_chat_dropdown" style="cursor: pointer;">
                             <i class="fa-solid fa-ellipsis-vertical text-white" id="dropdownMenuButton1"
                                 data-bs-toggle="dropdown" aria-expanded="false"></i>
@@ -408,9 +408,17 @@
                     </div>
 
 
-                    <div style="cursor: pointer;" *ngIf="feed.isPaid == 1 && !isCoach" (click)="getAdHocPost(feed.id)">
+                    <div style="cursor: pointer;" *ngIf="feed.isPaid == 1 && !isCoach && !feed.isShown"
+                        (click)="getAdHocPost(feed.id)">
                         <a class="ct_orange_btn mt-2 ct_border_radius_10 ct_blue_btn123"><i
-                                class="fa-solid fa-lock me-2"></i>Pay To See</a>
+                                class="fa-solid fa-lock me-2"></i>
+                            <div class="d-flex align-items-center">
+                                <div class="spinner-border me-2" role="status" *ngIf="btnLoaderPay">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <span *ngIf="!btnLoaderPay">Pay To See</span>
+                            </div>
+                        </a>
                     </div>
 
                     <p class="ct_fs_13 mb-0 text-white ct_ff_roboto ct_line_height_22 mt-3"
@@ -431,7 +439,7 @@
                         <ul>
                             <li>
                                 <div class="ct_like_btn d-flex align-items-center gap-3"
-                                    [class.ct_active_like]="feed.alreadyLiked" (click)="likePost(feed.id)"
+                                    [class.ct_active_like]="feed.alreadyLiked" (click)="toggleLike(feed)"
                                     style="cursor: pointer;">
                                     <!-- show this class ct_active_like when user will like  -->
                                     <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
@@ -458,7 +466,7 @@
                                 </div>
                             </li>
                             <li *ngIf="!isCoach" class="ct_book_mark_icon ms-auto"
-                                [class.ct_book_mark_icon_active]="feed.alreadySaved" (click)="bookmarkPost(feed.id)"
+                                [class.ct_book_mark_icon_active]="feed.alreadySaved" (click)="bookmarkPost(feed)"
                                 style="cursor: pointer;">
                                 <!-- add this class ct_book_mark_icon_active when user will book marked  -->
                                 <svg width="14" height="18" viewBox="0 0 14 18" fill="none"
@@ -476,10 +484,10 @@
                                 <input type="text" class="form-control ct_custom_input w-100 ct_pe_34"
                                     placeholder="Write comment..." [(ngModel)]="commentText"
                                     [ngModelOptions]="{standalone: true}" maxlength="250"
-                                    (keyup.enter)="addComment(feed.id)">
+                                    (keyup.enter)="addComment(feed)">
                                 <!-- <i (click)="addComment(feed.id)" class="fa fa-paper-plane ct_send_msg_plane text-white"
                                     aria-hidden="true"></i> -->
-                                <i (click)="addComment(feed.id)" *ngIf="!btnLoader"
+                                <i (click)="addComment(feed)" *ngIf="!btnLoader"
                                     class="fa fa-paper-plane ct_send_msg_plane text-white" aria-hidden="true">
                                 </i>
                                 <div class="d-flex align-items-center ct_send_msg_plane text-white" *ngIf="btnLoader">
@@ -659,7 +667,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if(feed.coachId == userId){
+                        @if(feed.coachId == userId && isCoach){
                         <div class="dropdown ct_chat_dropdown" style="cursor: pointer;">
                             <i class="fa-solid fa-ellipsis-vertical text-white" id="dropdownMenuButton1"
                                 data-bs-toggle="dropdown" aria-expanded="false"></i>
@@ -732,7 +740,7 @@
                         <ul>
                             <li>
                                 <div class="ct_like_btn d-flex align-items-center gap-3"
-                                    [class.ct_active_like]="feed.alreadyLiked" (click)="likePost(feed.id)"
+                                    [class.ct_active_like]="feed.alreadyLiked" (click)="toggleLike(feed)"
                                     style="cursor: pointer;">
                                     <!-- show this class ct_active_like when user will like  -->
                                     <svg width="21" height="19" viewBox="0 0 21 19" fill="none"
@@ -759,7 +767,7 @@
                                 </div>
                             </li>
                             <li *ngIf="!isCoach" class="ct_book_mark_icon ms-auto"
-                                [class.ct_book_mark_icon_active]="feed.alreadySaved" (click)="bookmarkPost(feed.id)"
+                                [class.ct_book_mark_icon_active]="feed.alreadySaved" (click)="bookmarkPost(feed)"
                                 style="cursor: pointer;">
                                 <!-- add this class ct_book_mark_icon_active when user will book marked  -->
                                 <svg width="14" height="18" viewBox="0 0 14 18" fill="none"
@@ -782,10 +790,10 @@
                                 <input type="text" class="form-control ct_custom_input w-100 ct_pe_34"
                                     placeholder="Write comment..." [(ngModel)]="commentText"
                                     [ngModelOptions]="{standalone: true}" maxlength="250"
-                                    (keyup.enter)="addComment(feed.id)">
+                                    (keyup.enter)="addComment(feed)">
                                 <!-- <i (click)="addComment(feed.id)" class="fa fa-paper-plane ct_send_msg_plane text-white"
                                     aria-hidden="true"></i> -->
-                                <i (click)="addComment(feed.id)" *ngIf="!btnLoader"
+                                <i (click)="addComment(feed)" *ngIf="!btnLoader"
                                     class="fa fa-paper-plane ct_send_msg_plane text-white" aria-hidden="true">
                                 </i>
                                 <div class="d-flex align-items-center ct_send_msg_plane text-white" *ngIf="btnLoader">

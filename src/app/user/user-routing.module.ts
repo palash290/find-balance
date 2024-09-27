@@ -22,6 +22,7 @@ import { TeamsComponent } from './teams/teams.component';
 import { FollowUsersComponent } from './follow-users/follow-users.component';
 import { EventListComponent } from './event-list/event-list.component';
 import { PaymentSuccessComponent } from './payment-success/payment-success.component';
+import { PaymentCancelComponent } from './payment-cancel/payment-cancel.component';
 
 const routes: Routes = [
   {
@@ -112,6 +113,10 @@ const routes: Routes = [
   {
     path: "payment-success",
     component: PaymentSuccessComponent,
+  },
+  {
+    path: "payment-cancel",
+    component: PaymentCancelComponent,
   },
 ];
 

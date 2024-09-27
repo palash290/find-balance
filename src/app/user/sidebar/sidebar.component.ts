@@ -91,13 +91,18 @@ export class SidebarComponent {
     });
   }
 
+  btnLoaderPay: boolean = false;
+
   getSubscriptonCoach() {
     const formURlData = new URLSearchParams();
     formURlData.set('coachId', this.userId);
     formURlData.set('planId', '4');
+    this.btnLoaderPay = true;
     this.visibilityService.postAPI(`subscription/create-subscription`, formURlData.toString()).subscribe(response => {
       this.stripeLink = response.url;
-      console.log(this.stripeLink);
+      window.location.href = this.stripeLink;
+      this.btnLoaderPay = false;
+      //console.log(this.stripeLink);
     });
   }
 

@@ -64,6 +64,8 @@ export class EditEventComponent {
           isPaid: this.data.isPaid,
           price: this.data.adhocPrice, 
         })
+        debugger
+        this.croppedImage = this.data.mediaUrl;
         this.isPaidValue = this.data.isPaid;
         this.eventType = this.data.type;
       },

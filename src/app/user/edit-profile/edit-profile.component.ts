@@ -118,7 +118,7 @@ export class EditProfileComponent {
             email: this.data.email
           })
         }
-        this.croppedImage = this.data.cover_photo_url
+        this.croppedImage = this.data.cover_photo_url;
 
         // Parse the comma-separated strings into arrays of objects
         this.certificates.update(certificates => this.parseCommaSeparated(this.data.certificates));
@@ -229,9 +229,6 @@ export class EditProfileComponent {
       }
 
 
-      // if (this.UploadedBg) {
-      //   formURlData.append('cover', this.UploadedBg);
-      // }
       // Append the cropped image if it has changed
       if (this.imageChanged && this.cropImgBlob) {
         const file = new File([this.cropImgBlob], 'profile_image.png', {
@@ -239,6 +236,11 @@ export class EditProfileComponent {
         });
         formURlData.append('cover', file);
       }
+
+      // if (this.croppedImage) {
+      //   formURlData.append('file', file);
+      // }
+
       // const file = new File([this.cropImgBlob], 'profile_image.png', {
       //   type: 'image/png'
       // })
@@ -310,7 +312,7 @@ export class EditProfileComponent {
   @ViewChild('closeModal') closeModal!: ElementRef;
 
   fileChangeEvent(event: Event): void {
-    // if (!this.croppedImage) {
+    // if (!this.croppedImag) {
     //   this.closeModal.nativeElement.click();
     // }
     this.imageChangedEvent = event;

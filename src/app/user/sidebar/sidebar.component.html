@@ -89,11 +89,13 @@
                         <h5 class="ct_fs_18 ct_fw_500 ct_ff_roboto mb-1 text-white text-center">{{totalPosts}}</h5>
                         <p class="ct_fs_14 text-white ct_text_op_5">Posts</p>
                     </div>
-                    <div class="ct_total_post" routerLink="/user/main/followed-users" style="cursor: pointer;">
+                    <div (click)="onToggleMenu()" class="ct_total_post" routerLink="/user/main/followed-users"
+                        style="cursor: pointer;">
                         <h5 class="ct_fs_18 ct_fw_500 ct_ff_roboto mb-1 text-white text-center">{{totalFollowers}}</h5>
                         <p class="ct_fs_14 text-white ct_text_op_5">Followers</p>
                     </div>
-                    <div class="ct_total_post" routerLink="/user/main/following" style="cursor: pointer;">
+                    <div (click)="onToggleMenu()" class="ct_total_post" routerLink="/user/main/following"
+                        style="cursor: pointer;">
                         <h5 class="ct_fs_18 ct_fw_500 ct_ff_roboto mb-1 text-white text-center">{{numberOfFollowings}}
                         </h5>
                         <p class="ct_fs_14 text-white ct_text_op_5">Following</p>
@@ -347,16 +349,21 @@
                                 <li>Can set up teams</li>
                                 <li>Can share long-form media (More than 2 minutes)</li>
                                 <li>Can set up free or paid webinars/events</li>
-                                <li>Can set up ad hoc charges for additional events/services
-                                </li>
-                                <li>Can set up ad hoc charges for additional posts
-                                </li>
+                                <li>Can set up ad hoc charges for additional events/services</li>
+                                <li>Can set up ad hoc charges for additional posts</li>
                             </ul>
                         </li>
                     </ul>
 
-                    <div style="cursor: pointer;" (click)="redirect()">
-                        <a class="ct_orange_btn mt-2 ct_border_radius_10">Buy Plan</a>
+                    <div style="cursor: pointer;" (click)="getSubscriptonCoach()">
+                        <a class="ct_orange_btn mt-2 ct_border_radius_10">
+                            <div class="d-flex align-items-center">
+                                <div class="spinner-border me-2" role="status" *ngIf="btnLoaderPay">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <span *ngIf="!btnLoaderPay">Buy Plan</span>
+                            </div>
+                        </a>
                     </div>
                 </div>
                 <button hidden type="button" class="btn btn-secondary" #closeModal

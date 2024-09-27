@@ -176,3 +176,13 @@
   object-fit: fill;
   border-radius: 20px;
 }
+
+.snackbar-success {
+  background-color: #4caf50; /* Green background for success */
+  color: white;
+}
+
+.snackbar-error {
+  background-color: #f44336; /* Red background for error */
+  color: white;
+}

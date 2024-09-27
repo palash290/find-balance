@@ -22,17 +22,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditEventComponent } from './edit-event/edit-event.component';
 import { ImageCropperComponent } from 'ngx-image-cropper';
 import { ToastrModule } from 'ngx-toastr';
-import {  ChatFilterPipe, FilterPipe } from '../services/filter.pipe';
+import { ChatFilterPipe, FilterPipe } from '../services/filter.pipe';
 import { FollowingComponent } from './following/following.component';
 import { CommunityComponent } from './community/community.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { SearchCoachesComponent } from './search-coaches/search-coaches.component';
 import { TeamsComponent } from './teams/teams.component';
 import { FollowUsersComponent } from './follow-users/follow-users.component';
 import { PaymentSuccessComponent } from './payment-success/payment-success.component';
 import { EventListComponent } from './event-list/event-list.component';
+import { PaymentCancelComponent } from './payment-cancel/payment-cancel.component';
 
 
 @NgModule({
@@ -63,6 +65,7 @@ import { EventListComponent } from './event-list/event-list.component';
     FollowUsersComponent,
     PaymentSuccessComponent,
     EventListComponent,
+    PaymentCancelComponent,
   ],
   imports: [
     CommonModule,
@@ -80,7 +83,7 @@ import { EventListComponent } from './event-list/event-list.component';
     MatFormFieldModule,
     MatChipsModule,
     MatIconModule,
-
+    MatSnackBarModule
   ]
 })
 export class UserModule { }

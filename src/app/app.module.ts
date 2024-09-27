@@ -35,7 +35,6 @@ initializeApp(environment.firebaseConfig)
     SignupUserComponent,
     ResetPasswordComponent,
     OtpResetComponent,
-
   ],
   imports: [
     AngularFireModule,

@@ -43,7 +43,7 @@
         style="cursor: pointer;">Delete Event</a>
     </div>
     } @else {
-    @if (eventData.isPaid == 1) {
+    @if (eventData?.isPaid == 1) {
     @if(!eventData?.isShown){
     <div style="cursor: pointer;" (click)="getAdHocPost(eventData.id)">
       <a class="ct_orange_btn  ct_border_radius_10">

@@ -128,9 +128,9 @@ export class AddEventComponent {
       //code: new FormControl(''), // For Live-event
       webinarUrl: new FormControl(''), // For Webinar
       isPaid: new FormControl({ value: 0, disabled: this.userPlan != 'Premium' }), // Default to '0' (No)
-      price: new FormControl('', [ Validators.required,
-        Validators.min(0),        // Ensure price is not negative
-        Validators.max(99999)  ]), // Conditionally required if isPaid is '1'
+      price: new FormControl('', [Validators.required,
+      Validators.min(0),        // Ensure price is not negative
+      Validators.max(99999)]), // Conditionally required if isPaid is '1'
       other_categ: new FormControl('')
     });
 
@@ -158,9 +158,9 @@ export class AddEventComponent {
     // Listen to changes in isPaid and update price validators accordingly
     this.newForm.get('isPaid')?.valueChanges.subscribe(value => {
       if (value == '1') {
-        this.newForm.get('price')?.setValidators([ Validators.required,
-          Validators.min(1),          // Ensure price is positive
-          Validators.max(99999)]);
+        this.newForm.get('price')?.setValidators([Validators.required,
+        Validators.min(1),          // Ensure price is positive
+        Validators.max(99999)]);
       } else {
         this.newForm.get('price')?.clearValidators();
       }
@@ -250,9 +250,9 @@ export class AddEventComponent {
       formData.set('about', this.newForm.value.about);
       formData.set('date', this.newForm.value.date);
       formData.set('type', this.newForm.value.eventType);
-      if(this.userPlan == 'Premium'){
+      if (this.userPlan == 'Premium') {
         formData.set('isPaid', this.newForm.value.isPaid);
-      }else{
+      } else {
         formData.set('isPaid', '0');
       }
 
@@ -265,7 +265,7 @@ export class AddEventComponent {
 
       if (this.newForm.value.isPaid == '1') {
         formData.set('adhocPrice', this.newForm.value.price);
-      } 
+      }
 
       const file = new File([this.cropImgBlob], 'profile_image.png', {
         type: 'image/png'
@@ -294,6 +294,7 @@ export class AddEventComponent {
             //this.getEventData()
             this.croppedImage = null
             this.loading = false;
+            this.route.navigateByUrl('/user/main/event-list')
           } else {
             this.toastr.warning(resp.message);
             this.loading = false;
