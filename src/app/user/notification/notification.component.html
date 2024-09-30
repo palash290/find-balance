@@ -19,7 +19,7 @@
         <li>
             @if(isCoach){
             <div *ngIf="notify.type == 'team'">
-                <div class="d-flex ct_flex_wrap_575 gap-3" style="cursor: pointer;">
+                <div class="d-flex  gap-3" style="cursor: pointer;">
                     <img [src]="notify.byCoach.avatar_url ? notify.byCoach.avatar_url : '/assets/img/np_pro.png'" alt=""
                         class="ct_img_40 ct_bor ct_white_border_1">
                     <div>
@@ -72,7 +72,7 @@
             </div>
 
             <div *ngIf="notify.type == 'chat'">
-                <div class="d-flex ct_flex_wrap_575 gap-3" style="cursor: pointer;"
+                <div class="d-flex  gap-3" style="cursor: pointer;"
                     (click)="getChat(notify.data.chatId, notify.type)">
                     <img [src]="notify.byUser.avatar_url ? notify.byUser.avatar_url : '/assets/img/np_pro.png'" alt=""
                         class="ct_img_40 ct_bor ct_white_border_1">
@@ -100,7 +100,7 @@
             </div>
 
             <div *ngIf="notify.type == 'post'">
-                <div class="d-flex ct_flex_wrap_575 gap-3" style="cursor: pointer;">
+                <div class="d-flex  gap-3" style="cursor: pointer;">
                     @if(notify.byCoach?.avatar_url){
                     <img [src]="notify.byCoach?.avatar_url ? notify.byCoach?.avatar_url : '/assets/img/np_pro.png'"
                         alt="" class="ct_img_40 ct_bor ct_white_border_1">
@@ -140,7 +140,7 @@
 
 
             <div *ngIf="notify.type == 'event'">
-                <div class="d-flex ct_flex_wrap_575 gap-3" (click)="viewEvent(notify.data.eventId, notify.type)" style="cursor: pointer;">
+                <div class="d-flex  gap-3" (click)="viewEvent(notify.data.eventId, notify.type)" style="cursor: pointer;">
                     <img [src]="notify.byCoach.avatar_url ? notify.byCoach.avatar_url : '/assets/img/np_pro.png'" alt=""
                         class="ct_img_40 ct_bor ct_white_border_1">
                     <div>

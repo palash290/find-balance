@@ -226,6 +226,12 @@
         margin-left: 0px !important;
     }
 }
+
+@media screen and (max-width:760px){
+    .error-message.ct_error_position {
+        position: relative;
+    }
+}
 @media screen and (max-width:575px){
     .ct_px_95 {
         padding-inline: 15px;
@@ -290,5 +296,11 @@
     }
     .ct_side_bar{
         width: 100%;
+    }
+    .ct_fs_18{
+        font-size: 14px;
+    }
+    .ct_fs_14{
+        font-size: 12px;
     }
 }

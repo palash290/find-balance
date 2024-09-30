@@ -120,7 +120,7 @@ a,a:hover{
 }
 .ct_fs_12{
     font-size: 12px;
-    line-height: 12px;
+    line-height: 18px;
 }
 .ct_fs_18 {
     font-size: 18px;
@@ -865,4 +865,9 @@ img.ct_i_am_coach_img.ct_show_img12 ,.ct_i_am_user_img.ct_show_img12 {
 
 .ct_blue_text_clr{
     color: #3490E5 !important;
+}
+
+
+.error-message.ct_error_position {
+    position: absolute;
 }

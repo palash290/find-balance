@@ -50,15 +50,17 @@
             </select>
         </div>
 
-        <div *ngIf="postType == 1" class="ct_category_filter123 ct_575_100 ">
+      <div class="ct_575_100">
+        <div *ngIf="postType == 1" class="ct_category_filter123  ">
             <input type="number" [(ngModel)]="adHocPrice" class="ct_transparent_input text-white"  (ngModelChange)="validateAdHocPrice()"
                 placeholder="Enter Price">
 
             <!-- Error message for required, negative, or max value -->
-            <div *ngIf="priceError" class="error-message">
-                {{ priceError }}
-            </div>
         </div>
+        <div *ngIf="priceError" class="error-message ct_error_position">
+            {{ priceError }}
+        </div>
+      </div>
 
         }
        </div>
