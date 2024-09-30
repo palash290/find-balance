@@ -35,6 +35,7 @@ export class SidebarComponent {
   planPrice: any;
   userPlan: any;
   plan_expired_at: any;
+  canceled_at: any;
 
   ngOnInit() {
     this.plan_expired_at = localStorage.getItem('plan_expired_at')
@@ -72,8 +73,10 @@ export class SidebarComponent {
       next: (resp) => {
         this.userPlan = resp.data.plan.name;
         this.plan_expired_at = resp.data.expired_at;
+        this.canceled_at = resp.data.canceled_at;
         localStorage.setItem('findPlan', this.userPlan);
         localStorage.setItem('plan_expired_at', this.plan_expired_at);
+        localStorage.setItem('canceled_at', this.canceled_at);
       },
       error: (error) => {
         console.error('Error fetching project list:', error);
@@ -97,12 +100,12 @@ export class SidebarComponent {
     const formURlData = new URLSearchParams();
     formURlData.set('coachId', this.userId);
     formURlData.set('planId', '4');
-    this.btnLoaderPay = true;
+    //this.btnLoaderPay = true;
     this.visibilityService.postAPI(`subscription/create-subscription`, formURlData.toString()).subscribe(response => {
       this.stripeLink = response.url;
-      window.location.href = this.stripeLink;
-      this.btnLoaderPay = false;
-      //console.log(this.stripeLink);
+      //window.location.href = this.stripeLink;
+      //this.btnLoaderPay = false;
+      console.log(this.stripeLink);
     });
   }
 
@@ -110,15 +113,18 @@ export class SidebarComponent {
     window.location.href = this.stripeLink;
   }
 
+  // ngOnDestroy() {
+  //   this.stripeLink = '';
+  // }
 
   checkPlanCommunity() {
-    if(this.isCoach){
+    if (this.isCoach) {
       if (this.userPlan == 'Premium') {
         this.router.navigate(['/user/main/community']);
       } else {
         this.toastr.warning('Please buy premium plan first.')
       }
-    }else{
+    } else {
       this.router.navigate(['/user/main/community']);
     }
 

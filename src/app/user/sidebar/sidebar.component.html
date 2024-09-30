@@ -13,9 +13,9 @@
                 <div class="position-relative">
                     <img [src]="avatar_url ? avatar_url : '/assets/img/np_pro.png'" alt=""
                         class="ct_img_84 ct_border_radius_100">
-                    <div *ngIf="userPlan == 'Premium'">
-                        <!-- <img src="../assets/img/crown_white.png" class="fa-solid fa-crown ct_user_crown_btm" /> -->
-                    </div>
+                    <!-- <div *ngIf="userPlan == 'Premium'">
+                        <img src="../assets/img/crown_white.png" class="fa-solid fa-crown ct_user_crown_btm" />
+                    </div> -->
                 </div>
                 <!-- @if (isCoach) { -->
                 <div class="ct_notification_icon" routerLink="/user/main/notifications" style="cursor: pointer;"
@@ -41,8 +41,24 @@
                     </a>
                 </div> -->
             </div>
+
+
             <div class="ct_mt_10">
-                <h4 class="ct_fs_22 ct_fw_600 ct_ff_roboto text-center text-white">{{name}} <img src="assets/img/ct_golden_crown.png" alt=""></h4>
+                <!-- <h4 class="ct_fs_22 ct_fw_600 ct_ff_roboto text-center text-white" style="cursor: pointer;"
+                    matTooltip="Premium Member">
+                    {{name}} <img *ngIf="userPlan == 'Premium'" src="assets/img/ct_golden_crown.png" alt=""></h4> -->
+                <h4 *ngIf="userPlan == 'Premium'; else regularUser"
+                    class="ct_fs_22 ct_fw_600 ct_ff_roboto text-center text-white" matTooltip="Premium Member"
+                    style="cursor: pointer;">
+                    {{name}} <img src="assets/img/ct_golden_crown.png" alt="">
+                </h4>
+
+                <ng-template #regularUser>
+                    <h4 class="ct_fs_22 ct_fw_600 ct_ff_roboto text-center text-white">
+                        {{name}}
+                    </h4>
+                </ng-template>
+
                 @if(isCoach){
                 <div class="d-flex align-items-center justify-content-center gap-2">
                     <img src="../assets/img/star.png" alt="star">
@@ -62,20 +78,20 @@
                 </p>
 
                 @if(userPlan == 'Premium'){
-                <div class="text-white text-center ct_expiry_text_small">
+                <!-- <div class="text-white text-center ct_expiry_text_small">
                     Your plan will expire on:
                     {{plan_expired_at | date: 'dd MMM yyyy' }}
-                </div>
+                </div> -->
                 }@else {
                 @if(isCoach){
-                <div (click)="onToggleMenu()" (click)="getSubscriptonCoach()" style="cursor: pointer;" data-bs-toggle="modal"
-                    data-bs-target="#ct_followed_coaches">
+                <div (click)="onToggleMenu()" (click)="getSubscriptonCoach()" style="cursor: pointer;"
+                    data-bs-toggle="modal" data-bs-target="#ct_followed_coaches">
                     <a class="ct_orange_btn mt-2 ct_border_radius_10 ct_blue_btn123"><i
                             class="fa-solid fa-crown me-2"></i>Buy Pro Plan</a>
                 </div>
                 }@else {
-                <div (click)="onToggleMenu()" (click)="getSubscriptonUser()" style="cursor: pointer;" data-bs-toggle="modal"
-                    data-bs-target="#ct_followed_coaches">
+                <div (click)="onToggleMenu()" (click)="getSubscriptonUser()" style="cursor: pointer;"
+                    data-bs-toggle="modal" data-bs-target="#ct_followed_coaches">
                     <a class="ct_orange_btn mt-2 ct_border_radius_10 ct_blue_btn123"><i
                             class="fa-solid fa-crown me-2"></i>Buy Pro Plan</a>
                 </div>
@@ -337,9 +353,12 @@
                     <ul>
                         <li *ngIf="!isCoach">
                             <ul>
-                                <li><i class="fa-solid fa-check me-1 text-white"></i>Have access to all content, both “free” and “paid”</li>
-                                <li class="mt-2"><i class="fa-solid fa-check me-1 text-white"></i>Can be invited and charged for additional “paid” events or content</li>
-                                <li class="mt-2"><i class="fa-solid fa-check me-1 text-white"></i>Repeatable/recurring membership charges and ad hoc charging for events and webinars
+                                <li><i class="fa-solid fa-check me-1 text-white"></i>Have access to all content, both
+                                    “free” and “paid”</li>
+                                <li class="mt-2"><i class="fa-solid fa-check me-1 text-white"></i>Can be invited and
+                                    charged for additional “paid” events or content</li>
+                                <li class="mt-2"><i class="fa-solid fa-check me-1 text-white"></i>Repeatable/recurring
+                                    membership charges and ad hoc charging for events and webinars
                                 </li>
                             </ul>
                         </li>
@@ -347,15 +366,19 @@
                             <ul>
                                 <li><i class="fa-solid fa-check me-1 text-white"></i>Can set up communities</li>
                                 <li><i class="fa-solid fa-check me-1 text-white mt-1"></i>Can set up teams</li>
-                                <li><i class="fa-solid fa-check me-1 text-white mt-1"></i>Can share long-form media (More than 2 minutes)</li>
-                                <li><i class="fa-solid fa-check me-1 text-white mt-1"></i>Can set up free or paid webinars/events</li>
-                                <li><i class="fa-solid fa-check me-1 text-white mt-1"></i>Can set up ad hoc charges for additional events/services</li>
-                                <li><i class="fa-solid fa-check me-1 text-white mt-1"></i>Can set up ad hoc charges for additional posts</li>
+                                <li><i class="fa-solid fa-check me-1 text-white mt-1"></i>Can share long-form media
+                                    (More than 2 minutes)</li>
+                                <li><i class="fa-solid fa-check me-1 text-white mt-1"></i>Can set up free or paid
+                                    webinars/events</li>
+                                <li><i class="fa-solid fa-check me-1 text-white mt-1"></i>Can set up ad hoc charges for
+                                    additional events/services</li>
+                                <li><i class="fa-solid fa-check me-1 text-white mt-1"></i>Can set up ad hoc charges for
+                                    additional posts</li>
                             </ul>
                         </li>
                     </ul>
 
-                    <div style="cursor: pointer;" class="mt-4" (click)="getSubscriptonCoach()">
+                    <div style="cursor: pointer;" class="mt-4" (click)="redirect()">
                         <a class="ct_orange_btn mt-2 ct_border_radius_10">
                             <div class="d-flex align-items-center">
                                 <div class="spinner-border me-2" role="status" *ngIf="btnLoaderPay">

@@ -864,5 +864,5 @@ img.ct_i_am_coach_img.ct_show_img12 ,.ct_i_am_user_img.ct_show_img12 {
 }
 
 .ct_blue_text_clr{
-    color: #3490E5;
+    color: #3490E5 !important;
 }

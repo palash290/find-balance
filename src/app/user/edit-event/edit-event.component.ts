@@ -154,7 +154,11 @@ export class EditEventComponent {
         },
         error: error => {
           this.loading = false;
-          this.toastr.error('Something went wrong.');
+          if (error.error.message) {
+            this.toastr.error(error.error.message);
+          } else {
+            this.toastr.error('Something went wrong!');
+          }
           console.log(error.statusText)
         }
       })

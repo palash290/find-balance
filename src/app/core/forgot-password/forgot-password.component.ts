@@ -106,7 +106,11 @@ export class ForgotPasswordComponent {
         },
         error: (error) => {
           this.loading = false;
-          this.toastr.error(error.error.message);
+          if (error.error.message) {
+            this.toastr.error(error.error.message);
+          } else {
+            this.toastr.error('Something went wrong!');
+          }
           console.error('Login error:', error.message);
         }
       });

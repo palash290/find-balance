@@ -4,6 +4,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SharedService } from '../../services/shared.service';
 import { filter, interval, Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { tr } from 'intl-tel-input/i18n';
 
 @Component({
   selector: 'app-otp-varify',
@@ -194,6 +195,7 @@ export class OtpVarifyComponent {
     return value < 10 ? '0' + value : value.toString();
   }
 
+
   resendCode() {
     const formURlData = new URLSearchParams();
     const jaonData: any = (localStorage.getItem('signupDet'));
@@ -205,6 +207,7 @@ export class OtpVarifyComponent {
     if (data?.categoryId) {
       formURlData.set('categoryId', data?.categoryId);
     }
+    this.loading = true;
     this.service.loginUser(this.isCoach ? 'coach/signup' : 'user/signup', formURlData.toString()).subscribe({
       next: (resp) => {
         if (resp.success == true) {

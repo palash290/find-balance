@@ -176,6 +176,7 @@ export class OtpResetComponent {
     return value < 10 ? '0' + value : value.toString();
   }
 
+  
   resendCode() {
     const formURlData = new URLSearchParams();
     //const jaonData: any = (localStorage.getItem('forgotPassDet'));
@@ -185,6 +186,7 @@ export class OtpResetComponent {
     // if (data?.categoryId) {
     //   formURlData.set('categoryId', data?.categoryId);
     // }
+    this.loading = true;
     this.service.loginUser(this.isCoach ? 'coach/forgetPassword' : 'user/forgetPassword', formURlData.toString()).subscribe({
       next: (resp) => {
         if (resp.success == true) {

@@ -38,11 +38,11 @@
   <li>
     <div class="d-flex align-items-center gap-3 justify-content-between">
       <p class="mb-0 text-white ct_fs_18 ct_fw_500 ct_ff_roboto">Membership</p>
-      <p class="mb-0 ct_fs_14 ct_fw_500 ct_ff_roboto ct_blue_text_clr">Pro plan will expire on 05-09-2025</p>
+      <p class="mb-0 ct_fs_14 ct_fw_500 ct_ff_roboto ct_blue_text_clr">{{membership ? 'Your autopay is re-sheduled at:' : 'Your plan will expire on'}} {{plan_expired_at | date: 'dd MMM yyyy' }}</p>
     </div>
   </li>
 
-  @if (userPlan == 'Premium') {
+  @if (userPlan == 'Premium' && membership) {
   <li>
     <div (click)="cancelSubscription()" class="d-flex align-items-center gap-3 justify-content-between"
       style="cursor: pointer;">

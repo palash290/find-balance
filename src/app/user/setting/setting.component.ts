@@ -18,9 +18,14 @@ export class SettingComponent implements OnInit {
   isCoach: boolean = true;
   userId: any;
   userPlan: any;
+  plan_expired_at: any;
+  canceled_at: any;
+  membership: boolean = false;
 
   constructor(private srevice: SharedService, private toastr: ToastrService, private route: Router, private location: Location) { }
   ngOnInit(): void {
+    this.canceled_at = localStorage.getItem('canceled_at');
+    this.plan_expired_at = localStorage.getItem('plan_expired_at');
     this.userId = localStorage.getItem('fbId');
     this.role = this.srevice.getRole();
     if (this.role == 'USER') {
@@ -31,6 +36,26 @@ export class SettingComponent implements OnInit {
     this.userDetails = data;
     this.getSettings();
     this.userPlan = localStorage.getItem('findPlan');
+    if (this.canceled_at == 'null') {
+      this.membership = true;
+    }
+    this.getPackage();
+  }
+
+  getPackage() {
+    this.srevice.getApi(this.isCoach ? 'coach/myActivePlan' : 'user/myActivePlan').subscribe({
+      next: (resp) => {
+        this.userPlan = resp.data.plan.name;
+        this.plan_expired_at = resp.data.expired_at;
+        this.canceled_at = resp.data.canceled_at;
+        localStorage.setItem('findPlan', this.userPlan);
+        localStorage.setItem('plan_expired_at', this.plan_expired_at);
+        localStorage.setItem('canceled_at', this.canceled_at);
+      },
+      error: (error) => {
+        console.error('Error fetching project list:', error);
+      }
+    });
   }
 
   backClicked() {
@@ -108,7 +133,7 @@ export class SettingComponent implements OnInit {
               this.route.navigateByUrl('/home')
               this.toastr.success(resp.message);
             } else {
-              this.toastr.warning(resp.message);
+              this.toastr.success(resp.message);
             }
           },
           error: (error) => {

@@ -104,6 +104,7 @@ export class SharedService {
     localStorage.removeItem('plan_expired_at');
     localStorage.removeItem('adHocPostId');
     localStorage.removeItem('adHocEventId');
+    localStorage.removeItem('canceled_at');
   }
 
   deleteAcc(url: any): Observable<any> {

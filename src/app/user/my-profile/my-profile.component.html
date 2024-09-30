@@ -38,7 +38,7 @@
         </div>
         }
 
-        @if(isCoach){
+        @if((isCoach && routerole == 'COACH') || (!isCoach && routerole == 'COACH')){
         @if(experience != ''){
         <div>
             <h4 class="ct_ff_roboto ct_orange_text ct_fs_18 ct_fw_600 mt-3">Experience</h4>
@@ -109,7 +109,7 @@
 
 
 @if((userRole === 'COACH' && !isCoach) || (isCoach && !userId)){
-    <!-- when coach is login then  ct_all_feed_boxex will hide  -->
+<!-- when coach is login then  ct_all_feed_boxex will hide  -->
 <div class="" [class.ct_all_feed_boxex]="!isCoach">
 
     <div *ngFor="let feed of postData; let i = index">
@@ -608,13 +608,13 @@
                             }
                         </div>
                     </div>
-                    
+
                     <div class="mt-4" *ngIf="shouldShowLoadMore(feed.id)">
                         <button (click)="loadMoreComments(feed.id)"
                             class="ct_orange_btn ct_tansparent_btn w-100 ct_white_border_1 ct_border_radius_10">Load
                             more comments</button>
                     </div>
-                    
+
                 </div>
             </div>
         </div>

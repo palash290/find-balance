@@ -128,9 +128,7 @@ export class AddEventComponent {
       //code: new FormControl(''), // For Live-event
       webinarUrl: new FormControl(''), // For Webinar
       isPaid: new FormControl({ value: 0, disabled: this.userPlan != 'Premium' }), // Default to '0' (No)
-      price: new FormControl('', [Validators.required,
-      Validators.min(0),        // Ensure price is not negative
-      Validators.max(99999)]), // Conditionally required if isPaid is '1'
+      price: new FormControl(''), // Conditionally required if isPaid is '1'
       other_categ: new FormControl('')
     });
 
@@ -242,6 +240,7 @@ export class AddEventComponent {
   // }
 
   addEvent() {
+    debugger
     this.newForm.markAllAsTouched();
     if (this.newForm.valid) {
       this.loading = true;
@@ -303,7 +302,11 @@ export class AddEventComponent {
         },
         error: error => {
           this.loading = false;
-          this.toastr.error('Something went wrong.');
+          if (error.error.message) {
+            this.toastr.error(error.error.message);
+          } else {
+            this.toastr.error('Something went wrong!');
+          }
           console.log(error.statusText)
         }
       })

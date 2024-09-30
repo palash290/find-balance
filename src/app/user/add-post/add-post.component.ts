@@ -42,6 +42,7 @@ export class AddPostComponent {
   teamId: any;
   userPlan: any;
   plan_expired_at: any;
+  canceled_at: any;
 
   hideField: boolean = false;
 
@@ -68,8 +69,10 @@ export class AddPostComponent {
       next: (resp) => {
         this.userPlan = resp.data.plan.name;
         this.plan_expired_at = resp.data.expired_at;
+        this.canceled_at = resp.data.canceled_at;
         localStorage.setItem('findPlan', this.userPlan);
         localStorage.setItem('plan_expired_at', this.plan_expired_at);
+        localStorage.setItem('canceled_at', this.canceled_at);
       },
       error: (error) => {
         console.error('Error fetching project list:', error);

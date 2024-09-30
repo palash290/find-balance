@@ -35,6 +35,7 @@ import { FollowUsersComponent } from './follow-users/follow-users.component';
 import { PaymentSuccessComponent } from './payment-success/payment-success.component';
 import { EventListComponent } from './event-list/event-list.component';
 import { PaymentCancelComponent } from './payment-cancel/payment-cancel.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -83,7 +84,8 @@ import { PaymentCancelComponent } from './payment-cancel/payment-cancel.componen
     MatFormFieldModule,
     MatChipsModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTooltipModule
   ]
 })
 export class UserModule { }

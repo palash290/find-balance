@@ -155,7 +155,7 @@ export class EventsComponent {
           next: (resp) => {
             if (resp.success) {
               this.service.triggerRefresh();
-              this.router.navigateByUrl('/user/main/add-event')
+              this.router.navigateByUrl('/user/main/event-list')
               //this.location.back();
             } else {
               this.getEventListData();
